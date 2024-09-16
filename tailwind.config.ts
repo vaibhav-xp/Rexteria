@@ -16,14 +16,6 @@ const config: Config = {
           "2xl": "1400px",
         },
       },
-      fontSize: {
-        s: "14px",
-        m: "15px",
-        l: "18px",
-        xl: "20px",
-        "2xl": "30px",
-        "3xl": "38px",
-      },
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",

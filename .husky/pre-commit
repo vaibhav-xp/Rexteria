@@ -1,8 +1,10 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-# Run lint-staged to format and lint staged files
-npx lint-staged
+# Run formatting
+pnpm run format
 
-# Ensure changes are added to the commit
+# Run linting
+pnpm run eslint
+
 git add .

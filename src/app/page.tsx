@@ -1,9 +1,13 @@
+import Banner from "@/components/Home/Banner";
+import Header from "@/components/Home/Header";
+import Mods from "@/components/Home/Mods";
+
 export default function Home() {
   return (
-    <div className="">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro laboriosam
-      consequuntur id quasi nesciunt iste est iure sed numquam provident? Hic
-      praesentium a earum sint mollitia ut quidem vel dolores.
-    </div>
+    <main className="h-[200vh]">
+      <Header />
+      <Banner />
+      <Mods />
+    </main>
   );
 }

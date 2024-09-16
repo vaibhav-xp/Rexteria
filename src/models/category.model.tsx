@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import ImageSchema from "./image.model";
 
 const CategorySchema = new mongoose.Schema(
   {
@@ -7,15 +8,14 @@ const CategorySchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    image: {
-      type: String,
-      required: true,
-    },
+    image: ImageSchema,
   },
   {
     timestamps: true,
   },
 );
 
-const Category = mongoose.model("mod_category", CategorySchema);
-export default Category;
+const ModCategory =
+  mongoose.models.Category || mongoose.model("Category", CategorySchema);
+
+export default ModCategory;
