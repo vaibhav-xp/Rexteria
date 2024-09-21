@@ -80,6 +80,7 @@ export const deleteImage = async (publicId: string): Promise<unknown> => {
 
     return result;
   } catch (error) {
+    console.log(error);
     throw new ErrorCreator(
       StatusCodes.INTERNAL_SERVER_ERROR,
       `Failed to delete image`,

@@ -10,7 +10,7 @@ interface AxiosContextType {
 
 // Create the context with a default value
 export const AxiosContext = createContext<AxiosContextType | undefined>(
-  undefined
+  undefined,
 );
 
 // Define the provider component with children prop

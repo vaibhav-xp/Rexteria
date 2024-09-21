@@ -26,12 +26,7 @@ const ModSchema = new mongoose.Schema(
     ],
     categoryId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "ModCategory",
-      required: true,
-    },
-    subcategoryId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Subcategory",
+      ref: "mod_category",
       required: true,
     },
     price: {
@@ -59,7 +54,6 @@ const ModSchema = new mongoose.Schema(
       {
         key: {
           categoryId: 1,
-          subcategoryId: 1,
           views: 1,
           rating: 1,
         },

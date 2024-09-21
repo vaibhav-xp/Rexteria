@@ -1,23 +1,31 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import useCarousal from "@/hooks/use-carousal";
+import { deleteCategoryByIdFn } from "@/services/category";
+import { showAlert } from "@/services/handle-api";
+import { DisplayCategoriesTypes } from "@/types/category-types";
 import { Edit, Trash } from "lucide-react";
 import Image from "next/image";
 
-// Define types for data props if needed
-interface CategoryData {
-  image?: {
-    url: string;
-    publid_id: string;
-  };
-  title: string;
-}
-
-interface CategoryCardProps {
-  data: CategoryData;
-}
-
-export default function CategoryCard({ data }: CategoryCardProps) {
+export default function CategoryCard({
+  data,
+  openModal,
+  fetchData,
+}: {
+  data: DisplayCategoriesTypes;
+  openModal: () => void;
+  fetchData: () => void;
+}) {
   const { image, title } = data;
+  const { handleSetImages } = useCarousal();
+
+  const handelDelete = () => {
+    const formData = new FormData();
+    formData.append("_id", data?._id);
+    deleteCategoryByIdFn(formData)
+      .then((data) => showAlert(data))
+      .then(() => fetchData());
+  };
 
   return (
     <Card className="overflow-hidden shadow-md transition-all hover:shadow-lg rounded-lg">
@@ -27,7 +35,8 @@ export default function CategoryCard({ data }: CategoryCardProps) {
           alt={title}
           width={500}
           height={500}
-          className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+          className="w-full h-full object-cover transition-transform duration-500 hover:scale-105 cursor-pointer"
+          onClick={() => handleSetImages([image?.url])}
         />
       </div>
       <CardContent className="p-4">
@@ -37,6 +46,7 @@ export default function CategoryCard({ data }: CategoryCardProps) {
             size="sm"
             variant="outline"
             className="flex items-center gap-2"
+            onClick={openModal}
           >
             <Edit size={16} /> Edit
           </Button>
@@ -44,6 +54,7 @@ export default function CategoryCard({ data }: CategoryCardProps) {
             size="sm"
             variant="destructive"
             className="flex items-center gap-2"
+            onClick={handelDelete}
           >
             <Trash size={16} /> Delete
           </Button>

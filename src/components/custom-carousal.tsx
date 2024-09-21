@@ -48,12 +48,22 @@ const CustomCarousal = () => {
         <CarouselContent>
           {images?.map((item, index) => (
             <CarouselItem key={index}>
-              <Image src={item} alt="Sample" className="w-full" />
+              <Image
+                src={item}
+                alt="Sample"
+                className="w-full"
+                width={1000}
+                height={600}
+              />
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="absolute left-4 top-1/2 transform -translate-y-1/2" />
-        <CarouselNext className="absolute right-4 top-1/2 transform -translate-y-1/2" />
+        {images?.length !== 0 && (
+          <CarouselPrevious className="absolute left-4 top-1/2 transform -translate-y-1/2" />
+        )}
+        {images?.length !== 0 && (
+          <CarouselNext className="absolute right-4 top-1/2 transform -translate-y-1/2" />
+        )}
       </Carousel>
     </div>
   );

@@ -33,6 +33,6 @@ const inquirySchema = new mongoose.Schema(
   },
 );
 
-const Inquiry = mongoose.model("Inquiry", inquirySchema);
+const Inquiry = mongoose.model("inquiry", inquirySchema);
 
 module.exports = Inquiry;

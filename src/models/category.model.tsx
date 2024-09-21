@@ -16,6 +16,6 @@ const CategorySchema = new mongoose.Schema(
 );
 
 const ModCategory =
-  mongoose.models.Category || mongoose.model("Category", CategorySchema);
+  mongoose.models.categories || mongoose.model("categories", CategorySchema);
 
 export default ModCategory;
