@@ -6,6 +6,7 @@ import { showAlert } from "@/services/handle-api";
 import { DisplayCategoriesTypes } from "@/types/category-types";
 import { Edit, Trash } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
 
 export default function CategoryCard({
   data,
@@ -18,13 +19,16 @@ export default function CategoryCard({
 }) {
   const { image, title } = data;
   const { handleSetImages } = useCarousal();
+  const [loader, setLoader] = useState(false);
 
   const handelDelete = () => {
+    setLoader(true);
     const formData = new FormData();
     formData.append("_id", data?._id);
     deleteCategoryByIdFn(formData)
       .then((data) => showAlert(data))
-      .then(() => fetchData());
+      .then(() => fetchData())
+      .then(() => setLoader(false));
   };
 
   return (
@@ -56,7 +60,8 @@ export default function CategoryCard({
             className="flex items-center gap-2"
             onClick={handelDelete}
           >
-            <Trash size={16} /> Delete
+            <Trash size={16} />
+            {loader ? "Deleting..." : "Delete"}
           </Button>
         </div>
       </CardContent>

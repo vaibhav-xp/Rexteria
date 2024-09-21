@@ -8,11 +8,11 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "./ui/carousel";
+} from "../ui/carousel";
 import { cn } from "@/lib/utils";
 import useCarousal from "@/hooks/use-carousal";
 import { Cross2Icon } from "@radix-ui/react-icons";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 
 const CustomCarousal = () => {
   const { images, handleRemoveImages } = useCarousal();
@@ -30,7 +30,7 @@ const CustomCarousal = () => {
       className={cn(
         images ? "flex" : "hidden",
         "fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 items-center justify-center transition-opacity duration-500 ease-in-out",
-        images ? "opacity-100" : "opacity-0",
+        images ? "opacity-100" : "opacity-0"
       )}
       onClick={handleClose}
     >

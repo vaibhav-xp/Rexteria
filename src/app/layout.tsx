@@ -4,9 +4,12 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import dynamic from "next/dynamic";
 
-const CustomCarousal = dynamic(() => import("@/components/custom-carousal"), {
-  ssr: false,
-});
+const CustomCarousal = dynamic(
+  () => import("@/components/shared/custom-carousal"),
+  {
+    ssr: false,
+  }
+);
 
 const AxiosContextProvider = dynamic(() => import("@/context/AxiosContext"), {
   ssr: false,
@@ -14,7 +17,7 @@ const AxiosContextProvider = dynamic(() => import("@/context/AxiosContext"), {
 
 const CarousalContextProvider = dynamic(
   () => import("@/context/CarousalContext"),
-  { ssr: false },
+  { ssr: false }
 );
 
 const poppins = Poppins({

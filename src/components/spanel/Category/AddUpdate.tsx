@@ -32,7 +32,7 @@ export function AddUpdateCategory({
       title: "",
       image: null,
     }),
-    [],
+    []
   );
 
   const {

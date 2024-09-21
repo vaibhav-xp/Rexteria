@@ -1,7 +1,7 @@
 "use client";
 
-import LoadingSpinner from "@/components/loading-spinner";
-import NotFound from "@/components/not-found";
+import LoadingSpinner from "@/components/shared/loading-spinner";
+import NotFound from "@/components/shared/not-found";
 import { AddUpdateCategory } from "@/components/spanel/Category/AddUpdate";
 import CategoryCard from "@/components/spanel/Category/Card";
 import { Button } from "@/components/ui/button";
