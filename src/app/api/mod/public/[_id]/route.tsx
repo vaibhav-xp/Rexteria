@@ -10,10 +10,11 @@ export const GET = catchAsyncHandler(async (_, query) => {
   const {
     params: { _id },
   } = query as Params;
+  console.log(_id);
 
   // Fetch the mod by ID
   await connectToDatabase();
-  const mod = await Mod.findById(_id)
+  const mod = await Mod.findOne({ slug: _id })
     .populate("images")
     .populate("main_image")
     .populate("categoryId");

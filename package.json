@@ -29,6 +29,7 @@
     "class-variance-authority": "^0.7.0",
     "cloudinary": "^2.4.0",
     "clsx": "^2.1.1",
+    "embla-carousel-autoplay": "^8.3.0",
     "embla-carousel-react": "^8.3.0",
     "http-status-codes": "^2.3.0",
     "input-otp": "^1.2.4",

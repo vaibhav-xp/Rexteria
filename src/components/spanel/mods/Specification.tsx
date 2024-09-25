@@ -14,7 +14,7 @@ export default function EditSepecification({
   const handleOnChange = (
     e: ChangeEvent<HTMLInputElement>,
     index: number,
-    field: "type" | "value",
+    field: "type" | "value"
   ) => {
     const newSpecifications = [...specifications];
     newSpecifications[index] = {
@@ -30,7 +30,7 @@ export default function EditSepecification({
 
   const handleRemoveSpecification = (index: number) => {
     const newSpecifications = specifications.filter(
-      (_, specIndex) => specIndex !== index,
+      (_, specIndex) => specIndex !== index
     );
     setSpecifications(newSpecifications);
   };
@@ -38,7 +38,7 @@ export default function EditSepecification({
   return (
     <div className="w-full">
       <FormLabel>Specifications</FormLabel>
-      {specifications.length > 0 && (
+      {specifications?.length > 0 && (
         <div className="grid grid-cols-1 gap-4 mt-4">
           {specifications.map((spec, index) => (
             <div key={index} className="grid grid-cols-[1fr_1fr_50px] gap-2">

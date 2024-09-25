@@ -13,7 +13,7 @@ export default function ModCard({ mod }: { mod: ModType }) {
       className="bg-card shadow-md rounded-lg overflow-hidden group relative transition-all duration-300 hover:shadow-lg cursor-pointer"
       onClick={(e) => {
         e.stopPropagation();
-        router.push(`/mods/${mod?._id}`);
+        router.push(`/mods/${mod?.slug}`);
       }}
     >
       {/* Image */}

@@ -32,6 +32,15 @@ import {
   SelectValue,
 } from "../ui/select";
 import ModCard from "./ModCard";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "../ui/breadcrumb";
+import { Car, HomeIcon } from "lucide-react";
 
 export default function ModsListing() {
   const [loading, setLoading] = useState(false);
@@ -83,6 +92,19 @@ export default function ModsListing() {
 
   return (
     <div className="container mx-auto px-4 my-8">
+      <Breadcrumb className="my-4">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/" className="flex gap-1">
+              <HomeIcon className="w-4 h-4" /> Home
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Mods</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
       <div className="grid grid-cols-1 md:grid-cols-[250px_1fr] gap-6">
         {/* Sidebar or Filter Popup Trigger */}
         {isMobile ? (

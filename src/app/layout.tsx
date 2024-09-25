@@ -9,21 +9,21 @@ const CustomCarousal = dynamic(
   () => import("@/components/shared/custom-carousal"),
   {
     ssr: false,
-  },
+  }
 );
 
 const UploadImagesContextProivder = dynamic(
   () => import("@/context/UploadImagesContext"),
   {
     ssr: false,
-  },
+  }
 );
 
 const SelectImageContextProvider = dynamic(
   () => import("@/context/SelectImageContext"),
   {
     ssr: false,
-  },
+  }
 );
 
 const AxiosContextProvider = dynamic(() => import("@/context/AxiosContext"), {
@@ -32,7 +32,7 @@ const AxiosContextProvider = dynamic(() => import("@/context/AxiosContext"), {
 
 const CarousalContextProvider = dynamic(
   () => import("@/context/CarousalContext"),
-  { ssr: false },
+  { ssr: false }
 );
 
 const poppins = Poppins({

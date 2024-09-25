@@ -34,3 +34,7 @@ export const statusModsFn = apiAsyncHandle((reqBody) => {
 export const getModByIdFn = apiAsyncHandle((_id) => {
   return publicAxios.get(`/api/mod/${_id}`);
 });
+
+export const getModBySlugFn = apiAsyncHandle((slug) => {
+  return publicAxios.get(`/api/mod/public/${slug}`);
+});
