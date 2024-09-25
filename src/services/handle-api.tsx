@@ -1,31 +1,31 @@
 import { toast } from "@/hooks/use-toast";
 import { AxiosError, AxiosResponse } from "axios";
 
-type AsyncFunction = (args?: object) => Promise<AxiosResponse>;
+type AsyncFunction = (args?: object | string) => Promise<AxiosResponse>;
 
-const apiAsyncHandle = (fn: AsyncFunction) => async (args?: object) => {
-  try {
-    const { data } = await fn(args);
-    return data;
-  } catch (error) {
-    console.log(error);
-    if (error instanceof AxiosError) {
-      toast({
-        title: "Failed",
-        description:
-          error.message ||
-          error?.response?.data?.message ||
-          "An unexpected error occurred.",
-      });
-    } else {
-      toast({
-        title: "Failed",
-        description: "An unexpected error occurred.",
-      });
+const apiAsyncHandle =
+  (fn: AsyncFunction) => async (args?: object | string) => {
+    try {
+      const { data } = await fn(args);
+      return data;
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        toast({
+          title: "Failed",
+          description:
+            error?.response?.data?.message ||
+            error.message ||
+            "An unexpected error occurred.",
+        });
+      } else {
+        toast({
+          title: "Failed",
+          description: "An unexpected error occurred.",
+        });
+      }
+      throw error;
     }
-    throw error;
-  }
-};
+  };
 
 interface ShowAlert {
   data?: unknown;

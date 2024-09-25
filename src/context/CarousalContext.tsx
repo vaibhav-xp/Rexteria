@@ -5,7 +5,7 @@ import { ReactNode, useState, createContext } from "react";
 // Create the context
 export const CarousalContext = createContext<{
   images: string[] | null;
-  handleSetImages: (images: string[]) => void;
+  handleSetImages: (images: string[], index: number) => void;
   handleRemoveImages: () => void;
 } | null>(null);
 
@@ -18,8 +18,13 @@ export default function CarousalContextProvider({
   const [images, setImages] = useState<string[] | null>(null);
 
   // Function to set images
-  const handleSetImages = (images: string[]) => {
-    setImages(images);
+  const handleSetImages = (images: string[], index?: number) => {
+    if (index) {
+      const selectedOne = images.find((_, idx) => index === idx);
+      setImages([selectedOne as string, ...images]);
+    } else {
+      setImages(images);
+    }
   };
 
   // Function to remove images

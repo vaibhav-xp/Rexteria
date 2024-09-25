@@ -11,15 +11,19 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import useCarousal from "@/hooks/use-carousal";
+import useSelectImages from "@/hooks/use-select-images";
 import { patchCategoryFn, postCategoryFn } from "@/services/category";
 import { showAlert } from "@/services/handle-api";
 import { UpdateCategoryPropsTypes } from "@/types/category-types";
+import { ImageTypeWithID } from "@/types/image-types";
+import { Camera, Trash2 } from "lucide-react";
+import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 interface FormData {
   title: string;
-  image: File | null;
 }
 
 export function AddUpdateCategory({
@@ -30,56 +34,76 @@ export function AddUpdateCategory({
   const defaultValues = useMemo(
     () => ({
       title: "",
-      image: null,
     }),
-    []
+    [],
   );
 
   const {
     register,
     handleSubmit,
-    setValue,
     reset,
+    getValues,
     formState: { errors },
   } = useForm<FormData>({
     defaultValues,
   });
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [file, setFile] = useState<File | null>(null);
+  const {
+    selectedImages,
+    setSelectDialogOpen,
+    handelDeleteSingleSelectedImages,
+    handleDeleteAllSelectedImages,
+    handleDialogClose,
+    setSelectedImages,
+  } = useSelectImages();
+  const { handleSetImages } = useCarousal();
 
   useEffect(() => {
     if (action?.type === "update") {
       reset({
         title: action?.data?.title,
       });
+      if (action?.data?.image)
+        setSelectedImages([action?.data?.image as ImageTypeWithID]);
     }
+
+    return () => handleDeleteAllSelectedImages();
   }, [reset, action]);
 
   const handleClose = () => {
-    setFile(null);
     setIsLoading(false);
     setAction(null);
     reset(defaultValues);
+    handleDeleteAllSelectedImages();
+    handleDialogClose();
   };
 
-  const onSubmit: SubmitHandler<FormData> = async (formData) => {
+  const onSubmit: SubmitHandler<FormData> = async () => {
     setIsLoading(true);
-    const form = new FormData();
-    form.append("title", formData.title);
-    if (file) {
-      form.append("image", file);
-    }
+    const bodyData = new FormData();
+    bodyData.append("title", getValues("title"));
+    bodyData.append("image", selectedImages[0]?._id);
 
     const _id = action?.data?._id;
     if (action?.type === "update" && _id) {
-      form.append("_id", _id);
-      await patchCategoryFn(form).then((data) => showAlert(data));
+      bodyData.append("_id", _id);
+      await patchCategoryFn(bodyData)
+        .then((data) => showAlert(data))
+        .then(() => {
+          fetchData();
+          handleClose();
+        })
+        .finally(() => setIsLoading(false));
     } else {
-      await postCategoryFn(form).then((data) => showAlert(data));
+      await postCategoryFn(bodyData)
+        .then((data) => showAlert(data))
+        .then(() => {
+          fetchData();
+          handleClose();
+        })
+        .finally(() => setIsLoading(false));
     }
-    fetchData();
-    handleClose();
   };
 
   return (
@@ -110,24 +134,60 @@ export function AddUpdateCategory({
               <p className="text-red-500">{errors.title.message}</p>
             )}
           </div>
-          <div className="grid grid-cols-1 items-center gap-4">
-            <Label htmlFor="image" className="text-start">
-              Image
-            </Label>
-            <Input
-              id="image"
-              type="file"
-              accept="image/*"
-              onChange={(e) => {
-                const selectedFile = e.target.files ? e.target.files[0] : null;
-                setFile(selectedFile);
-                setValue("image", selectedFile);
-              }}
-              className="col-span-3"
-            />
+
+          {/* Image Upload Area */}
+          <div className="relative w-full h-[300px] overflow-hidden rounded-md border flex items-center justify-center cursor-pointer">
+            {selectedImages[0] ? (
+              <>
+                {/* Main Image Display */}
+                <Image
+                  src={selectedImages[0].url as string}
+                  width={400}
+                  height={400}
+                  alt="Selected image preview"
+                  className="object-cover w-full h-full"
+                  onClick={() =>
+                    handleSetImages([selectedImages[0].url as string], 0)
+                  }
+                />
+
+                {/* Small Bottom-right Image Preview */}
+                <div className="absolute bottom-2 right-2 w-16 h-16 border rounded-full overflow-hidden">
+                  <Image
+                    src={selectedImages[0].url as string}
+                    width={64}
+                    height={64}
+                    alt="Preview thumbnail"
+                    className="object-cover"
+                  />
+                </div>
+                <button
+                  type="button"
+                  className="absolute bottom-2 right-2 p-1 bg-primary rounded-full hover:bg-primary-dark transition-all"
+                  onClick={() => setSelectDialogOpen(1)}
+                >
+                  <Camera className="w-5 h-5 text-white" />
+                </button>
+                {/* Delete Image Icon */}
+                <button
+                  className="absolute bottom-2 right-10 p-1 bg-red-500 rounded-full hover:bg-red-600 transition-all"
+                  onClick={() =>
+                    handelDeleteSingleSelectedImages(selectedImages[0])
+                  }
+                >
+                  <Trash2 className="w-5 h-5 text-white" />
+                </button>
+              </>
+            ) : (
+              <Camera
+                className="w-24 h-24 text-gray-400"
+                onClick={() => setSelectDialogOpen(1)}
+              />
+            )}
           </div>
+
           <DialogFooter>
-            <Button type="submit" disabled={isLoading}>
+            <Button type="submit" disabled={isLoading} className="w-full">
               {isLoading
                 ? "Loading..."
                 : action?.type === "update"

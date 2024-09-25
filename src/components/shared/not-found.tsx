@@ -10,7 +10,7 @@ export default function NotFound({ className }: Props) {
   return (
     <div
       className={cn(
-        "w-full h-full flex flex-col justify-center items-center text-center",
+        "w-full h-full flex flex-col justify-center items-center text-center opacity-20",
         className,
       )}
     >

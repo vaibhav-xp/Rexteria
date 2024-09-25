@@ -1,6 +1,17 @@
 import mongoose from "mongoose";
 
+type ConnectionObject = {
+  isConnected?: number;
+};
+
+const connection: ConnectionObject = {};
+
 const connectToDatabase = async () => {
+  if (connection.isConnected) {
+    console.log("Already connected to the database");
+    return;
+  }
+
   try {
     const uri = process.env.URI || "";
     await mongoose.connect(uri, {

@@ -1,26 +1,34 @@
-import { deleteImage, uploadImage } from "@/lib/cloudinary";
+import { authRequired } from "@/lib/authRoute";
 import connectToDatabase from "@/lib/connectDatabase";
 import ErrorCreator from "@/lib/errorCreator";
 import catchAsyncHandler from "@/lib/tryCatch";
+import { ROLES } from "@/middleware";
 import ModCategory from "@/models/category.model";
-import { ImageType } from "@/types/image-types";
+import GalleryModel from "@/models/gallery";
+import Mod from "@/models/mod.model";
 import ReturnNextResponse from "@/types/response-types";
+import console from "console";
 import { StatusCodes } from "http-status-codes";
+import { NextRequest } from "next/server";
 
-export const POST = catchAsyncHandler(async (req: Request) => {
+export const POST = catchAsyncHandler(async (req: NextRequest) => {
+  authRequired(req, [ROLES.ADMIN]);
+
   const data = await req.formData();
-  const title = data.get("title") as string | null;
-  const imageFile = data.get("image") as File | null;
+  const title = data.get("title");
+  const image = data.get("image");
 
-  if (!title) {
-    throw new ErrorCreator(StatusCodes.BAD_REQUEST, "Title is required.");
-  }
+  console.log(title, image);
 
-  if (!imageFile) {
-    throw new ErrorCreator(StatusCodes.BAD_REQUEST, "Image file is required.");
+  if (!title || !image) {
+    throw new ErrorCreator(
+      StatusCodes.BAD_REQUEST,
+      "Title & image are required.",
+    );
   }
 
   await connectToDatabase();
+
   const isExist = await ModCategory.findOne({ title });
   if (isExist) {
     throw new ErrorCreator(
@@ -29,9 +37,16 @@ export const POST = catchAsyncHandler(async (req: Request) => {
     );
   }
 
-  const image = await uploadImage(imageFile);
-  const newCategory = new ModCategory({ title, image });
+  // Check if the image exists in the gallery
+  const galleryExists = await GalleryModel.findOne({ _id: image });
+  if (!galleryExists) {
+    throw new ErrorCreator(
+      StatusCodes.BAD_REQUEST,
+      "Image does not exist in the gallery.",
+    );
+  }
 
+  const newCategory = new ModCategory({ title, image });
   await newCategory.save();
 
   return ReturnNextResponse(
@@ -40,11 +55,13 @@ export const POST = catchAsyncHandler(async (req: Request) => {
   );
 });
 
-export const PATCH = catchAsyncHandler(async (req: Request) => {
+export const PATCH = catchAsyncHandler(async (req: NextRequest) => {
+  authRequired(req, [ROLES.ADMIN]);
+
   const data = await req.formData();
-  const _id = data.get("_id") as string;
-  const title = data.get("title") as string;
-  const imageFile = data.get("image") as File;
+  const _id = data.get("_id");
+  const title = data.get("title");
+  const image = data.get("image");
 
   if (!_id) {
     throw new ErrorCreator(
@@ -58,6 +75,7 @@ export const PATCH = catchAsyncHandler(async (req: Request) => {
   }
 
   await connectToDatabase();
+
   const isExist = await ModCategory.findById(_id);
   if (!isExist) {
     throw new ErrorCreator(
@@ -74,16 +92,19 @@ export const PATCH = catchAsyncHandler(async (req: Request) => {
     );
   }
 
-  let image: ImageType | undefined;
-  if (imageFile) {
-    image = await uploadImage(imageFile);
+  // Check if the new image exists in the gallery
+  if (image) {
+    const galleryExists = await GalleryModel.findOne({ _id: image });
+    if (!galleryExists) {
+      throw new ErrorCreator(
+        StatusCodes.BAD_REQUEST,
+        "Image does not exist in the gallery.",
+      );
+    }
   }
 
   isExist.title = title;
-  if (image) {
-    await deleteImage(isExist.image.public_id);
-    isExist.image = image;
-  }
+  isExist.image = image;
 
   await isExist.save();
 
@@ -95,7 +116,7 @@ export const PATCH = catchAsyncHandler(async (req: Request) => {
 
 export const GET = catchAsyncHandler(async () => {
   await connectToDatabase();
-  const categories = await ModCategory.find();
+  const categories = await ModCategory.find().populate("image");
   return ReturnNextResponse(
     StatusCodes.OK,
     "Categories fetched successfully.",
@@ -103,7 +124,9 @@ export const GET = catchAsyncHandler(async () => {
   );
 });
 
-export const DELETE = catchAsyncHandler(async (req: Request) => {
+export const DELETE = catchAsyncHandler(async (req: NextRequest) => {
+  authRequired(req, [ROLES.ADMIN]);
+
   const data = await req.formData();
   const _id = data.get("_id") as string;
 
@@ -115,14 +138,22 @@ export const DELETE = catchAsyncHandler(async (req: Request) => {
   }
 
   await connectToDatabase();
+
   const isExist = await ModCategory.findById(_id);
   if (!isExist) {
     throw new ErrorCreator(StatusCodes.NOT_FOUND, "Category doesn't exist.");
   }
 
   const categoryName = isExist.title;
-  if (isExist.image?.public_id) {
-    await deleteImage(isExist.image.public_id);
+
+  const modsExist = await Mod.find({ categoryId: isExist._id });
+
+  // Add a check to see if mods actually exist
+  if (modsExist.length > 0) {
+    throw new ErrorCreator(
+      StatusCodes.FORBIDDEN,
+      "Mods are already assigned to this category. Deletion is not possible.",
+    );
   }
 
   await isExist.deleteOne();

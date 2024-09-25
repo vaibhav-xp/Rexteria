@@ -8,6 +8,7 @@ import {
   Car,
   ChartBarStacked,
   ChevronRight,
+  GalleryThumbnails,
   LayoutDashboard,
 } from "lucide-react";
 
@@ -62,6 +63,12 @@ export default function Sidebar() {
             title: "Mods",
             href: "/spanel/mods",
             icon: Car,
+            variant: "ghost",
+          },
+          {
+            title: "Gallery",
+            href: "/spanel/gallery",
+            icon: GalleryThumbnails,
             variant: "ghost",
           },
           {

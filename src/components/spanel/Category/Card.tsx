@@ -28,7 +28,7 @@ export default function CategoryCard({
     deleteCategoryByIdFn(formData)
       .then((data) => showAlert(data))
       .then(() => fetchData())
-      .then(() => setLoader(false));
+      .finally(() => setLoader(false));
   };
 
   return (
@@ -40,7 +40,7 @@ export default function CategoryCard({
           width={500}
           height={500}
           className="w-full h-full object-cover transition-transform duration-500 hover:scale-105 cursor-pointer"
-          onClick={() => handleSetImages([image?.url])}
+          onClick={() => handleSetImages([image?.url], 0)}
         />
       </div>
       <CardContent className="p-4">

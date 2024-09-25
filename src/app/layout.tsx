@@ -3,12 +3,27 @@ import { Poppins, Oxanium } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import dynamic from "next/dynamic";
-
+import SelectedImages from "@/components/shared/custom-select-images";
+import UploadImages from "@/components/shared/custom-upload-image";
 const CustomCarousal = dynamic(
   () => import("@/components/shared/custom-carousal"),
   {
     ssr: false,
-  }
+  },
+);
+
+const UploadImagesContextProivder = dynamic(
+  () => import("@/context/UploadImagesContext"),
+  {
+    ssr: false,
+  },
+);
+
+const SelectImageContextProvider = dynamic(
+  () => import("@/context/SelectImageContext"),
+  {
+    ssr: false,
+  },
 );
 
 const AxiosContextProvider = dynamic(() => import("@/context/AxiosContext"), {
@@ -17,7 +32,7 @@ const AxiosContextProvider = dynamic(() => import("@/context/AxiosContext"), {
 
 const CarousalContextProvider = dynamic(
   () => import("@/context/CarousalContext"),
-  { ssr: false }
+  { ssr: false },
 );
 
 const poppins = Poppins({
@@ -49,11 +64,17 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${poppins.className} ${oxanium.className} dark`}>
         <AxiosContextProvider>
-          <CarousalContextProvider>
-            <main>{children}</main>
-            <Toaster />
-            <CustomCarousal />
-          </CarousalContextProvider>
+          <UploadImagesContextProivder>
+            <CarousalContextProvider>
+              <SelectImageContextProvider>
+                <main>{children}</main>
+                <Toaster />
+                <CustomCarousal />
+                <UploadImages />
+                <SelectedImages />
+              </SelectImageContextProvider>
+            </CarousalContextProvider>
+          </UploadImagesContextProivder>
         </AxiosContextProvider>
       </body>
     </html>

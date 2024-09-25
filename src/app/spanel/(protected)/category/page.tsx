@@ -33,7 +33,7 @@ export default function Category() {
   }, []);
 
   return (
-    <div className="p-6">
+    <>
       <div className="flex justify-between items-center mb-6">
         <Title title="Mod Category" />
         <Button variant="outline" onClick={() => setAction({ type: "add" })}>
@@ -65,8 +65,8 @@ export default function Category() {
         </div>
       )}
       {!isPending && data?.length === 0 && (
-        <NotFound className="w-1/2 mx-auto" />
+        <NotFound className="w-1/3 mx-auto" />
       )}
-    </div>
+    </>
   );
 }

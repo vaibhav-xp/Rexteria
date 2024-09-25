@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import ImageSchema from "./image.model";
 
 const CategorySchema = new mongoose.Schema(
   {
@@ -8,7 +7,11 @@ const CategorySchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    image: ImageSchema,
+    image: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "gallery",
+      required: true,
+    },
   },
   {
     timestamps: true,

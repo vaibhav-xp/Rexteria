@@ -1,9 +1,14 @@
-import { NextResponse } from "next/server";
+import { JwtPayload } from "jwt-decode";
+import { NextRequest, NextResponse } from "next/server";
 
 interface ResponseType {
   statusCode: number;
   message: string;
   data?: unknown;
+}
+
+export class NextRequestWithUser extends NextRequest {
+  user?: JwtPayload;
 }
 
 const ReturnNextResponse = (
