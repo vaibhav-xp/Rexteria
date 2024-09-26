@@ -3,7 +3,7 @@ import bg_mods from "@/assets/bg-mods.webp";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 
-export default function Banner() {
+export default function BannerCatgories() {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {

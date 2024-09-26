@@ -8,6 +8,8 @@ import bcrypt from "bcrypt";
 import { expiresOTP, generateOTP } from "@/lib/otp";
 import connectToDatabase from "@/lib/connectDatabase";
 import { NextRequest } from "next/server";
+import { authRequired } from "@/lib/authRoute";
+import { ROLES } from "@/middleware";
 
 export const POST = catchAsyncHandler(async (req: NextRequest) => {
   const formData = await req.formData();
@@ -47,7 +49,7 @@ export const POST = catchAsyncHandler(async (req: NextRequest) => {
   } catch (error) {
     throw new ErrorCreator(
       StatusCodes.INTERNAL_SERVER_ERROR,
-      "Failed to save OTP.",
+      "Failed to save OTP."
     );
   }
 
@@ -109,12 +111,44 @@ export const POST = catchAsyncHandler(async (req: NextRequest) => {
   } catch (error) {
     throw new ErrorCreator(
       StatusCodes.INTERNAL_SERVER_ERROR,
-      "Failed to send OTP email.",
+      "Failed to send OTP email."
     );
   }
 
   return ReturnNextResponse(
     StatusCodes.OK,
-    "OTP sent successfully. It will be valid only for 15 minutes.",
+    "OTP sent successfully. It will be valid only for 15 minutes."
+  );
+});
+
+export const GET = catchAsyncHandler(async (req) => {
+  const response = authRequired(req, [ROLES.ADMIN]);
+  if (response) return response;
+
+  const params = req.nextUrl.searchParams;
+  const search = params.get("search");
+  const limit = parseInt(params.get("limit") as string, 10) || 10;
+  const page = parseInt(params.get("page") as string, 10) || 1;
+
+  const query = {
+    $or: [{ email: { $regex: search, $options: "i" } }],
+  };
+  const totalOTPs = await OTP.countDocuments(query);
+  const totalPages = Math.ceil(totalOTPs / limit);
+
+  const otps = await OTP.find(query)
+    .skip((page - 1) * limit)
+    .limit(limit);
+
+  return ReturnNextResponse(
+    StatusCodes.OK,
+    "All users fetch who tries to login.",
+    {
+      otps,
+      limit,
+      page,
+      totalPages,
+      totalOTPs,
+    }
   );
 });

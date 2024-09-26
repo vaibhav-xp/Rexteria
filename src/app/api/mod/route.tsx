@@ -30,7 +30,7 @@ export const POST = catchAsyncHandler(async (req) => {
   ) {
     throw new ErrorCreator(
       StatusCodes.BAD_REQUEST,
-      "All fields are required, except for the content field.",
+      "All fields are required, except for the content field."
     );
   }
 
@@ -45,7 +45,7 @@ export const POST = catchAsyncHandler(async (req) => {
   if (isModExist) {
     throw new ErrorCreator(
       StatusCodes.BAD_REQUEST,
-      "Mod already exists with this title.",
+      "Mod already exists with this title."
     );
   }
 
@@ -63,6 +63,7 @@ export const POST = catchAsyncHandler(async (req) => {
     categoryId: data.categoryId,
     rating: 0,
     views: 0,
+    likes: 0,
     status: data.status,
   });
 
@@ -94,7 +95,7 @@ export const PATCH = catchAsyncHandler(async (req) => {
   ) {
     throw new ErrorCreator(
       StatusCodes.BAD_REQUEST,
-      "All fields are required, except for the content field.",
+      "All fields are required, except for the content field."
     );
   }
 
@@ -109,7 +110,7 @@ export const PATCH = catchAsyncHandler(async (req) => {
   if (!isModExist) {
     throw new ErrorCreator(
       StatusCodes.BAD_REQUEST,
-      "Mod is not found with this id.",
+      "Mod is not found with this id."
     );
   }
 
@@ -123,11 +124,9 @@ export const PATCH = catchAsyncHandler(async (req) => {
   isModExist.price = data.price;
   isModExist.discount = data.discount;
   isModExist.discount_price = (data.price * (1 - data.discount / 100)).toFixed(
-    2,
+    2
   );
   isModExist.categoryId = data.categoryId;
-  isModExist.rating = 0;
-  isModExist.views = 0;
   isModExist.status = data.status;
 
   // Save the new mod document to the database

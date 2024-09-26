@@ -10,6 +10,7 @@ import {
   ChevronRight,
   GalleryThumbnails,
   LayoutDashboard,
+  LogIn,
 } from "lucide-react";
 
 import { useWindowWidth } from "@react-hook/window-size";
@@ -69,6 +70,12 @@ export default function Sidebar() {
             title: "Gallery",
             href: "/spanel/gallery",
             icon: GalleryThumbnails,
+            variant: "ghost",
+          },
+          {
+            title: "OTPs",
+            href: "/spanel/otp",
+            icon: LogIn,
             variant: "ghost",
           },
           {

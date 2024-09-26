@@ -14,7 +14,7 @@ export default function EditSepecification({
   const handleOnChange = (
     e: ChangeEvent<HTMLInputElement>,
     index: number,
-    field: "type" | "value"
+    field: "type" | "value",
   ) => {
     const newSpecifications = [...specifications];
     newSpecifications[index] = {
@@ -30,7 +30,7 @@ export default function EditSepecification({
 
   const handleRemoveSpecification = (index: number) => {
     const newSpecifications = specifications.filter(
-      (_, specIndex) => specIndex !== index
+      (_, specIndex) => specIndex !== index,
     );
     setSpecifications(newSpecifications);
   };

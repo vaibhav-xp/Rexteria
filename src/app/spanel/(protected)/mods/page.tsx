@@ -33,22 +33,25 @@ import useCarousal from "@/hooks/use-carousal";
 import { getCategoriesFn } from "@/services/category";
 import { showAlert } from "@/services/handle-api";
 import { deleteModsFn, getModsFn, statusModsFn } from "@/services/mod";
+import ShimmerTableBody from "@/shimmer/Spanel/table-shimmer";
 import { DisplayCategoriesTypes } from "@/types/category-types";
 import { ModType } from "@/types/mod-types";
 import { PlusCircle } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { MdVisibility } from "react-icons/md";
 
 export default function Mods() {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [mods, setMods] = useState<ModType[]>([]);
   const [search, setSearch] = useState("");
   const [categoryId, setCategoryId] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalMods, setTotalMods] = useState(0);
-  const [totalPage, setTotalPages] = useState(1);
+  const [totalPage, setTotalPages] = useState(0);
   const [categories, setCategories] = useState<DisplayCategoriesTypes[]>([]);
   const itemsPerPage = 10;
 
@@ -80,7 +83,8 @@ export default function Mods() {
   };
 
   useEffect(() => {
-    getMods();
+    const timer = setTimeout(() => getMods(), 500);
+    return () => clearTimeout(timer);
   }, [search, currentPage, categoryId]);
 
   useEffect(() => {
@@ -99,7 +103,7 @@ export default function Mods() {
 
   return (
     <>
-      <Title title="Mod Category" />
+      <Title title="Mods" />
       <div className="flex justify-between items-center mb-4">
         <div className="flex gap-4 items-center w-[600px]">
           <Input
@@ -134,35 +138,48 @@ export default function Mods() {
           Add New Mod
         </Button>
       </div>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto w-full">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableCell className="text-center">Title</TableCell>
-              <TableCell className="text-center">Main Image</TableCell>
-              <TableCell className="text-center">Price (INR)</TableCell>
-              <TableCell className="text-center">Discount (%)</TableCell>
-              <TableCell className="text-center">Category</TableCell>
-              <TableCell className="text-center">Rating</TableCell>
-              <TableCell className="text-center">Views</TableCell>
-              <TableCell className="text-center">Status</TableCell>
-              <TableCell className="text-center">Images</TableCell>
-              <TableCell className="text-center">Actions</TableCell>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <TableRow>
-              <TableCell className="min-h-[500px]" colSpan={10}>
-                {loading && <LoadingSpinner className="mx-auto my-16" />}
-                {!loading && mods.length === 0 && (
-                  <NotFound className="w-1/3 mx-auto" />
-                )}
+              <TableCell className="text-center text-lg">Title</TableCell>
+              <TableCell className="text-center text-lg">Main Image</TableCell>
+              <TableCell className="text-center text-lg">Price (INR)</TableCell>
+              <TableCell className="text-center text-lg">
+                Discount (%)
+              </TableCell>
+              <TableCell className="text-center text-lg">Category</TableCell>
+              <TableCell className="text-center text-lg">Rating</TableCell>
+              <TableCell className="text-center text-lg">Views</TableCell>
+              <TableCell className="text-center text-lg">Status</TableCell>
+              <TableCell className="text-center text-lg">Images</TableCell>
+              <TableCell className="text-center text-lg">Actions</TableCell>
+              <TableCell className="text-center text-lg">
+                View On Website
               </TableCell>
             </TableRow>
-            {!loading &&
-              mods.map((mod: ModType) => (
+          </TableHeader>
+          {loading && <ShimmerTableBody row={10} coloumn={11} />}
+          {!loading && mods.length === 0 && (
+            <TableBody>
+              <TableRow>
+                <TableCell className="min-h-[500px]" colSpan={11}>
+                  <NotFound className="w-1/3 mx-auto" />
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          )}
+
+          {!loading &&
+            mods.map((mod: ModType) => (
+              <TableBody>
                 <TableRow key={mod._id}>
-                  <TableCell className="text-center">{mod.title}</TableCell>
+                  <TableCell>
+                    <p className="w-[250px] mx-auto text-center overflow-hidden whitespace-nowrap text-ellipsis ">
+                      {mod.title}
+                    </p>
+                  </TableCell>
+
                   <TableCell className="text-center">
                     <Image
                       src={mod?.main_image?.url}
@@ -215,12 +232,17 @@ export default function Mods() {
                       Delete
                     </button>
                   </TableCell>
+                  <TableCell>
+                    <Link target="_blank" href={`/mods/${mod.slug}`}>
+                      <MdVisibility className="w-6 h-6 mx-auto" />
+                    </Link>
+                  </TableCell>
                 </TableRow>
-              ))}
-          </TableBody>
+              </TableBody>
+            ))}
           <TableFooter>
             <TableRow>
-              <TableCell colSpan={9}>
+              <TableCell colSpan={10}>
                 <Pagination>
                   <PaginationContent>
                     <PaginationItem>

@@ -36,6 +36,7 @@ export interface ModType {
   images: Image[];
   categoryId: Category;
   price: number;
+  likes: number;
   discount: number;
   discount_price: number;
   rating: number;

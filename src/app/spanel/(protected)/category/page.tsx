@@ -7,6 +7,8 @@ import CategoryCard from "@/components/spanel/Category/Card";
 import { Button } from "@/components/ui/button";
 import Title from "@/components/ui/title";
 import { getCategoriesFn } from "@/services/category";
+import ShimmerModCard from "@/shimmer/Mods/mod-card-shimmer";
+import ShimmerCategoryCardPanel from "@/shimmer/Spanel/category-card-shimmer";
 import {
   CategoryActionTypes,
   DisplayCategoriesTypes,
@@ -17,10 +19,9 @@ import { useEffect, useState } from "react";
 export default function Category() {
   const [action, setAction] = useState<CategoryActionTypes | null>(null);
   const [data, setData] = useState<DisplayCategoriesTypes[]>([]);
-  const [isPending, setIsPending] = useState<boolean>(false);
+  const [isPending, setIsPending] = useState<boolean>(true);
 
   const fetchData: () => void = () => {
-    setIsPending(true);
     getCategoriesFn()
       .then(({ data }) => {
         setData(data);
@@ -46,7 +47,7 @@ export default function Category() {
           fetchData={fetchData}
         />
       </div>
-      {isPending && <LoadingSpinner className="mx-auto mt-16" />}
+      {isPending && <ShimmerCategoryCardPanel />}
       {!isPending && data?.length !== 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
           {data?.map((item) => (

@@ -53,6 +53,9 @@ const ModSchema = new mongoose.Schema(
     rating: {
       type: Number,
     },
+    likes: {
+      type: Number,
+    },
     views: {
       type: Number,
     },
@@ -78,7 +81,7 @@ const ModSchema = new mongoose.Schema(
         },
       },
     ],
-  },
+  }
 );
 
 // ModSchema.pre(

@@ -1,28 +1,28 @@
 "use client";
 
 import { ImageTypeWithID } from "@/types/image-types";
-import { Card, CardContent } from "../ui/card";
-import Autoplay from "embla-carousel-autoplay"; // Uncomment if you want autoplay
+import { useEffect, useState } from "react";
+import Autoplay from "embla-carousel-autoplay";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
+  CarouselApi,
 } from "../ui/carousel";
 import Image from "next/image";
-import { type CarouselApi } from "@/components/ui/carousel";
-import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import useCarousal from "@/hooks/use-carousal";
+import { EyeIcon } from "lucide-react";
 
 export default function DisplayModImages({
   images,
 }: {
   images: ImageTypeWithID[];
 }) {
-  const [api, setApi] = useState<CarouselApi>();
+  const [api, setApi] = useState<CarouselApi | null>(null);
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
+  const { handleSetImages } = useCarousal();
 
   useEffect(() => {
     if (!api) {
@@ -32,41 +32,32 @@ export default function DisplayModImages({
     setCount(api.scrollSnapList().length);
     setCurrent(api.selectedScrollSnap() + 1);
 
-    const onSelect = () => {
+    api.on("select", () => {
       setCurrent(api.selectedScrollSnap() + 1);
-    };
-
-    api.on("select", onSelect);
-
-    return () => {
-      api.off("select", onSelect);
-    };
+    });
   }, [api]);
 
   return (
-    <div>
+    <div className="lg:sticky lg:top-28 space-y-4">
       {/* Main Carousel */}
       <div className="sticky top-28 space-y-4">
-        <div>
-          <Carousel
-            plugins={[
-              Autoplay({
-                delay: 2000,
-              }),
-            ]}
-            opts={{
-              align: "start",
-              loop: true,
-            }}
-            className="w-full"
-            setApi={setApi}
-          >
-            <CarouselContent>
-              {images.map((img, index) => (
-                <CarouselItem
-                  key={index}
-                  className="rounded-lg overflow-hidden aspect-video"
-                >
+        <Carousel
+          plugins={[
+            Autoplay({
+              delay: 2000,
+            }),
+          ]}
+          opts={{ align: "start", loop: true }}
+          className="w-full"
+          setApi={setApi}
+        >
+          <CarouselContent>
+            {images.map((img, index) => (
+              <CarouselItem
+                key={index}
+                className="overflow-hidden aspect-video"
+              >
+                <div className="w-full h-full overflow-hidden rounded-lg">
                   <Image
                     src={img.url as string}
                     alt={`image-${index}`}
@@ -74,26 +65,27 @@ export default function DisplayModImages({
                     height={720}
                     className="w-full h-full transition-transform duration-300 ease-in-out hover:scale-105 object-cover"
                   />
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-          </Carousel>
-        </div>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
 
-        {/* Thumbnail Carousel */}
-        <div className="relative">
-          <Carousel className="w-full">
-            <CarouselContent>
-              {images.map((img, index) => (
-                <CarouselItem
-                  key={index}
+        <Carousel className="w-full">
+          <CarouselContent className="space-x-1">
+            {images.map((img, index) => (
+              <CarouselItem
+                key={index}
+                className={cn(
+                  "overflow-hidden basis-1/4 sm:basis-1/2 md:basis-1/4 cursor-pointer h-[60px] md:h-[120px]"
+                )}
+                onClick={() => api?.scrollTo(index)}
+              >
+                <div
                   className={cn(
-                    "rounded-md overflow-hidden basis-1/4 sm:basis-1/2 md:basis-1/4 cursor-pointer h-[60px] md:h-[120px]"
+                    "w-full h-full overflow-hidden rounded-md aspect-video ",
+                    current - 1 === index && "border-primary border "
                   )}
-                  onClick={() => {
-                    console.log(index);
-                    api?.scrollTo(index);
-                  }}
                 >
                   <Image
                     src={img.url as string}
@@ -101,15 +93,28 @@ export default function DisplayModImages({
                     width={300}
                     height={200}
                     className={cn(
-                      "w-full h-full object-cover transition-transform duration-300 ease-in-out hover:scale-105",
-                      current === index && "border-primary border"
+                      "w-full h-full object-cover transition-transform duration-300 ease-in-out hover:scale-105"
                     )}
                   />
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-          </Carousel>
-        </div>
+                </div>
+              </CarouselItem>
+            ))}
+            <CarouselItem
+              className={cn(
+                "rounded-md overflow-hidden basis-1/3 sm:basis-1/2 md:basis-1/4 cursor-pointer"
+              )}
+              onClick={() =>
+                handleSetImages(images.map((img) => img.url) as string[], 0)
+              }
+            >
+              <div className="flex flex-col justify-center items-center bg-card text-gray-400 overflow-hidden rounded-lg gap-2 h-full">
+                <EyeIcon className="w-6 h-6 text-gray-500" />{" "}
+                {/* Adding the icon */}
+                <span className="text-sm">View All Images</span>
+              </div>
+            </CarouselItem>
+          </CarouselContent>
+        </Carousel>
       </div>
     </div>
   );

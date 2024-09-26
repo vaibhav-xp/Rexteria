@@ -39,18 +39,20 @@ export default function ModCard({ mod }: { mod: ModType }) {
       {/* Details */}
       <div className="p-4 text-center">
         <Rating rating={mod?.rating} />
-        <p className="text-lg font-bold text-white truncate mt-2 group-hover:text-primary transition-colors duration-300">
+        <h5 className="text-lg font-bold text-white truncate mt-2 group-hover:text-primary transition-colors duration-300">
           {mod?.title}
-        </p>
-        <div className="flex justify-center items-center mt-2 text-gray-700">
+        </h5>
+        <div className="flex flex-col sm:flex-row justify-center items-center mt-2 text-gray-700 ">
           <span className="text-primary font-semibold text-xl">
             &#x20B9;{mod?.discount_price.toFixed(0)}
           </span>
-          <span className="text-sm text-gray-400 ml-3 line-through">
-            &#x20B9; {mod?.price}
-          </span>
-          <span className="ml-3 text-base font-semibold text-green-500">
-            -{mod?.discount}%
+          <span>
+            <span className="text-sm text-gray-400 ml-3 line-through">
+              &#x20B9; {mod?.price}
+            </span>
+            <span className="ml-3 text-base font-semibold text-primary">
+              -{mod?.discount}%
+            </span>
           </span>
         </div>
       </div>

@@ -21,7 +21,7 @@ export const GET = catchAsyncHandler(async (_, query) => {
   if (!mod) {
     throw new ErrorCreator(
       StatusCodes.NOT_FOUND,
-      "Mod with this ID doesn't exist."
+      "Mod with this ID doesn't exist.",
     );
   }
 

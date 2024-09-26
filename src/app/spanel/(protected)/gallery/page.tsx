@@ -15,16 +15,17 @@ import useCarousal from "@/hooks/use-carousal";
 import useUploadImages from "@/hooks/use-upload-images";
 import { deleteGalleryFn, getGalleryFn } from "@/services/gallery";
 import { showAlert } from "@/services/handle-api";
+import ShimmerGalleryCard from "@/shimmer/Spanel/gallery-card-shimmer";
 import { ImageType } from "@/types/image-types";
 import { Trash, Upload } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 
 export default function Gallery() {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [images, setImages] = useState<ImageType[]>([]);
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState<ImageType | null>(
-    null,
+    null
   );
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
 
@@ -32,7 +33,6 @@ export default function Gallery() {
   const { handleSetImages } = useCarousal();
 
   const getGalleries = useCallback(() => {
-    setLoading(true);
     getGalleryFn().then((data) => {
       setImages(data?.data);
       setLoading(false);
@@ -47,7 +47,7 @@ export default function Gallery() {
     setIsDeleteLoading(true);
     const formData = new FormData();
     imagesToDelete.forEach((img, i) =>
-      formData.append(`image[${i}]`, img.public_id as string),
+      formData.append(`image[${i}]`, img.public_id as string)
     );
     const data = await deleteGalleryFn(formData);
     showAlert(data);
@@ -74,16 +74,14 @@ export default function Gallery() {
         </div>
       </div>
 
-      {loading && images.length === 0 && (
-        <LoadingSpinner className="mx-auto mt-32" />
-      )}
-      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      {loading && images.length === 0 && <ShimmerGalleryCard />}
+      <div className="mt-4 grid grid-cols-4 gap-4 ">
         {!loading &&
           images.length > 0 &&
           images.map((img, index) => (
             <div
               key={index}
-              className="relative h-[200px] md:h-[300px] xl:h-[300px] group overflow-hidden"
+              className="relative h-[300px] group overflow-hidden"
             >
               <Image
                 src={img?.url as string}

@@ -8,3 +8,7 @@ export const sendOtpFn = apiAsyncHandle((reqBody) => {
 export const verfiyOtpFn = apiAsyncHandle((reqBody) => {
   return publicAxios.post(`/api/otp/verify`, reqBody);
 });
+
+export const getOtpFn = apiAsyncHandle((reqBody) => {
+  return publicAxios.get(`/api/otp`, { params: reqBody });
+});
