@@ -67,7 +67,7 @@ export const POST = catchAsyncHandler(async (req: NextRequest) => {
 
   // Generate JWT token
   const token = jwt.sign(
-    { id: user._id, email: user.email, role: user.role },
+    { _id: user._id, email: user.email, role: user.role },
     process.env.SECRET_ACCESS_TOKEN as string,
     { expiresIn: "24h" },
   );

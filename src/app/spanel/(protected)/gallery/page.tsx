@@ -25,7 +25,7 @@ export default function Gallery() {
   const [loading, setLoading] = useState(true);
   const [images, setImages] = useState<ImageType[]>([]);
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState<ImageType | null>(
-    null
+    null,
   );
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
 
@@ -47,7 +47,7 @@ export default function Gallery() {
     setIsDeleteLoading(true);
     const formData = new FormData();
     imagesToDelete.forEach((img, i) =>
-      formData.append(`image[${i}]`, img.public_id as string)
+      formData.append(`image[${i}]`, img.public_id as string),
     );
     const data = await deleteGalleryFn(formData);
     showAlert(data);

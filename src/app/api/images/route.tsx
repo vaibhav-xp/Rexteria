@@ -11,7 +11,7 @@ import { StatusCodes } from "http-status-codes";
 
 // POST: Upload multiple images
 export const POST = catchAsyncHandler(async (req: NextRequestWithUser) => {
-  const response = authRequired(req, [ROLES.ADMIN]);
+  const response = await authRequired(req, [ROLES.ADMIN]);
   if (response) {
     return response;
   }
@@ -43,7 +43,7 @@ export const GET = catchAsyncHandler(async () => {
 
 // DELETE: Delete images based on public_id
 export const DELETE = catchAsyncHandler(async (req: NextRequestWithUser) => {
-  const response = authRequired(req, [ROLES.ADMIN]);
+  const response = await authRequired(req, [ROLES.ADMIN]);
   if (response) {
     return response;
   }

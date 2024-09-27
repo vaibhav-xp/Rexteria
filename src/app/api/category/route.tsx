@@ -12,7 +12,7 @@ import { StatusCodes } from "http-status-codes";
 import { NextRequest } from "next/server";
 
 export const POST = catchAsyncHandler(async (req: NextRequest) => {
-  authRequired(req, [ROLES.ADMIN]);
+  await authRequired(req, [ROLES.ADMIN]);
 
   const data = await req.formData();
   const title = data.get("title");
@@ -56,7 +56,7 @@ export const POST = catchAsyncHandler(async (req: NextRequest) => {
 });
 
 export const PATCH = catchAsyncHandler(async (req: NextRequest) => {
-  authRequired(req, [ROLES.ADMIN]);
+  await authRequired(req, [ROLES.ADMIN]);
 
   const data = await req.formData();
   const _id = data.get("_id");
@@ -125,7 +125,7 @@ export const GET = catchAsyncHandler(async () => {
 });
 
 export const DELETE = catchAsyncHandler(async (req: NextRequest) => {
-  authRequired(req, [ROLES.ADMIN]);
+  await authRequired(req, [ROLES.ADMIN]);
 
   const data = await req.formData();
   const _id = data.get("_id") as string;

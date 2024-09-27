@@ -1,17 +1,14 @@
 "use client";
 
+import insta from "@/assets/rexteria_insta.jpg";
+import useStore from "@/hooks/use-store";
 import { InstagramLogoIcon } from "@radix-ui/react-icons";
 import { RefreshCcw, ThumbsUp, Truck } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { FaYoutube } from "react-icons/fa";
 import { MdInstallDesktop } from "react-icons/md";
 import { Separator } from "../ui/separator";
-import { useEffect, useState } from "react";
-import { DisplayCategoriesTypes } from "@/types/category-types";
-import { getCategoriesFn } from "@/services/category";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import Image from "next/image";
-import insta from "@/assets/rexteria_insta.jpg";
 
 const featuresData = [
   {
@@ -45,11 +42,7 @@ const featuresData = [
 ];
 
 export default function Footer() {
-  const [categories, setCategories] = useState<DisplayCategoriesTypes[]>([]);
-
-  useEffect(() => {
-    getCategoriesFn().then((data) => setCategories(data?.data));
-  }, []);
+  const { categories } = useStore();
 
   return (
     <footer className="mt-32">

@@ -15,7 +15,7 @@ export default function CategoryCard({
 }: {
   data: DisplayCategoriesTypes;
   openModal: () => void;
-  fetchData: () => void;
+  fetchData: () => Promise<void>;
 }) {
   const { image, title } = data;
   const { handleSetImages } = useCarousal();

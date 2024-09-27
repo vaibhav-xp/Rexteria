@@ -81,7 +81,7 @@ const ModSchema = new mongoose.Schema(
         },
       },
     ],
-  }
+  },
 );
 
 // ModSchema.pre(

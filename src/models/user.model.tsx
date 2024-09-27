@@ -12,12 +12,27 @@ const UserSchema = new mongoose.Schema(
       index: true,
     },
     avatar: {
+      public_id: {
+        type: String,
+      },
+      url: {
+        type: String,
+      },
+    },
+    country: {
+      type: String,
+    },
+    phone: {
+      type: Number,
+    },
+    youtube: {
       type: String,
     },
     instagram: {
       type: String,
+      rquired: true,
     },
-    twitter: {
+    x: {
       type: String,
     },
     role: {
@@ -25,8 +40,10 @@ const UserSchema = new mongoose.Schema(
       enum: ["ADMIN", "USER"],
       default: "USER",
     },
-    password: {
-      type: String,
+    active: {
+      type: Boolean,
+      required: true,
+      default: true,
     },
   },
   { timestamps: true },

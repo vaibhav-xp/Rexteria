@@ -1,37 +1,19 @@
 "use client";
 
-import LoadingSpinner from "@/components/shared/loading-spinner";
 import NotFound from "@/components/shared/not-found";
 import { AddUpdateCategory } from "@/components/spanel/Category/AddUpdate";
 import CategoryCard from "@/components/spanel/Category/Card";
 import { Button } from "@/components/ui/button";
 import Title from "@/components/ui/title";
-import { getCategoriesFn } from "@/services/category";
-import ShimmerModCard from "@/shimmer/Mods/mod-card-shimmer";
+import useStore from "@/hooks/use-store";
 import ShimmerCategoryCardPanel from "@/shimmer/Spanel/category-card-shimmer";
-import {
-  CategoryActionTypes,
-  DisplayCategoriesTypes,
-} from "@/types/category-types";
+import { CategoryActionTypes } from "@/types/category-types";
 import { PlusCircle } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function Category() {
   const [action, setAction] = useState<CategoryActionTypes | null>(null);
-  const [data, setData] = useState<DisplayCategoriesTypes[]>([]);
-  const [isPending, setIsPending] = useState<boolean>(true);
-
-  const fetchData: () => void = () => {
-    getCategoriesFn()
-      .then(({ data }) => {
-        setData(data);
-      })
-      .then(() => setIsPending(false));
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const { categories, isCategoriesLoading, refetchCategory } = useStore();
 
   return (
     <>
@@ -44,17 +26,17 @@ export default function Category() {
         <AddUpdateCategory
           action={action}
           setAction={setAction}
-          fetchData={fetchData}
+          fetchData={refetchCategory}
         />
       </div>
-      {isPending && <ShimmerCategoryCardPanel />}
-      {!isPending && data?.length !== 0 && (
+      {isCategoriesLoading && <ShimmerCategoryCardPanel />}
+      {!isCategoriesLoading && categories?.length !== 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-          {data?.map((item) => (
+          {categories?.map((item) => (
             <CategoryCard
               key={item._id || item.title}
               data={item}
-              fetchData={fetchData}
+              fetchData={refetchCategory}
               openModal={() =>
                 setAction({
                   type: "update",
@@ -65,7 +47,7 @@ export default function Category() {
           ))}
         </div>
       )}
-      {!isPending && data?.length === 0 && (
+      {!isCategoriesLoading && categories?.length === 0 && (
         <NotFound className="w-1/3 mx-auto" />
       )}
     </>

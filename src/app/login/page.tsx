@@ -9,6 +9,7 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { Label } from "@/components/ui/label";
+import useStore from "@/hooks/use-store";
 import { showAlert } from "@/services/handle-api";
 import { sendOtpFn, verfiyOtpFn } from "@/services/login";
 import Image from "next/image";
@@ -18,6 +19,7 @@ import { IoArrowBack } from "react-icons/io5";
 
 const Login = () => {
   const router = useRouter();
+  const { refetchUser } = useStore();
   const [state, setState] = useState("send");
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
@@ -54,52 +56,48 @@ const Login = () => {
     verfiyOtpFn(formData)
       .then((data) => showAlert(data))
       .then(() => router.replace("/"))
+      .then(() => refetchUser())
       .finally(() => {
         setLoadingVerify(false);
       });
   };
 
-  const hanelBack = () => {
+  const handleBack = () => {
     setOtp("");
     setState("send");
   };
 
   return (
-    <div className="w-full h-screen flex">
+    <div className="w-full h-screen flex flex-col lg:flex-row">
       {/* Image Section */}
-      <div className="relative w-3/5 flex-shrink-0">
+      <div className="relative lg:w-3/5 w-full h-2/5 lg:h-full flex-shrink-0">
         <Image
           src={background}
           alt="background image"
           layout="fill"
-          className="object-cover brightness-75"
+          className="object-cover brightness-75 transition-opacity duration-700"
         />
-        <div className="absolute inset-0 bg-black opacity-40" />
+        <div className="absolute inset-0 opacity-40" />
       </div>
 
       {/* Form Section */}
-      <div className="flex items-center justify-center w-2/5 p-10">
+      <div className="flex items-center justify-center w-full lg:w-2/5 p-6 lg:p-10 transition-transform duration-500 ease-in-out">
         {state === "send" && (
           <form
             onSubmit={handleSendOTP}
-            className="bg-transparent p-8 rounded-lg shadow-lg w-full max-w-sm"
+            className="bg-transparent p-8 rounded-lg shadow-lg w-full max-w-sm space-y-6 animate-fade-in"
           >
-            <h2 className="text-3xl font-bold mb-6 text-center text-primary">
-              Login
-            </h2>
+            <h2 className="text-3xl font-bold mb-6 text-center">Login</h2>
 
             <div className="mb-4">
-              <Label
-                htmlFor="email"
-                className="block text-sm font-medium mb-1 text-primary"
-              >
+              <Label htmlFor="email" className="block text-sm font-medium mb-1">
                 Email
               </Label>
               <Input
                 type="email"
                 id="email"
                 placeholder="Enter your email"
-                className="w-full mb-2 p-3 border border-primary rounded focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full mb-2 p-3 border rounded focus:outline-none focus:ring-2"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -108,8 +106,8 @@ const Login = () => {
 
             <Button
               type="submit"
-              variant={"default"}
-              className="w-full"
+              variant="default"
+              className="w-full hover:bg-primary-light transition-colors"
               disabled={loadingSend}
             >
               {loadingSend ? "Sending..." : "Send OTP"}
@@ -120,17 +118,12 @@ const Login = () => {
         {state === "otp" && (
           <form
             onSubmit={handleVerifyOTP}
-            className="bg-transparent p-8 rounded-lg shadow-lg w-full max-w-sm"
+            className="bg-transparent p-8 rounded-lg w-full max-w-sm space-y-6 animate-slide-in"
           >
-            <h2 className="text-3xl font-bold mb-6 text-center text-primary">
-              Verify OTP
-            </h2>
+            <h2 className="text-3xl font-bold mb-6 text-center">Verify OTP</h2>
 
             <div className="mb-6">
-              <Label
-                htmlFor="otp"
-                className="block text-sm font-medium mb-1 text-primary"
-              >
+              <Label htmlFor="otp" className="block text-sm font-medium mb-1">
                 Enter OTP
               </Label>
               <InputOTP
@@ -148,13 +141,19 @@ const Login = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <Button type="button" variant={"default"} onClick={hanelBack}>
+              <Button
+                type="button"
+                variant="default"
+                onClick={handleBack}
+                className="hover:bg-primary-light transition-colors"
+              >
                 <IoArrowBack /> Back
               </Button>
               <Button
                 type="submit"
-                variant={"default"}
+                variant="default"
                 disabled={loadingVerify}
+                className="hover:bg-primary-light transition-colors"
               >
                 {loadingVerify ? "Verifying..." : "Verify OTP"}
               </Button>

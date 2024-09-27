@@ -63,7 +63,7 @@ export default function ShimmerModDetails() {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_40%] my-4 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-[60%_1fr] my-4 gap-4">
         <div className="space-y-4">
           <Skeleton className="w-full aspect-video" />
           <div className={`flex gap-4`}>

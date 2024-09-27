@@ -1,91 +1,54 @@
-/** @format */
 "use client";
 
 import { useState } from "react";
-
-import {
-  BadgeHelp,
-  Car,
-  ChartBarStacked,
-  ChevronRight,
-  GalleryThumbnails,
-  LayoutDashboard,
-  LogIn,
-} from "lucide-react";
-
+import { ChevronRight, ChevronLeft, LucideIcon, LogOut } from "lucide-react";
 import { useWindowWidth } from "@react-hook/window-size";
 import { Button } from "../ui/button";
 import { Nav } from "../ui/nav";
+import { useRouter } from "next/navigation";
 
-export default function Sidebar() {
+interface LinksType {
+  title: string;
+  label?: string;
+  icon: LucideIcon;
+  variant: "default" | "ghost";
+  href: string;
+}
+
+export default function Sidebar({ links }: { links: LinksType[] }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
-
   const onlyWidth = useWindowWidth();
   const mobileWidth = onlyWidth < 768;
+  const router = useRouter();
 
   function toggleSidebar() {
     setIsCollapsed(!isCollapsed);
   }
 
+  const handleBackClick = () => {
+    router.back();
+  };
+
   return (
     <aside
       className={`relative transition-all duration-150 self-stretch ${
         mobileWidth ? "w-[80px]" : isCollapsed ? "w-[80px]" : "w-[200px]"
-      } border-r px-3  pb-10 pt-24`}
+      } border-r px-3 pb-10 pt-24`}
     >
       {!mobileWidth && (
         <div className="absolute right-[-20px] top-7">
           <Button
             onClick={toggleSidebar}
             variant="secondary"
-            className=" rounded-full p-2"
+            className="rounded-full p-2"
           >
             <ChevronRight />
           </Button>
         </div>
       )}
 
-      <Nav
-        isCollapsed={mobileWidth ? true : isCollapsed}
-        links={[
-          {
-            title: "Dashboard",
-            href: "/spanel",
-            icon: LayoutDashboard,
-            variant: "ghost",
-          },
-          {
-            title: "Category",
-            href: "/spanel/category",
-            icon: ChartBarStacked,
-            variant: "ghost",
-          },
-          {
-            title: "Mods",
-            href: "/spanel/mods",
-            icon: Car,
-            variant: "ghost",
-          },
-          {
-            title: "Gallery",
-            href: "/spanel/gallery",
-            icon: GalleryThumbnails,
-            variant: "ghost",
-          },
-          {
-            title: "OTPs",
-            href: "/spanel/otp",
-            icon: LogIn,
-            variant: "ghost",
-          },
-          {
-            title: "Enquiry",
-            href: "/spanel/equiry",
-            icon: BadgeHelp,
-            variant: "ghost",
-          },
-        ]}
-      />
+      {/* Back Button */}
+      <Nav isCollapsed={mobileWidth ? true : isCollapsed} links={links} />
     </aside>
   );
 }

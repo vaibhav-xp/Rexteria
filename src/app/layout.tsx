@@ -9,35 +9,39 @@ const CustomCarousal = dynamic(
   () => import("@/components/shared/custom-carousal"),
   {
     ssr: false,
-  }
+  },
 );
 
 const UploadImages = dynamic(
   () => import("@/components/shared/custom-upload-image"),
   {
     ssr: false,
-  }
+  },
 );
 
 const SelectedImages = dynamic(
   () => import("@/components/shared/custom-select-images"),
   {
     ssr: false,
-  }
+  },
 );
 
 const UploadImagesContextProvider = dynamic(
   () => import("@/context/UploadImagesContext"),
   {
     ssr: false,
-  }
+  },
 );
+
+const StoreContextProvider = dynamic(() => import("@/context/StoreContext"), {
+  ssr: false,
+});
 
 const SelectImageContextProvider = dynamic(
   () => import("@/context/SelectImageContext"),
   {
     ssr: false,
-  }
+  },
 );
 
 const AxiosContextProvider = dynamic(() => import("@/context/AxiosContext"), {
@@ -46,7 +50,7 @@ const AxiosContextProvider = dynamic(() => import("@/context/AxiosContext"), {
 
 const CarousalContextProvider = dynamic(
   () => import("@/context/CarousalContext"),
-  { ssr: false }
+  { ssr: false },
 );
 
 const poppins = Poppins({
@@ -78,17 +82,19 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${poppins.className} ${oxanium.className} dark`}>
         <AxiosContextProvider>
-          <UploadImagesContextProvider>
-            <CarousalContextProvider>
-              <SelectImageContextProvider>
-                <main>{children}</main>
-                <Toaster />
-                <CustomCarousal />
-                <UploadImages />
-                <SelectedImages />
-              </SelectImageContextProvider>
-            </CarousalContextProvider>
-          </UploadImagesContextProvider>
+          <StoreContextProvider>
+            <UploadImagesContextProvider>
+              <CarousalContextProvider>
+                <SelectImageContextProvider>
+                  <main>{children}</main>
+                  <Toaster />
+                  <CustomCarousal />
+                  <UploadImages />
+                  <SelectedImages />
+                </SelectImageContextProvider>
+              </CarousalContextProvider>
+            </UploadImagesContextProvider>
+          </StoreContextProvider>
         </AxiosContextProvider>
       </body>
     </html>

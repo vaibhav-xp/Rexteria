@@ -22,11 +22,10 @@ import {
 import Title from "@/components/ui/title";
 import useCarousal from "@/hooks/use-carousal";
 import useSelectImages from "@/hooks/use-select-images";
+import useStore from "@/hooks/use-store";
 import { toast } from "@/hooks/use-toast";
-import { getCategoriesFn } from "@/services/category";
 import { showAlert } from "@/services/handle-api";
 import { getModByIdFn, patchModsFn, postModsFn } from "@/services/mod";
-import { DisplayCategoriesTypes } from "@/types/category-types";
 import { ModFormTypes, ModType, SpecificationsTypes } from "@/types/mod-types";
 import { Camera, Trash2 } from "lucide-react";
 import dynamic from "next/dynamic";
@@ -46,7 +45,7 @@ interface Params {
 export default function AddUpdate({ params }: { params: Params }) {
   const router = useRouter();
   const { handleSetImages } = useCarousal();
-  const [categories, setCategories] = useState<DisplayCategoriesTypes[]>([]);
+  const { categories } = useStore();
   const [loading, setLoading] = useState(false);
   const [specifications, setSpecifications] = useState<SpecificationsTypes[]>(
     [],
@@ -104,10 +103,6 @@ export default function AddUpdate({ params }: { params: Params }) {
 
     return () => handleDeleteAllSelectedImages();
   }, [status, _id]);
-
-  useEffect(() => {
-    getCategoriesFn().then((data) => setCategories(data?.data));
-  }, []);
 
   const onSubmit = (values: ModFormTypes) => {
     if (

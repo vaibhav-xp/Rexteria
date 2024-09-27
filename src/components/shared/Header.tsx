@@ -1,26 +1,22 @@
 "use client";
 
-import avatar from "@/assets/rexteria_insta.jpg";
+import useStore from "@/hooks/use-store";
 import {
-  Car,
-  CassetteTape,
-  ChevronDownIcon,
-  Edit,
-  Heart,
-  History,
-  HomeIcon,
-  Info,
-  LogOut,
-  PuzzleIcon,
-  ShoppingBagIcon,
-  User,
-} from "lucide-react";
+  drowpdown,
+  navlinkMobAfterLogin,
+  navlinkMobBeforeLogin,
+  navLinks,
+  placeHolderImage,
+} from "@/lib/constants";
+import { cn } from "@/lib/utils";
+import { ChevronDownIcon, Edit, LogIn, LogOut } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaInstagram, FaYoutube } from "react-icons/fa";
 import { MdClose, MdMenu, MdOutlineShoppingBag } from "react-icons/md";
-import { Drawer, DrawerContent, DrawerOverlay } from "../ui/drawer"; // Ensure DrawerOverlay is used for the background dim effect
+import { Drawer, DrawerContent, DrawerOverlay } from "../ui/drawer";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,15 +25,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { Button } from "../ui/button";
 
 export default function Header() {
-  const [drawer, setDrawer] = useState(false); // Default is closed
+  const router = useRouter();
+  const { user, logout } = useStore();
+  const pathname = usePathname();
+  const [drawer, setDrawer] = useState(false);
   const mail = "mauryaabc@gmail.com";
-
   const toggleDrawer = () => {
     setDrawer(!drawer);
   };
-
   return (
     <header className="bg-background border-b border-primary sticky top-0 z-50">
       {/* Header Top Bar */}
@@ -62,29 +60,35 @@ export default function Header() {
 
       {/* Main Header */}
       <div className="container flex justify-between items-center text-sm py-2">
-        <Link href={"/"} className="text-xl md:text-2xl font-oxanium">
+        <Link href={"/"} className={cn("text-xl md:text-2xl font-oxanium")}>
           REX<span className="text-primary font-bold">TERIA</span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-4">
-          <Link href="/" className="hover:text-primary">
-            Home
-          </Link>
-          <Link href="/categories" className="hover:text-primary">
-            Categories
-          </Link>
-          <Link href="/mods" className="hover:text-primary">
-            Mods
-          </Link>
-          <Link href="/" className="hover:text-primary">
-            About Us
-          </Link>
+          {navLinks.map((link) => (
+            <Link
+              href={link.href}
+              className={cn(
+                "hover:text-primary",
+                pathname === link.href && "text-primary",
+              )}
+            >
+              {link.label}
+            </Link>
+          ))}
         </nav>
 
         <div className="flex items-center gap-4">
-          <p className="flex items-center gap-1 text-base md:text-lg text-primary cursor-pointer">
-            <MdOutlineShoppingBag className="text-foreground" /> (0) &#8377;0.00
-          </p>
+          {user ? (
+            <p className="flex items-center gap-1 text-base md:text-lg text-primary cursor-pointer">
+              <MdOutlineShoppingBag className="text-foreground" /> (0)
+              &#8377;0.00
+            </p>
+          ) : (
+            <Button onClick={() => router.push("/login")} variant={"default"}>
+              Login
+            </Button>
+          )}
 
           {/* Mobile Menu Toggle */}
           <button
@@ -94,39 +98,51 @@ export default function Header() {
             {drawer ? <MdClose /> : <MdMenu />}
           </button>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger className="hidden md:flex items-center gap-2">
-              <p className="w-8 h-8 overflow-hidden rounded-full">
-                <Image
-                  src={avatar}
-                  width={60}
-                  height={60}
-                  alt="profile"
-                  className="object-cover w-full h-full"
-                />
-              </p>
-              <ChevronDownIcon className="w-4 h-4" />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="mr-4">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="flex items-center gap-2">
-                <User className="w-4 h-4" /> Profile
-              </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2">
-                <ShoppingBagIcon className="w-4 h-4" /> Cart
-              </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2">
-                <Heart className="w-4 h-4" /> Wishlist
-              </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2">
-                <History className="w-4 h-4" /> Orders
-              </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2">
-                <LogOut className="w-4 h-4" /> Logout
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {user && (
+            <DropdownMenu>
+              <DropdownMenuTrigger className="hidden md:flex items-center gap-2">
+                <p className="w-8 h-8 overflow-hidden rounded-full">
+                  <Image
+                    src={
+                      (user?.avatar?.url as string) ||
+                      placeHolderImage(user?.name)
+                    }
+                    width={60}
+                    height={60}
+                    alt="profile"
+                    className="object-cover w-full h-full"
+                  />
+                </p>
+                <ChevronDownIcon className="w-4 h-4" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="mr-4">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {drowpdown.map((link) => (
+                  <DropdownMenuItem>
+                    <Link
+                      href={link.href}
+                      className={cn(
+                        "flex items-center gap-2",
+                        pathname === link.href && "text-primary",
+                      )}
+                    >
+                      <link.icon className="w-4 h-4" /> {link.label}
+                    </Link>
+                  </DropdownMenuItem>
+                ))}
+                <DropdownMenuItem>
+                  <Link
+                    href={pathname}
+                    className={cn("flex items-center gap-2")}
+                    onClick={() => logout().then(() => router.push("/"))}
+                  >
+                    <LogOut className="w-4 h-4" /> Logout
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
       </div>
 
@@ -136,90 +152,73 @@ export default function Header() {
         <DrawerContent className="px-4">
           <section className="py-8">
             {/* Profile Section */}
-            <div className="flex gap-2 items-center relative">
-              <p className="w-16 h-16 overflow-hidden rounded-full">
-                <Image
-                  src={avatar}
-                  width={60}
-                  height={60}
-                  alt="profile"
-                  className="object-cover w-full h-full"
+            {user && (
+              <div className="flex gap-2 items-center relative">
+                <p className="w-16 h-16 overflow-hidden rounded-full">
+                  <Image
+                    src={
+                      (user?.avatar?.url as string) ||
+                      placeHolderImage(user?.name)
+                    }
+                    width={60}
+                    height={60}
+                    alt="profile"
+                    className="object-cover w-full h-full"
+                  />
+                </p>
+                <p>
+                  {user?.name && <span className="text-xl">{user?.name}</span>}
+                  <br />
+                  <span className="text-base text-gray-500">{user?.email}</span>
+                </p>
+                <Edit
+                  className="absolute top-0 right-2 hover:text-primary cursor-pointer"
+                  onClick={() => {
+                    router.push("/profile");
+                    toggleDrawer();
+                  }}
                 />
-              </p>
-              <p>
-                <span className="text-xl">Vaibhav Maurya</span>
-                <br />
-                <span className="text-base text-gray-500">
-                  vibhu.astute@gmail.com
-                </span>
-              </p>
-              <Edit className="absolute top-0 right-2 hover:text-primary" />
-            </div>
+              </div>
+            )}
 
             {/* Drawer Links */}
             <nav className="mt-8 space-y-4 text-lg">
-              <Link
-                href="/"
-                className="flex items-center gap-2 hover:text-primary"
-                onClick={toggleDrawer}
-              >
-                <HomeIcon className="w-5 h-5" /> Home
-              </Link>
-
-              <Link
-                href="/categories"
-                className="flex items-center gap-2 hover:text-primary"
-                onClick={toggleDrawer}
-              >
-                <CassetteTape className="w-5 h-5" /> Categories
-              </Link>
-
-              <Link
-                href="/mods"
-                className="flex items-center gap-2 hover:text-primary"
-                onClick={toggleDrawer}
-              >
-                <Car className="w-5 h-5" /> Mods
-              </Link>
-
-              <Link
-                href="/cart"
-                className="flex items-center gap-2 hover:text-primary"
-                onClick={toggleDrawer}
-              >
-                <ShoppingBagIcon className="w-5 h-5" /> Cart
-              </Link>
-
-              <Link
-                href="/wishlist"
-                className="flex items-center gap-2 hover:text-primary"
-                onClick={toggleDrawer}
-              >
-                <Heart className="w-5 h-5" /> Wishlist
-              </Link>
-
-              <Link
-                href="/orders"
-                className="flex items-center gap-2 hover:text-primary"
-                onClick={toggleDrawer}
-              >
-                <History className="w-5 h-5" /> Wishlist
-              </Link>
-
-              <Link
-                href="/about"
-                className=" flex items-center gap-2 hover:text-primary"
-                onClick={toggleDrawer}
-              >
-                <Info className="w-5 h-5" /> About Us
-              </Link>
-              <Link
-                href="/about"
-                className=" flex items-center gap-2 hover:text-primary"
-                onClick={toggleDrawer}
-              >
-                <LogOut className="w-5 h-5" /> Logout
-              </Link>
+              {(user ? navlinkMobAfterLogin : navlinkMobBeforeLogin).map(
+                (link) => {
+                  return (
+                    <Link
+                      href={link.href}
+                      className={cn(
+                        "flex items-center gap-2 hover:text-primary",
+                        pathname === link.href && "text-primary",
+                      )}
+                      onClick={toggleDrawer}
+                    >
+                      <link.icon className="w-5 h-5" /> {link.label}
+                    </Link>
+                  );
+                },
+              )}
+              {user ? (
+                <Link
+                  href={"/"}
+                  className={cn("flex items-center gap-2 hover:text-primary")}
+                  onClick={() => logout().then(() => toggleDrawer())}
+                >
+                  <LogOut className="w-5 h-5" /> Logout
+                </Link>
+              ) : (
+                <Link
+                  href={"/login"}
+                  className={cn(
+                    "flex items-center gap-2 hover:text-primary",
+                    pathname === "login" && "text-primary",
+                  )}
+                  onClick={toggleDrawer}
+                >
+                  <LogIn className="w-5 h-5" /> Login
+                </Link>
+              )}
             </nav>
           </section>
         </DrawerContent>

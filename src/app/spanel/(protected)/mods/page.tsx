@@ -1,6 +1,5 @@
 "use client";
 
-import LoadingSpinner from "@/components/shared/loading-spinner";
 import NotFound from "@/components/shared/not-found";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,11 +29,10 @@ import {
 } from "@/components/ui/table";
 import Title from "@/components/ui/title";
 import useCarousal from "@/hooks/use-carousal";
-import { getCategoriesFn } from "@/services/category";
+import useStore from "@/hooks/use-store";
 import { showAlert } from "@/services/handle-api";
 import { deleteModsFn, getModsFn, statusModsFn } from "@/services/mod";
 import ShimmerTableBody from "@/shimmer/Spanel/table-shimmer";
-import { DisplayCategoriesTypes } from "@/types/category-types";
 import { ModType } from "@/types/mod-types";
 import { PlusCircle } from "lucide-react";
 import Image from "next/image";
@@ -45,6 +43,7 @@ import { MdVisibility } from "react-icons/md";
 
 export default function Mods() {
   const router = useRouter();
+  const { categories } = useStore();
   const [loading, setLoading] = useState(true);
   const [mods, setMods] = useState<ModType[]>([]);
   const [search, setSearch] = useState("");
@@ -52,7 +51,6 @@ export default function Mods() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalMods, setTotalMods] = useState(0);
   const [totalPage, setTotalPages] = useState(0);
-  const [categories, setCategories] = useState<DisplayCategoriesTypes[]>([]);
   const itemsPerPage = 10;
 
   const { handleSetImages } = useCarousal();
@@ -86,10 +84,6 @@ export default function Mods() {
     const timer = setTimeout(() => getMods(), 500);
     return () => clearTimeout(timer);
   }, [search, currentPage, categoryId]);
-
-  useEffect(() => {
-    getCategoriesFn().then((data) => setCategories(data?.data));
-  }, []);
 
   const handleDelete = (_id: string) => {
     deleteModsFn({ mod_id: _id })

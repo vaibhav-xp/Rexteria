@@ -1,5 +1,5 @@
-import { JwtPayload } from "jwt-decode";
 import { NextRequest, NextResponse } from "next/server";
+import { UserType } from "./store-types";
 
 interface ResponseType {
   statusCode: number;
@@ -8,7 +8,7 @@ interface ResponseType {
 }
 
 export class NextRequestWithUser extends NextRequest {
-  user?: JwtPayload;
+  user?: UserType;
 }
 
 const ReturnNextResponse = (

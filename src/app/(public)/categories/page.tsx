@@ -9,29 +9,14 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { getCategoriesFn } from "@/services/category";
-import ShimmerCategoriesHome, {
-  ShimmerCategoryPage,
-} from "@/shimmer/Home/categories-shimmer";
-import { DisplayCategoriesTypes } from "@/types/category-types";
-import { Car, HomeIcon } from "lucide-react";
+import useStore from "@/hooks/use-store";
+import { ShimmerCategoryPage } from "@/shimmer/Home/categories-shimmer";
+import { HomeIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 export default function Categories() {
-  const [isCategoriesLoading, setIsCategoriesLoading] = useState(true);
-  const [categories, setCategories] = useState<DisplayCategoriesTypes[]>([]);
-
-  const getCategories = () => {
-    getCategoriesFn()
-      .then((data) => setCategories(data?.data))
-      .finally(() => setIsCategoriesLoading(false));
-  };
-
-  useEffect(() => {
-    getCategories();
-  }, []);
+  const { categories, isCategoriesLoading } = useStore();
 
   return (
     <main>
@@ -53,7 +38,10 @@ export default function Categories() {
         {!isCategoriesLoading && (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {categories.map((cat) => (
-              <div className="overflow-hidden w-full rounded-lg relative h-[200px] group">
+              <div
+                key={cat?._id}
+                className="overflow-hidden w-full rounded-lg relative h-[200px] group"
+              >
                 <Image
                   src={cat?.image?.url}
                   width={400}

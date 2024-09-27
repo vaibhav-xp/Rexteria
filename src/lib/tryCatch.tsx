@@ -22,6 +22,7 @@ const catchAsyncHandler =
       const response = await fn(req, query);
       return response;
     } catch (error) {
+      console.log(error);
       if (error instanceof ErrorCreator) {
         const statusCode = error.statusCode || 500;
         const message = error.message || "Internal Server Error";

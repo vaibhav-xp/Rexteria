@@ -12,3 +12,7 @@ export const verfiyOtpFn = apiAsyncHandle((reqBody) => {
 export const getOtpFn = apiAsyncHandle((reqBody) => {
   return publicAxios.get(`/api/otp`, { params: reqBody });
 });
+
+export const logoutFn = apiAsyncHandle(() => {
+  return publicAxios.post(`/api/logout`);
+});

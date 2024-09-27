@@ -104,7 +104,7 @@ export default function ModsListing() {
     window.history.replaceState(
       {},
       "",
-      `${window.location.pathname}?${newParams}`
+      `${window.location.pathname}?${newParams}`,
     );
   };
 

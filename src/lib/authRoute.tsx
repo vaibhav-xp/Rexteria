@@ -5,11 +5,14 @@ import { StatusCodes } from "http-status-codes";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import ErrorCreator from "./errorCreator";
 import { NextResponse } from "next/server";
+import { UserType } from "@/types/store-types";
+import connectToDatabase from "./connectDatabase";
+import User from "@/models/user.model";
 
-export function authRequired(
+export async function authRequired(
   req: NextRequestWithUser,
   assignedRoles?: string[],
-): NextResponse | null {
+): Promise<NextResponse | null> {
   const authToken = req.cookies.get("token");
 
   if (!authToken) {
@@ -22,12 +25,25 @@ export function authRequired(
     const verified = jwt.verify(
       token,
       process.env.SECRET_ACCESS_TOKEN as string,
-    ) as JwtPayload;
+    ) as UserType;
 
     if (!verified) {
       throw new ErrorCreator(
         StatusCodes.UNAUTHORIZED,
         "User is not authorized.",
+      );
+    }
+
+    await connectToDatabase();
+    const userIsActive = await User.findById(verified?._id);
+    if (!userIsActive) {
+      throw new ErrorCreator(StatusCodes.NOT_FOUND, "User not found.");
+    }
+
+    if (userIsActive && !userIsActive?.active) {
+      throw new ErrorCreator(
+        StatusCodes.FORBIDDEN,
+        "User is blocked.Contact to the administrator.",
       );
     }
 

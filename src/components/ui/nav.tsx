@@ -3,7 +3,7 @@
 "use client";
 
 import Link from "next/link";
-import { LucideIcon } from "lucide-react";
+import { LogOut, LucideIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
@@ -14,6 +14,8 @@ import {
 } from "@/components/ui/tooltip";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import { usePathname } from "next/navigation";
+import useStore from "@/hooks/use-store";
+import { useRouter } from "next/navigation";
 
 interface NavProps {
   isCollapsed: boolean;
@@ -27,7 +29,16 @@ interface NavProps {
 }
 
 export function Nav({ links, isCollapsed }: NavProps) {
+  const router = useRouter();
   const pathName = usePathname();
+  const { logout } = useStore();
+
+  const onLogout = () => {
+    logout().then(() => {
+      router.replace("/");
+    });
+  };
+
   return (
     <TooltipProvider>
       <div
@@ -97,6 +108,47 @@ export function Nav({ links, isCollapsed }: NavProps) {
               </Link>
             ),
           )}
+          <div className="absolute bottom-4 w-[80%]">
+            {isCollapsed ? (
+              <Tooltip delayDuration={0}>
+                <TooltipTrigger asChild>
+                  <button
+                    onClick={onLogout}
+                    className={cn(
+                      buttonVariants({
+                        variant: "ghost",
+                        size: "icon",
+                      }),
+                      "h-9 w-9 transition-all duration-300 hover:bg-muted hover:text-primary",
+                    )}
+                  >
+                    <LogOut className="h-4 w-4" />
+                    <span className="sr-only">Logout</span>
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent
+                  side="right"
+                  className="flex items-center gap-4"
+                >
+                  Logout
+                </TooltipContent>
+              </Tooltip>
+            ) : (
+              <button
+                onClick={onLogout}
+                className={cn(
+                  buttonVariants({
+                    variant: "ghost",
+                    size: "lg",
+                  }),
+                  "w-full justify-start transition-all duration-300 hover:bg-muted hover:text-primary",
+                )}
+              >
+                <LogOut className="mr-2 h-4 w-4" />
+                Logout
+              </button>
+            )}
+          </div>
         </nav>
       </div>
     </TooltipProvider>

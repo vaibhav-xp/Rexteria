@@ -9,7 +9,7 @@ import ReturnNextResponse, {
 import { StatusCodes } from "http-status-codes";
 
 export const PATCH = catchAsyncHandler(async (req: NextRequestWithUser) => {
-  const response = authRequired(req, [ROLES.ADMIN]);
+  const response = await authRequired(req, [ROLES.ADMIN]);
   if (response) {
     return response;
   }

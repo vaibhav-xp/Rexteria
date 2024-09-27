@@ -1,27 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
-import Title from "../ui/title";
-import { DisplayCategoriesTypes } from "@/types/category-types";
-import { getCategoriesFn } from "@/services/category";
+import useStore from "@/hooks/use-store";
+import ShimmerCategoriesHome from "@/shimmer/Home/categories-shimmer";
 import Image from "next/image";
 import Link from "next/link";
-import ShimmerCategoriesHome from "@/shimmer/Home/categories-shimmer";
+import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
+import Title from "../ui/title";
 
 export default function TopCategories() {
-  const [isCategoriesLoading, setIsCategoriesLoading] = useState(true);
-  const [categories, setCategories] = useState<DisplayCategoriesTypes[]>([]);
-
-  const getCategories = () => {
-    getCategoriesFn()
-      .then((data) => setCategories(data?.data?.slice(0, 5)))
-      .finally(() => setIsCategoriesLoading(false));
-  };
-
-  useEffect(() => {
-    getCategories();
-  }, []);
+  const { categories, isCategoriesLoading } = useStore();
 
   return (
     <div className="container my-10">
@@ -48,7 +35,7 @@ export default function TopCategories() {
 
                     {/* Text and Button container */}
                     <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center bg-gradient-to-t from-black/60 to-transparent opacity-100 group-hover:bg-black/30 transition-all duration-500 ease-in-out">
-                      <h4 className="text-3xl font-bold tracking-wide transition-transform duration-500 transform translate-y-0 group-hover:-translate-y-3">
+                      <h4 className="text-2xl font-bold tracking-wide transition-transform duration-500 transform translate-y-0 group-hover:-translate-y-3">
                         {cat?.title}
                       </h4>
 

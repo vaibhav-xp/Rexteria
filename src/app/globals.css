@@ -79,22 +79,15 @@
   body {
     @apply bg-background text-foreground;
   }
+}
 
-  /* Scrollbar styles */
-  ::-webkit-scrollbar {
-    width: 12px;
-  }
+/* Scrollbar styles */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
 
-  ::-webkit-scrollbar-track {
-    background: var(--scrollbar-track);
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: var(--scrollbar-thumb);
-    border-radius: var(--radius);
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--scrollbar-thumb-hover);
-  }
+::-webkit-scrollbar-thumb {
+  background: #1bcbc1;
+  border-radius: var(--radius);
 }

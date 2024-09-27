@@ -10,6 +10,7 @@ import connectToDatabase from "@/lib/connectDatabase";
 import { NextRequest } from "next/server";
 import { authRequired } from "@/lib/authRoute";
 import { ROLES } from "@/middleware";
+import User from "@/models/user.model";
 
 export const POST = catchAsyncHandler(async (req: NextRequest) => {
   const formData = await req.formData();
@@ -24,12 +25,20 @@ export const POST = catchAsyncHandler(async (req: NextRequest) => {
     throw new ErrorCreator(StatusCodes.BAD_REQUEST, "Invalid email address.");
   }
 
+  await connectToDatabase();
+  const isUserActive = await User.findOne({ email });
+
+  if (isUserActive && !isUserActive?.active)
+    throw new ErrorCreator(
+      StatusCodes.BAD_REQUEST,
+      "Your account has been blocked by the admin. Please contact the administrator for further assistance.",
+    );
+
   const otp = generateOTP();
   const salt = await bcrypt.genSalt(12);
   const hashOTP = await bcrypt.hash(otp.toString(), salt);
 
   try {
-    await connectToDatabase();
     const isOtpReceived = await OTP.findOne({ email });
 
     if (isOtpReceived) {
@@ -49,7 +58,7 @@ export const POST = catchAsyncHandler(async (req: NextRequest) => {
   } catch (error) {
     throw new ErrorCreator(
       StatusCodes.INTERNAL_SERVER_ERROR,
-      "Failed to save OTP."
+      "Failed to save OTP.",
     );
   }
 
@@ -111,18 +120,18 @@ export const POST = catchAsyncHandler(async (req: NextRequest) => {
   } catch (error) {
     throw new ErrorCreator(
       StatusCodes.INTERNAL_SERVER_ERROR,
-      "Failed to send OTP email."
+      "Failed to send OTP email.",
     );
   }
 
   return ReturnNextResponse(
     StatusCodes.OK,
-    "OTP sent successfully. It will be valid only for 15 minutes."
+    "OTP sent successfully. It will be valid only for 15 minutes.",
   );
 });
 
 export const GET = catchAsyncHandler(async (req) => {
-  const response = authRequired(req, [ROLES.ADMIN]);
+  const response = await authRequired(req, [ROLES.ADMIN]);
   if (response) return response;
 
   const params = req.nextUrl.searchParams;
@@ -149,6 +158,6 @@ export const GET = catchAsyncHandler(async (req) => {
       page,
       totalPages,
       totalOTPs,
-    }
+    },
   );
 });

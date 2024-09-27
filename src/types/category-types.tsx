@@ -15,7 +15,7 @@ export interface CategoryActionTypes {
 }
 
 export interface UpdateCategoryPropsTypes {
-  fetchData: () => void;
+  fetchData: () => Promise<void>;
   action: CategoryActionTypes | null;
   setAction: Dispatch<SetStateAction<CategoryActionTypes | null>>;
 }
