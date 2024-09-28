@@ -57,9 +57,9 @@ export const POST = catchAsyncHandler(async (req) => {
     content: data.content,
     main_image: data.images[0],
     images: data.images.slice(1),
-    price: data.price,
-    discount: data.discount,
-    discount_price: (data.price * (1 - data.discount / 100)).toFixed(2),
+    price: data.price.toFixed(0),
+    discount: data.discount.toFixed(0),
+    discount_price: (data.price * (1 - data.discount / 100)).toFixed(0),
     categoryId: data.categoryId,
     rating: 0,
     views: 0,
@@ -121,8 +121,8 @@ export const PATCH = catchAsyncHandler(async (req) => {
   isModExist.content = data.content;
   isModExist.main_image = data.images[0];
   isModExist.images = data.images.slice(1);
-  isModExist.price = data.price;
-  isModExist.discount = data.discount;
+  isModExist.price = data.price.toFixed(0);
+  isModExist.discount = data.discount.toFixed(0);
   isModExist.discount_price = (data.price * (1 - data.discount / 100)).toFixed(
     2,
   );

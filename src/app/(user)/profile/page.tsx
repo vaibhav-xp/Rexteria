@@ -117,8 +117,8 @@ export default function Profile() {
         <div className="relative group w-28 h-28 overflow-hidden rounded-full border-2 border-primary">
           <Image
             src={image}
-            width={100}
-            height={100}
+            width={400}
+            height={400}
             alt="profile"
             className="w-full h-full object-cover"
           />

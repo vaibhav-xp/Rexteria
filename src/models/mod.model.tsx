@@ -52,15 +52,19 @@ const ModSchema = new mongoose.Schema(
     },
     rating: {
       type: Number,
+      default: 0,
     },
     likes: {
       type: Number,
+      default: 0,
     },
     views: {
       type: Number,
+      default: 0,
     },
     status: {
       type: Boolean,
+      default: false,
     },
     reviews: [
       {

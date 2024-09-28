@@ -160,8 +160,8 @@ export default function Header() {
                       (user?.avatar?.url as string) ||
                       placeHolderImage(user?.name)
                     }
-                    width={60}
-                    height={60}
+                    width={200}
+                    height={200}
                     alt="profile"
                     className="object-cover w-full h-full"
                   />

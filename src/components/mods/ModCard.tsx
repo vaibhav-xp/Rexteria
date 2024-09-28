@@ -1,12 +1,29 @@
+import { addToCartFn } from "@/services/cart";
+import { showAlert } from "@/services/handle-api";
+import { ModType } from "@/types/mod-types";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { FaRegHeart } from "react-icons/fa";
 import { MdOutlineShoppingBag } from "react-icons/md";
 import Rating from "../shared/rating";
-import { ModType } from "@/types/mod-types";
-import { useRouter } from "next/navigation";
+import { MouseEvent } from "react";
+import { addToWishlistFn } from "@/services/wishlist";
 
 export default function ModCard({ mod }: { mod: ModType }) {
   const router = useRouter();
+
+  const addToCart = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    const formData = new FormData();
+    formData.append("mod_id", mod._id);
+    addToCartFn(formData).then((data) => showAlert(data));
+  };
+  const addToWishlilst = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    const formData = new FormData();
+    formData.append("mod_id", mod._id);
+    addToWishlistFn(formData).then((data) => showAlert(data));
+  };
 
   return (
     <div
@@ -28,10 +45,16 @@ export default function ModCard({ mod }: { mod: ModType }) {
 
       {/* Hover Icons */}
       <div className="absolute top-3 right-3 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <button className="p-2 bg-white text-card rounded-full shadow-lg hover:bg-primary hover:text-white transition-colors duration-300">
+        <button
+          className="p-2 bg-white text-card rounded-full shadow-lg hover:bg-primary hover:text-white transition-colors duration-300"
+          onClick={addToWishlilst}
+        >
           <FaRegHeart />
         </button>
-        <button className="p-2 bg-white text-card rounded-full shadow-lg hover:bg-primary hover:text-white transition-colors duration-300">
+        <button
+          className="p-2 bg-white text-card rounded-full shadow-lg hover:bg-primary hover:text-white transition-colors duration-300"
+          onClick={addToCart}
+        >
           <MdOutlineShoppingBag />
         </button>
       </div>

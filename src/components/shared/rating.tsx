@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { IoStarSharp } from "react-icons/io5";
+import { IoStarHalf, IoStarOutline, IoStarSharp } from "react-icons/io5";
 
 export default function Rating({
   rating,
@@ -8,14 +8,18 @@ export default function Rating({
   rating: number;
   className?: string;
 }) {
-  const ratingRound = Math.round(rating);
   return (
     <p className={cn("flex justify-center gap-1", className)}>
-      {new Array(ratingRound).fill(0).map((_, idx) => (
-        <IoStarSharp key={idx} className="text-primary" />
-      ))}
-      {new Array(5 - ratingRound).fill(0).map((_, idx) => (
-        <IoStarSharp key={idx} />
+      {Array.from({ length: 5 }, (_, index) => (
+        <>
+          {rating >= index + 1 ? (
+            <IoStarSharp key={index} className="text-primary" />
+          ) : rating >= index + 0.5 ? (
+            <IoStarHalf key={index} className="text-primary" />
+          ) : (
+            <IoStarOutline key={index} className="text-gray-600" />
+          )}
+        </>
       ))}
     </p>
   );

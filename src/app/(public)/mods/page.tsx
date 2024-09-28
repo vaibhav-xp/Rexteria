@@ -96,7 +96,6 @@ export default function ModsListing() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Function to update the category ID and URL params
   const updateCategory = (value: string) => {
     setCategoryId(value);
     const newParams = new URLSearchParams(window.location.search);

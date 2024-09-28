@@ -1,6 +1,7 @@
 "use client";
 
 import DisplayModImages from "@/components/mods/DisplayModImages";
+import RatingDialog from "@/components/mods/RatingDialog";
 import NotFound from "@/components/shared/not-found";
 import Rating from "@/components/shared/rating";
 import {
@@ -12,11 +13,28 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
+import { addToCartFn } from "@/services/cart";
+import { showAlert } from "@/services/handle-api";
 import { getModBySlugFn } from "@/services/mod";
+import { addToWishlistFn } from "@/services/wishlist";
 import ShimmerModDetails from "@/shimmer/Mods/mod-details-shimmer";
 import { ModType } from "@/types/mod-types";
+import { open } from "fs";
 import { Car, Heart, HomeIcon } from "lucide-react";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { MdOutlineShoppingBag, MdThumbUp, MdVisibility } from "react-icons/md";
 
@@ -38,6 +56,20 @@ export default function SingleModShow({ params }: { params: { _id: string } }) {
 
     fetchMod();
   }, [params._id]);
+
+  const addToCart = () => {
+    const formData = new FormData();
+    if (!mod) return;
+    formData.append("mod_id", mod._id);
+    addToCartFn(formData).then((data) => showAlert(data));
+  };
+
+  const addToWishlilst = () => {
+    const formData = new FormData();
+    if (!mod) return;
+    formData.append("mod_id", mod._id);
+    addToWishlistFn(formData).then((data) => showAlert(data));
+  };
 
   if (loading) {
     return <ShimmerModDetails />;
@@ -136,13 +168,14 @@ export default function SingleModShow({ params }: { params: { _id: string } }) {
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <Button className="w-full my-4 flex gap-1">
+            <Button className="w-full my-4 flex gap-1" onClick={addToWishlilst}>
               <Heart className="w-6 h-6" /> Add To Wishlist
             </Button>
-            <Button className="w-full my-4 flex gap-1">
+            <Button className="w-full my-4 flex gap-1" onClick={addToCart}>
               <MdOutlineShoppingBag className="w-6 h-6 " /> Add To Cart
             </Button>
           </div>
+          <RatingDialog mod={mod} />
 
           <div className="mt-8">
             <h4 className="text-base font-semibold">Description:</h4>
