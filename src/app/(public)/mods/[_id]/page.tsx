@@ -25,7 +25,7 @@ import ShimmerModDetails from "@/shimmer/Mods/mod-details-shimmer";
 import { ModType } from "@/types/mod-types";
 import { ReviewType } from "@/types/review-types";
 import { Car, Heart, HomeIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   MdOutlineShoppingBag,
   MdOutlineThumbUp,
@@ -41,17 +41,18 @@ export default function SingleModShow({ params }: { params: { _id: string } }) {
   const [viewHitOnce, setVewHitOnce] = useState(true);
   const [isRatingLoading, setIsRatingLoading] = useState(true);
 
-  const fetchMod = async () => {
+  const fetchMod = useCallback(async () => {
     try {
       const data = await getModBySlugFn(params._id);
       setMod(data?.data);
     } finally {
       setLoading(false);
     }
-  };
+  }, [params?._id]);
+
   useEffect(() => {
     fetchMod();
-  }, [params._id]);
+  }, [params._id, fetchMod]);
 
   const addToCart = () => {
     loginFirst(user, () => {
@@ -64,10 +65,12 @@ export default function SingleModShow({ params }: { params: { _id: string } }) {
     });
   };
 
-  const getRatings = () =>
-    getRatingFn({ mod_id: mod?._id })
-      .then((data) => setReview(data?.data))
-      .finally(() => setIsRatingLoading(false));
+  const getRatings = useCallback(() => {
+    if (user && mod)
+      getRatingFn({ mod_id: mod?._id })
+        .then((data) => setReview(data?.data))
+        .finally(() => setIsRatingLoading(false));
+  }, [user, mod]);
 
   const addToWishlilst = () => {
     loginFirst(user, () => {
@@ -93,10 +96,8 @@ export default function SingleModShow({ params }: { params: { _id: string } }) {
   };
 
   useEffect(() => {
-    if (user && mod) {
-      getRatings();
-    }
-  }, [user, mod]);
+    getRatings();
+  }, [getRatings]);
 
   useEffect(() => {
     if (mod && viewHitOnce && mod?.status) {

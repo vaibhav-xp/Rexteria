@@ -41,6 +41,7 @@ export const uploadImage = async (file: File): Promise<ImageType> => {
         .end(buffer);
     });
   } catch (error) {
+    console.log(error);
     throw new ErrorCreator(
       StatusCodes.INTERNAL_SERVER_ERROR,
       `Failed to upload image`,

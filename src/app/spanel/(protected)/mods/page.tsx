@@ -39,7 +39,7 @@ import { PlusCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { MdVisibility } from "react-icons/md";
 
 export default function Mods() {
@@ -56,7 +56,7 @@ export default function Mods() {
 
   const { handleSetImages } = useCarousal();
 
-  const getMods = () => {
+  const getMods = useCallback(() => {
     setLoading(true);
     getModsFn({
       search,
@@ -71,7 +71,7 @@ export default function Mods() {
         setTotalPages(data?.data?.totalPages);
       })
       .finally(() => setLoading(false));
-  };
+  }, [categoryId, currentPage, search]);
 
   const handleStatus = (_id: string) => {
     const formData = new FormData();
@@ -84,7 +84,7 @@ export default function Mods() {
   useEffect(() => {
     const timer = setTimeout(() => getMods(), 500);
     return () => clearTimeout(timer);
-  }, [search, currentPage, categoryId]);
+  }, [search, currentPage, categoryId, getMods]);
 
   const handleDelete = (_id: string) => {
     deleteModsFn({ mod_id: _id })
@@ -168,8 +168,8 @@ export default function Mods() {
 
           {!loading &&
             mods.map((mod: ModType) => (
-              <TableBody>
-                <TableRow key={mod._id}>
+              <TableBody key={mod?._id}>
+                <TableRow>
                   <TableCell>
                     <p className="w-[250px] mx-auto text-center overflow-hidden whitespace-nowrap text-ellipsis ">
                       {mod.title}

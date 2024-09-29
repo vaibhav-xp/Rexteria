@@ -28,6 +28,7 @@ import NotFound from "./not-found";
 export default function SelectedImages() {
   const [loading, setLoading] = useState<boolean>(false);
   const [images, setImages] = useState<ImageTypeWithID[]>([]);
+  const [onlyFirstTime, setOnlyFirstTime] = useState(true);
   const { user } = useStore();
   const {
     selectDialogOpen,
@@ -54,8 +55,11 @@ export default function SelectedImages() {
   }, []);
 
   useEffect(() => {
-    if (user && user?.role === "ADMIN") getGalleries();
-  }, [getGalleries, user]);
+    if (user && user?.role === "ADMIN" && onlyFirstTime) {
+      getGalleries();
+      setOnlyFirstTime(false);
+    }
+  }, [getGalleries, user, onlyFirstTime]);
 
   const viewImages = useMemo(() => images.map((img) => img.url), [images]);
 

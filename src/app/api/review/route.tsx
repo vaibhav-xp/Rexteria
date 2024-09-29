@@ -37,7 +37,7 @@ export const PATCH = catchAsyncHandler(async (req) => {
   const user_id = req?.user?._id;
   const mod_id = formData.get("mod_id");
   const rating = formData.get("rating") as string;
-  const like = formData.get("like");
+  const like = formData.get("like") === "true";
 
   await connectToDatabase();
 
@@ -45,29 +45,32 @@ export const PATCH = catchAsyncHandler(async (req) => {
   if (!mod) {
     throw new ErrorCreator(
       StatusCodes.NOT_FOUND,
-      "Mod with this id not found.",
+      "Mod with this ID not found.",
     );
   }
 
   mod.likes = mod.likes || 0;
   mod.rating = mod.rating || 0;
+  mod.reviewCount = mod.reviewCount || 0;
 
   const review = await ReviewModel.findOne({ user_id, mod_id });
 
   if (review) {
-    if (review.likes && like) {
-      review.likes = false;
-      mod.likes -= 1;
-    } else if (like && !review.likes) {
-      review.likes = true;
-      mod.likes += 1;
+    if (review.likes !== like) {
+      if (like) {
+        mod.likes += 1;
+      } else {
+        mod.likes -= 1;
+      }
+      review.likes = like;
     }
 
     if (rating) {
       const newRating = parseInt(rating, 10);
-      const totalRating = mod.rating * mod.reviewCount - review.rating;
+      mod.rating =
+        (mod.rating * mod.reviewCount - review.rating + newRating) /
+        mod.reviewCount;
       review.rating = newRating;
-      mod.rating = (totalRating + newRating) / mod.reviewCount;
     }
 
     await review.save();
@@ -75,16 +78,17 @@ export const PATCH = catchAsyncHandler(async (req) => {
     const newReview = new ReviewModel({
       user_id,
       mod_id,
-      likes: like === "true",
+      likes: like,
+      rating: rating ? parseInt(rating, 10) : undefined,
     });
 
-    if (like === "true") mod.likes += 1;
+    if (like) mod.likes += 1;
     if (rating) {
-      newReview.rating = parseInt(rating, 10);
+      const newRating = parseInt(rating, 10);
       mod.rating =
-        (mod.rating * mod.reviewCount + newReview.rating) /
-        (mod.reviewCount + 1);
+        (mod.rating * mod.reviewCount + newRating) / (mod.reviewCount + 1);
       mod.reviewCount += 1;
+      newReview.rating = newRating;
     }
 
     await newReview.save();

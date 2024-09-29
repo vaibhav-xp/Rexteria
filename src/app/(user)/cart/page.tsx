@@ -18,7 +18,11 @@ export default function Cart() {
           <div className="mt-4 overflow-y-scroll">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {cartItems.map((cart) => (
-                <CartCard cart={cart} getCartData={refetchCartData} />
+                <CartCard
+                  key={cart?.mod_id as string}
+                  cart={cart}
+                  getCartData={refetchCartData}
+                />
               ))}
             </div>
           </div>

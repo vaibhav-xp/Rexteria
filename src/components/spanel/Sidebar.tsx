@@ -1,11 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { ChevronRight, ChevronLeft, LucideIcon, LogOut } from "lucide-react";
 import { useWindowWidth } from "@react-hook/window-size";
+import { ChevronRight, LucideIcon } from "lucide-react";
+import { useState } from "react";
 import { Button } from "../ui/button";
 import { Nav } from "../ui/nav";
-import { useRouter } from "next/navigation";
 
 interface LinksType {
   title: string;
@@ -19,15 +18,10 @@ export default function Sidebar({ links }: { links: LinksType[] }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const onlyWidth = useWindowWidth();
   const mobileWidth = onlyWidth < 768;
-  const router = useRouter();
 
   function toggleSidebar() {
     setIsCollapsed(!isCollapsed);
   }
-
-  const handleBackClick = () => {
-    router.back();
-  };
 
   return (
     <aside

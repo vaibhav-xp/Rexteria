@@ -31,12 +31,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { MdVisibility } from "react-icons/md";
 
-interface OTP {
-  _id: string;
-  email: string;
-  createdAt: string;
-}
-
 export default function OTPList() {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -46,23 +40,18 @@ export default function OTPList() {
   const { handleSetImages } = useCarousal();
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(true);
-      getReviewsFn({
-        page,
-        limit: 10,
+    setLoading(true);
+    getReviewsFn({
+      page,
+      limit: 10,
+    })
+      .then((data) => {
+        setTotalPages(data?.data?.totalPages);
+        setReviews(data?.data?.reviews);
+        setTotalReviews(data?.data?.totalReviews);
       })
-        .then((data) => {
-          setPage(data?.data?.page);
-          setTotalPages(data?.data?.totalPages);
-          setReviews(data?.data?.reviews);
-          setTotalReviews(data?.data?.totalReviews);
-        })
-        .finally(() => setLoading(false));
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, []);
+      .finally(() => setLoading(false));
+  }, [page]);
 
   return (
     <>
@@ -100,7 +89,7 @@ export default function OTPList() {
               const mod = review?.mod_id as ModType;
 
               return (
-                <TableBody>
+                <TableBody key={review?._id}>
                   <TableRow key={review?._id}>
                     <TableCell className="text-center">
                       <p className="w-16 h-16 overflow-hidden rounded-full mx-auto">
@@ -126,7 +115,9 @@ export default function OTPList() {
                     </TableCell>
                     <TableCell className="text-center">{user?.name}</TableCell>
                     <TableCell className="text-center">{user?.email}</TableCell>
-                    <TableCell className="text-center">{mod?.title}</TableCell>
+                    <TableCell className="text-center text-ellipsis whitespace-nowrap overflow-hidden max-w-[200px]">
+                      {mod?.title}
+                    </TableCell>
                     <TableCell className="text-center">
                       <Image
                         src={mod?.main_image?.url}

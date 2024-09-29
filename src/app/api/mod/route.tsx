@@ -4,7 +4,9 @@ import ErrorCreator from "@/lib/errorCreator";
 import createSlug from "@/lib/slugCreator";
 import catchAsyncHandler from "@/lib/tryCatch";
 import { ROLES } from "@/middleware";
+import CartModel from "@/models/cart.model";
 import Mod from "@/models/mod.model";
+import WishlistModel from "@/models/wishlist.model";
 import { ImageTypeWithID } from "@/types/image-types";
 import ReturnNextResponse from "@/types/response-types";
 import { StatusCodes } from "http-status-codes";
@@ -191,19 +193,23 @@ export const DELETE = catchAsyncHandler(async (req) => {
 
   await connectToDatabase();
 
-  // Get the mod ID from the request URL parameters
   const modId = req.nextUrl.searchParams.get("mod_id");
 
   if (!modId) {
     throw new ErrorCreator(StatusCodes.BAD_REQUEST, "Mod ID is required.");
   }
 
-  // Attempt to find and delete the mod
   const deletedMod = await Mod.findByIdAndDelete(modId);
   if (!deletedMod) {
     throw new ErrorCreator(StatusCodes.NOT_FOUND, "Mod not found.");
   }
 
-  // Return a success response
+  await WishlistModel.updateMany({ mods: modId }, { $pull: { mods: modId } });
+
+  await CartModel.updateMany(
+    { "mods.mod_id": modId },
+    { $pull: { mods: { mod_id: modId } } },
+  );
+
   return ReturnNextResponse(StatusCodes.OK, `Mod deleted successfully.`);
 });

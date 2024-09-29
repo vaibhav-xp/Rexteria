@@ -76,14 +76,14 @@ export default function CartCard({
         <div className="flex justify-between items-center">
           <p className="text-lg font-semibold">
             Price: ₹
-            <span className="line-through text-red-500">{item.price}</span>{" "}
+            <span className="line-through text-red-500">{item?.price}</span>{" "}
             <span className="text-primary">{item?.discount_price}</span>
           </p>
           <div className="flex items-center gap-4">
             <Button
               variant="outline"
               size="icon"
-              onClick={() => action(item._id, "asc")}
+              onClick={() => action(item?._id, "asc")}
               disabled={cart.quantity === 1}
             >
               <Minus className="w-4 h-4" />

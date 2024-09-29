@@ -19,7 +19,6 @@ import { patchRatingFn } from "@/services/review";
 import { ModType } from "@/types/mod-types";
 import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { IoStarOutline, IoStarSharp } from "react-icons/io5";
 import Rating from "../shared/rating";
@@ -32,7 +31,6 @@ export default function RatingDialog({
   mod: ModType;
   fetchMod: () => Promise<void>;
 }) {
-  const router = useRouter();
   const [open, setOpen] = useState(false);
   const { user } = useStore();
   const [ratingValue, setRatingValue] = useState(0);

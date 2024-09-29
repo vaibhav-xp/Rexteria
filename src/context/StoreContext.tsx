@@ -9,7 +9,13 @@ import { CartModType } from "@/types/cart-types";
 import { DisplayCategoriesTypes } from "@/types/category-types";
 import { UserType } from "@/types/store-types";
 import { useRouter } from "next/navigation";
-import { createContext, ReactNode, useEffect, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useEffect,
+  useState,
+  useCallback,
+} from "react";
 
 interface StoreContextTypes {
   user: UserType | null;
@@ -38,47 +44,47 @@ export default function StoreContextProvider({
   const [isCartLoading, setIsCartLoading] = useState(true);
   const [cartItems, setCartItems] = useState<CartModType[]>([]);
   const [totalAmount, setTotalAmount] = useState(0);
+  const [onlyFirstTime, setOnlyFirstTime] = useState(true);
 
-  // Fetch categories
-  const refetchCategory = () =>
-    getCategoriesFn()
+  const refetchCategory = useCallback(() => {
+    setIsCategoriesLoading(true);
+    return getCategoriesFn()
       .then((data) => setCategories(data?.data))
       .finally(() => setIsCategoriesLoading(false));
+  }, []);
 
-  // Fetch user profile
-  const refetchUser = () => getUserFn().then((data) => setUser(data?.data));
+  const refetchUser = useCallback(() => {
+    return getUserFn().then((data) => setUser(data?.data));
+  }, []);
 
-  // Logout function
-  const logout = () =>
-    logoutFn()
+  const logout = useCallback(() => {
+    return logoutFn()
       .then((data) => showAlert(data))
       .then(() => router.push("/"))
       .then(() => setUser(null));
+  }, [router]);
 
-  // Fetch cart data
-  const refetchCartData = () =>
-    getCartFn()
+  const refetchCartData = useCallback(() => {
+    setIsCartLoading(true);
+    return getCartFn()
       .then((data) => {
         setCartItems(data?.data?.mods || []);
         setTotalAmount(data?.data?.totalAmount.toFixed(0));
       })
       .finally(() => setIsCartLoading(false));
+  }, []);
 
-  // Initial load for categories and user
   useEffect(() => {
     refetchCategory();
     refetchUser();
-  }, []);
+  }, [refetchCategory, refetchUser]);
 
-  // Fetch cart data only when the user is present
   useEffect(() => {
-    if (user) {
+    if (user && onlyFirstTime) {
       refetchCartData();
-    } else {
-      setCartItems([]);
-      setTotalAmount(0);
+      setOnlyFirstTime(false);
     }
-  }, [user]);
+  }, [user, refetchCartData, onlyFirstTime]);
 
   return (
     <StoreContext.Provider

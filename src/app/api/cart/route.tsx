@@ -6,7 +6,6 @@ import { ROLES } from "@/middleware";
 import CartModel from "@/models/cart.model";
 import Mod from "@/models/mod.model";
 import { CartModType } from "@/types/cart-types";
-import { ModType } from "@/types/mod-types";
 import ReturnNextResponse from "@/types/response-types";
 import { StatusCodes } from "http-status-codes";
 
@@ -34,7 +33,7 @@ export const POST = catchAsyncHandler(async (req) => {
     );
   }
 
-  let isCart = await CartModel.findOne({ user_id });
+  const isCart = await CartModel.findOne({ user_id });
 
   if (isCart) {
     const modPresent = isCart.mods.find(

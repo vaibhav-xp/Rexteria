@@ -4,6 +4,7 @@ const nextConfig = {
     dangerouslyAllowSVG: true,
     domains: ["i.pinimg.com", "res.cloudinary.com", "placehold.co"],
   },
+  reactStrictMode: false,
 };
 
 export default nextConfig;

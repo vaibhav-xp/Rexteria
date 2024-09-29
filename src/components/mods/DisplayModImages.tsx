@@ -21,15 +21,12 @@ export default function DisplayModImages({
 }) {
   const [api, setApi] = useState<CarouselApi | null>(null);
   const [current, setCurrent] = useState(0);
-  const [count, setCount] = useState(0);
   const { handleSetImages } = useCarousal();
 
   useEffect(() => {
     if (!api) {
       return;
     }
-
-    setCount(api.scrollSnapList().length);
     setCurrent(api.selectedScrollSnap() + 1);
 
     api.on("select", () => {

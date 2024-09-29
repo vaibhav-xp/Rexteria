@@ -69,7 +69,7 @@ export function AddUpdateCategory({
     }
 
     return () => handleDeleteAllSelectedImages();
-  }, [reset, action]);
+  }, [reset, action, setSelectedImages, handleDeleteAllSelectedImages]);
 
   const handleClose = () => {
     setIsLoading(false);

@@ -56,6 +56,7 @@ export const POST = catchAsyncHandler(async (req: NextRequest) => {
       await newData.save();
     }
   } catch (error) {
+    console.log(error);
     throw new ErrorCreator(
       StatusCodes.INTERNAL_SERVER_ERROR,
       "Failed to save OTP.",
@@ -118,6 +119,7 @@ export const POST = catchAsyncHandler(async (req: NextRequest) => {
   try {
     await transporter.sendMail(mailOptions(email, subject, content));
   } catch (error) {
+    console.log(error);
     throw new ErrorCreator(
       StatusCodes.INTERNAL_SERVER_ERROR,
       "Failed to send OTP email.",

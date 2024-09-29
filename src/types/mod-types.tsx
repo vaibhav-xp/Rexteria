@@ -42,7 +42,6 @@ export interface ModType {
   rating: number;
   views: number;
   status: boolean;
-  reviews: any[];
   createdAt: string;
   updatedAt: string;
   reviewCount: number;

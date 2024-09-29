@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useState, useCallback } from "react";
 
 interface UploadImagesContextTypes {
   open: boolean;
@@ -22,18 +22,18 @@ export default function UploadImagesContextProvider({
   const [open, setOpen] = useState<boolean>(false);
   const [refetch, setRefetch] = useState<(() => void) | null>(null);
 
-  const handleOpenUploadImages = () => {
+  const handleOpenUploadImages = useCallback(() => {
     setOpen(true);
-  };
+  }, []);
 
-  const handleCloseUploadImages = () => {
+  const handleCloseUploadImages = useCallback(() => {
     setOpen(false);
     setRefetch(null);
-  };
+  }, []);
 
-  const handleSetRefetch = (fn: () => void) => {
+  const handleSetRefetch = useCallback((fn: () => void) => {
     setRefetch(() => fn);
-  };
+  }, []);
 
   return (
     <UploadImagesContext.Provider

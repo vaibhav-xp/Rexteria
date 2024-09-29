@@ -1,15 +1,13 @@
 "use client";
 
-import { ReactNode, useState, createContext } from "react";
+import { ReactNode, useState, createContext, useCallback } from "react";
 
-// Create the context
 export const CarousalContext = createContext<{
   images: string[] | null;
-  handleSetImages: (images: string[], index: number) => void;
+  handleSetImages: (images: string[], index?: number) => void;
   handleRemoveImages: () => void;
 } | null>(null);
 
-// Create the CarousalContextProvider component
 export default function CarousalContextProvider({
   children,
 }: {
@@ -17,22 +15,19 @@ export default function CarousalContextProvider({
 }) {
   const [images, setImages] = useState<string[] | null>(null);
 
-  // Function to set images
-  const handleSetImages = (images: string[], index?: number) => {
-    if (index) {
+  const handleSetImages = useCallback((images: string[], index?: number) => {
+    if (index !== undefined) {
       const selectedOne = images.find((_, idx) => index === idx);
-      setImages([selectedOne as string, ...images]);
+      setImages((prev) => [selectedOne as string, ...(prev || [])]);
     } else {
       setImages(images);
     }
-  };
+  }, []);
 
-  // Function to remove images
-  const handleRemoveImages = () => {
+  const handleRemoveImages = useCallback(() => {
     setImages(null);
-  };
+  }, []);
 
-  // Value to be provided to the context consumers
   const value = {
     images,
     handleSetImages,

@@ -43,13 +43,14 @@ export const PATCH = catchAsyncHandler(async (req) => {
   let image: ImageType | undefined;
 
   if (avatar) {
+    console.log(avatar, "==============");
     if (user?.avatar?.public_id) await deleteImage(user?.avatar?.public_id);
     image = await uploadImage(avatar);
   }
 
   // Update user data
   user.name = name;
-  user.avatar = image;
+  if (image) user.avatar = image;
   user.country = country;
   user.phone = phone;
   user.youtube = youtube || user.youtube;

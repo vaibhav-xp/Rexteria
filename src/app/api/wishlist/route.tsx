@@ -30,7 +30,7 @@ export const POST = catchAsyncHandler(async (req) => {
     );
   }
 
-  let wishlist = await WishlistModel.findOne({ user_id });
+  const wishlist = await WishlistModel.findOne({ user_id });
 
   if (wishlist) {
     const modExists = wishlist.mods.some(

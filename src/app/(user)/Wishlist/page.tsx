@@ -29,7 +29,6 @@ export default function Whishlist() {
   };
 
   const deleteFn = (_id: string) => {
-    const formData = new FormData();
     deleteWishlistFn({ mod_id: _id })
       .then((data) => showAlert(data))
       .then(() => getData());

@@ -7,7 +7,6 @@ import ModCategory from "@/models/category.model";
 import GalleryModel from "@/models/gallery";
 import Mod from "@/models/mod.model";
 import ReturnNextResponse from "@/types/response-types";
-import console from "console";
 import { StatusCodes } from "http-status-codes";
 import { NextRequest } from "next/server";
 
@@ -114,7 +113,11 @@ export const PATCH = catchAsyncHandler(async (req: NextRequest) => {
 
 export const GET = catchAsyncHandler(async () => {
   await connectToDatabase();
-  const categories = await ModCategory.find().populate("image");
+
+  const categories = await ModCategory.find()
+    .sort({ createdAt: -1 })
+    .populate("image");
+
   return ReturnNextResponse(
     StatusCodes.OK,
     "Categories fetched successfully.",

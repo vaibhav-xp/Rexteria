@@ -10,13 +10,16 @@ import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { ShimmerCardsTypes } from "@/types/shimmer-types";
 import { useWindowWidth } from "@react-hook/window-size";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export default function ShimmerModDetails() {
-  const initialCards = {
-    count: 4,
-    basis: "basis-1/4",
-  };
+  const initialCards = useMemo(
+    () => ({
+      count: 4,
+      basis: "basis-1/4",
+    }),
+    [],
+  );
   const [cards, setCards] = useState<ShimmerCardsTypes>(initialCards);
   const onlyWidth = useWindowWidth();
 
@@ -34,7 +37,7 @@ export default function ShimmerModDetails() {
     } else {
       setCards(initialCards);
     }
-  }, [onlyWidth]);
+  }, [onlyWidth, initialCards]);
 
   return (
     <div className="container py-4">

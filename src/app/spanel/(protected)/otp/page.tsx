@@ -1,6 +1,5 @@
 "use client";
 
-import LoadingSpinner from "@/components/shared/loading-spinner";
 import NotFound from "@/components/shared/not-found";
 import { Input } from "@/components/ui/input";
 import {
@@ -56,7 +55,7 @@ export default function OTPList() {
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [search]);
+  }, [search, page]);
 
   return (
     <>
@@ -95,7 +94,7 @@ export default function OTPList() {
             otps.map((otp) => {
               const date = new Date(otp?.createdAt);
               return (
-                <TableBody>
+                <TableBody key={otp?._id}>
                   <TableRow key={otp?._id}>
                     <TableCell className="text-center">{otp?._id}</TableCell>
                     <TableCell className="text-center">{otp?.email}</TableCell>

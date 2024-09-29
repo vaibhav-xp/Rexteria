@@ -41,7 +41,7 @@ import { DisplayCategoriesTypes } from "@/types/category-types";
 import { ModType } from "@/types/mod-types";
 import { Car, HomeIcon } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export default function ModsListing() {
   const params = useSearchParams();
@@ -56,7 +56,7 @@ export default function ModsListing() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPages] = useState(1);
 
-  const getMods = () => {
+  const getMods = useCallback(() => {
     setLoading(true);
     getPublicModsFn({
       limit: 20,
@@ -72,7 +72,7 @@ export default function ModsListing() {
         setTotalPages(data?.data?.totalPages);
       })
       .finally(() => setLoading(false));
-  };
+  }, [currentPage, search, sortOrder, sortField, categoryId]);
 
   useEffect(() => {
     getCategoriesFn().then((data) => setCategories(data?.data));
@@ -81,11 +81,11 @@ export default function ModsListing() {
   useEffect(() => {
     const timer = setTimeout(() => getMods(), 500);
     return () => clearTimeout(timer);
-  }, [search, categoryId, sortOrder, sortField, currentPage]);
+  }, [search, categoryId, sortOrder, sortField, currentPage, getMods]);
 
   useEffect(() => {
     if (params.get("category")) setCategoryId(params.get("category") as string);
-  }, [params.get("category")]);
+  }, [params]);
 
   useEffect(() => {
     const handleResize = () => {

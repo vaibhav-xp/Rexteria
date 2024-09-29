@@ -1,14 +1,16 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { ShimmerCardsTypes } from "@/types/shimmer-types";
 import { useWindowWidth } from "@react-hook/window-size";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export default function ShimmerCategoriesHome() {
-  const initialCards = {
-    count: 2,
-    basis: "basis-1/2",
-  };
-
+  const initialCards = useMemo(
+    () => ({
+      count: 2,
+      basis: "basis-1/2",
+    }),
+    [],
+  );
   const [cards, setCards] = useState<ShimmerCardsTypes>(initialCards);
   const onlyWidth = useWindowWidth();
 
@@ -26,12 +28,15 @@ export default function ShimmerCategoriesHome() {
     } else {
       setCards(initialCards);
     }
-  }, [onlyWidth]);
+  }, [onlyWidth, initialCards]);
 
   return (
     <div className="flex gap-4">
       {Array.from({ length: cards.count }).map((_, index) => (
-        <Skeleton className={`aspect-square w-full h-full ${cards.basis}`} />
+        <Skeleton
+          key={index}
+          className={`aspect-square w-full h-full ${cards.basis}`}
+        />
       ))}
     </div>
   );

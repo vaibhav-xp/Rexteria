@@ -31,7 +31,7 @@ import { Camera, Trash2 } from "lucide-react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import "react-quill/dist/quill.snow.css";
 
@@ -76,10 +76,9 @@ export default function AddUpdate({ params }: { params: Params }) {
     },
   });
 
-  const fetchMod = async () => {
+  const fetchMod = useCallback(async () => {
     const data = await getModByIdFn(_id);
     const mod: ModType = data?.data;
-    console.log(data?.data);
     setSpecifications(mod.specifications);
     form.reset({
       title: mod.title,
@@ -96,13 +95,13 @@ export default function AddUpdate({ params }: { params: Params }) {
         if (m) modsImage.push(m);
       });
     setSelectedImages(modsImage);
-  };
+  }, [_id, form, setSelectedImages]);
 
   useEffect(() => {
     if (status === "update" && _id) fetchMod();
 
     return () => handleDeleteAllSelectedImages();
-  }, [status, _id]);
+  }, [status, _id, handleDeleteAllSelectedImages, fetchMod]);
 
   const onSubmit = (values: ModFormTypes) => {
     if (
@@ -154,10 +153,10 @@ export default function AddUpdate({ params }: { params: Params }) {
 
   return (
     <>
-      <Title title={`${status === "add" ? "Add" : "Update"} Mod`} />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="flex justify-end">
+          <div className="flex justify-between">
+            <Title title={`${status === "add" ? "Add" : "Update"} Mod`} />
             <Button type="submit" variant={"default"}>
               {loading ? "Saving..." : "Save"}
             </Button>

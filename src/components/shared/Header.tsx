@@ -16,6 +16,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaInstagram, FaYoutube } from "react-icons/fa";
 import { MdClose, MdMenu, MdOutlineShoppingBag } from "react-icons/md";
+import { Button } from "../ui/button";
 import { Drawer, DrawerContent, DrawerOverlay } from "../ui/drawer";
 import {
   DropdownMenu,
@@ -25,7 +26,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { Button } from "../ui/button";
 
 export default function Header() {
   const { cartItems, totalAmount } = useStore();
@@ -68,6 +68,7 @@ export default function Header() {
         <nav className="hidden md:flex items-center gap-4">
           {navLinks.map((link) => (
             <Link
+              key={link?.href}
               href={link.href}
               className={cn(
                 "hover:text-primary",
@@ -123,7 +124,7 @@ export default function Header() {
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {drowpdown.map((link) => (
-                  <DropdownMenuItem>
+                  <DropdownMenuItem key={link.href}>
                     <Link
                       href={link.href}
                       className={cn(
@@ -191,6 +192,7 @@ export default function Header() {
                 (link) => {
                   return (
                     <Link
+                      key={link.href}
                       href={link.href}
                       className={cn(
                         "flex items-center gap-2 hover:text-primary",

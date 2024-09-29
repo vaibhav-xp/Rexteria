@@ -7,6 +7,7 @@ import {
   ReactNode,
   SetStateAction,
   useState,
+  useCallback,
 } from "react";
 
 interface SelectImagesContextTypes {
@@ -27,24 +28,29 @@ const SelectImageContextProvider = ({ children }: { children: ReactNode }) => {
   const [selectDialogOpen, setSelectDialogOpen] = useState<number>(0);
   const [selectedImages, setSelectedImages] = useState<ImageTypeWithID[]>([]);
 
-  const handleSelectedImages = (image: ImageTypeWithID) => {
+  const handleSelectedImages = useCallback((image: ImageTypeWithID) => {
     setSelectedImages((prev) => [...prev, image]);
-  };
+  }, []);
 
-  const handleDeleteAllSelectedImages = () => {
+  const handleDeleteAllSelectedImages = useCallback(() => {
     setSelectedImages([]);
-  };
+  }, []);
 
-  const handelDeleteSingleSelectedImages = (image: ImageTypeWithID) => {
-    setSelectedImages((prev) => {
-      const newImages = prev.filter((img) => img.public_id !== image.public_id);
-      return newImages;
-    });
-  };
+  const handelDeleteSingleSelectedImages = useCallback(
+    (image: ImageTypeWithID) => {
+      setSelectedImages((prev) => {
+        const newImages = prev.filter(
+          (img) => img.public_id !== image.public_id,
+        );
+        return newImages;
+      });
+    },
+    [],
+  );
 
-  const handleDialogClose = () => {
+  const handleDialogClose = useCallback(() => {
     setSelectDialogOpen(0);
-  };
+  }, []);
 
   return (
     <SelectImagesContext.Provider

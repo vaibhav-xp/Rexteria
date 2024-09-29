@@ -65,24 +65,44 @@ export default function Profile() {
 
   const onSubmit = (data: z.infer<typeof schema>) => {
     const formData = new FormData();
-    Object.keys(data).map((key) => {
-      const typedKey = key as keyof z.infer<typeof schema>;
-      if (data[typedKey]) {
-        formData.append(typedKey, data[typedKey]);
-      }
-    });
 
-    if (!file && !image)
+    // Manually append each field to formData
+    formData.append("name", data.name);
+    formData.append("email", data.email);
+    formData.append("country", data.country);
+    formData.append("phone", data.phone);
+
+    if (data.instagram) {
+      formData.append("instagram", data.instagram);
+    }
+
+    if (data.youtube) {
+      formData.append("youtube", data.youtube);
+    }
+
+    if (data.x) {
+      formData.append("x", data.x);
+    }
+
+    // Handle image file upload
+    if (!file && !image) {
       return toast({
         title: "Failed",
         description: "Image is required.",
       });
+    }
 
-    if (file) formData.append("avatar", file);
+    if (file) {
+      formData.append("avatar", file);
+    }
+
     setLoading(true);
+
+    // API call to update the user
     patchUserFn(formData)
       .then((data) => showAlert(data))
       .then(() => refetchUser())
+      .then(() => setFile(null))
       .finally(() => setLoading(false));
   };
 
@@ -108,7 +128,7 @@ export default function Profile() {
       });
       setImage(user?.avatar?.url || placeHolderImage(user?.name));
     }
-  }, [user]);
+  }, [user, form]);
 
   return (
     <>

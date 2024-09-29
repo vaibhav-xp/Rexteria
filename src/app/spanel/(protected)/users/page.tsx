@@ -36,7 +36,7 @@ import { UserType } from "@/types/store-types";
 import { Instagram, XIcon, YoutubeIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export default function UsersList() {
   const { handleSetImages } = useCarousal();
@@ -47,7 +47,7 @@ export default function UsersList() {
   const [totalPages, setTotalPages] = useState(0);
   const [page, setPage] = useState(1);
 
-  const getUsers = () => {
+  const getUsers = useCallback(() => {
     getAllUsersFn({
       search,
       page,
@@ -59,7 +59,7 @@ export default function UsersList() {
       setTotalPages(data?.data?.totalPages);
       setLoading(false);
     });
-  };
+  }, [active, page, search]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -67,7 +67,7 @@ export default function UsersList() {
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [search, page, active]);
+  }, [search, page, active, getUsers]);
 
   const handleStatus = (_id: string) => {
     const formData = new FormData();
