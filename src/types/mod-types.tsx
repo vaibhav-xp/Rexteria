@@ -45,7 +45,7 @@ export interface ModType {
   reviews: any[];
   createdAt: string;
   updatedAt: string;
-  __v: number;
+  reviewCount: number;
 }
 
 export interface ModFormTypes {

@@ -13,63 +13,99 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from "@/components/ui/carousel";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
+import useStore from "@/hooks/use-store";
+import { displayViews } from "@/lib/constants";
 import { addToCartFn } from "@/services/cart";
-import { showAlert } from "@/services/handle-api";
+import { loginFirst, showAlert } from "@/services/handle-api";
 import { getModBySlugFn } from "@/services/mod";
+import { getRatingFn, patchRatingFn, postViewsFn } from "@/services/review";
 import { addToWishlistFn } from "@/services/wishlist";
 import ShimmerModDetails from "@/shimmer/Mods/mod-details-shimmer";
 import { ModType } from "@/types/mod-types";
-import { open } from "fs";
+import { ReviewType } from "@/types/review-types";
 import { Car, Heart, HomeIcon } from "lucide-react";
-import Image from "next/image";
 import { useEffect, useState } from "react";
-import { MdOutlineShoppingBag, MdThumbUp, MdVisibility } from "react-icons/md";
+import {
+  MdOutlineShoppingBag,
+  MdOutlineThumbUp,
+  MdThumbUp,
+  MdVisibility,
+} from "react-icons/md";
 
 export default function SingleModShow({ params }: { params: { _id: string } }) {
+  const { user, refetchCartData } = useStore();
   const [mod, setMod] = useState<ModType | null>(null);
+  const [review, setReview] = useState<ReviewType | null>(null);
   const [loading, setLoading] = useState(true);
+  const [viewHitOnce, setVewHitOnce] = useState(true);
+  const [isRatingLoading, setIsRatingLoading] = useState(true);
 
+  const fetchMod = async () => {
+    try {
+      const data = await getModBySlugFn(params._id);
+      setMod(data?.data);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    const fetchMod = async () => {
-      try {
-        const data = await getModBySlugFn(params._id);
-        setMod(data?.data);
-      } catch (error) {
-        console.error("Error fetching mod:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchMod();
   }, [params._id]);
 
   const addToCart = () => {
-    const formData = new FormData();
-    if (!mod) return;
-    formData.append("mod_id", mod._id);
-    addToCartFn(formData).then((data) => showAlert(data));
+    loginFirst(user, () => {
+      const formData = new FormData();
+      if (!mod) return;
+      formData.append("mod_id", mod._id);
+      addToCartFn(formData)
+        .then((data) => showAlert(data))
+        .then(() => refetchCartData());
+    });
   };
 
+  const getRatings = () =>
+    getRatingFn({ mod_id: mod?._id })
+      .then((data) => setReview(data?.data))
+      .finally(() => setIsRatingLoading(false));
+
   const addToWishlilst = () => {
-    const formData = new FormData();
-    if (!mod) return;
-    formData.append("mod_id", mod._id);
-    addToWishlistFn(formData).then((data) => showAlert(data));
+    loginFirst(user, () => {
+      const formData = new FormData();
+      if (!mod) return;
+      formData.append("mod_id", mod._id);
+      addToWishlistFn(formData)
+        .then((data) => showAlert(data))
+        .then(() => getRatings());
+    });
   };
+
+  const handleLikeSubmit = () => {
+    loginFirst(user, () => {
+      patchRatingFn({
+        mod_id: mod?._id,
+        like: "true",
+      })
+        .then((data) => showAlert(data))
+        .then(() => fetchMod())
+        .then(() => getRatings());
+    });
+  };
+
+  useEffect(() => {
+    if (user && mod) {
+      getRatings();
+    }
+  }, [user, mod]);
+
+  useEffect(() => {
+    if (mod && viewHitOnce && mod?.status) {
+      const formData = new FormData();
+      formData.append("mod_id", mod?._id);
+      postViewsFn(formData);
+      setVewHitOnce(false);
+    }
+  }, [mod, viewHitOnce]);
 
   if (loading) {
     return <ShimmerModDetails />;
@@ -111,6 +147,10 @@ export default function SingleModShow({ params }: { params: { _id: string } }) {
         <div>
           <div className="flex justify-between items-center font-poppins">
             <Rating rating={mod.rating} className="justify-start mb-2" />
+            {/* Display Rating Count */}
+            <span className="text-sm text-gray-600">
+              {mod?.reviewCount || 0} Ratings
+            </span>
           </div>
 
           <h1 className="text-2xl font-bold mb-2">{mod.title}</h1>
@@ -119,7 +159,9 @@ export default function SingleModShow({ params }: { params: { _id: string } }) {
           <div className="flex gap-4 items-center mb-4">
             <div className="flex gap-2 items-center">
               <MdVisibility className="text-primary text-lg" />
-              <span className="text-sm text-gray-600">{mod.views} Views</span>
+              <span className="text-sm text-gray-600">
+                {displayViews(mod.views)} Views
+              </span>
             </div>
             <div className="flex gap-2 items-center">
               <MdThumbUp className="text-primary text-lg" />
@@ -175,7 +217,24 @@ export default function SingleModShow({ params }: { params: { _id: string } }) {
               <MdOutlineShoppingBag className="w-6 h-6 " /> Add To Cart
             </Button>
           </div>
-          <RatingDialog mod={mod} />
+
+          {!isRatingLoading && (
+            <div className="flex flex-col md:flex-row lg:flex-col xl:flex-row items-center gap-4">
+              {(!review || !review.likes) && (
+                <Button
+                  className="w-full my-4 flex gap-1"
+                  onClick={handleLikeSubmit}
+                >
+                  <MdOutlineThumbUp className="w-6 h-6" /> Like
+                </Button>
+              )}
+
+              {/* Show Rating Dialog if user has not rated */}
+              {(!review || !review.rating) && (
+                <RatingDialog mod={mod} fetchMod={fetchMod} />
+              )}
+            </div>
+          )}
 
           <div className="mt-8">
             <h4 className="text-base font-semibold">Description:</h4>

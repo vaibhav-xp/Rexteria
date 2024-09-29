@@ -2,14 +2,18 @@
 
 import useCarousal from "@/hooks/use-carousal";
 import useSelectImages from "@/hooks/use-select-images";
+import useStore from "@/hooks/use-store";
 import useUploadImages from "@/hooks/use-upload-images";
 import { deleteGalleryFn, getGalleryFn } from "@/services/gallery";
 import { showAlert } from "@/services/handle-api";
 import { ImageTypeWithID } from "@/types/image-types";
+import { CheckedState } from "@radix-ui/react-checkbox";
+import { Cross1Icon } from "@radix-ui/react-icons";
 import { Minus, Upload } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button } from "../ui/button";
+import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
 import { Checkbox } from "../ui/checkbox";
 import {
   Dialog,
@@ -19,14 +23,12 @@ import {
   DialogTitle,
 } from "../ui/dialog";
 import LoadingSpinner from "./loading-spinner";
-import { Cross1Icon } from "@radix-ui/react-icons";
-import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
-import { CheckedState } from "@radix-ui/react-checkbox";
 import NotFound from "./not-found";
 
 export default function SelectedImages() {
   const [loading, setLoading] = useState<boolean>(false);
   const [images, setImages] = useState<ImageTypeWithID[]>([]);
+  const { user } = useStore();
   const {
     selectDialogOpen,
     handleDialogClose,
@@ -52,8 +54,8 @@ export default function SelectedImages() {
   }, []);
 
   useEffect(() => {
-    getGalleries();
-  }, [getGalleries]);
+    if (user && user?.role === "ADMIN") getGalleries();
+  }, [getGalleries, user]);
 
   const viewImages = useMemo(() => images.map((img) => img.url), [images]);
 

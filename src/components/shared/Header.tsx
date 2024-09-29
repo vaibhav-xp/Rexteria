@@ -28,6 +28,7 @@ import {
 import { Button } from "../ui/button";
 
 export default function Header() {
+  const { cartItems, totalAmount } = useStore();
   const router = useRouter();
   const { user, logout } = useStore();
   const pathname = usePathname();
@@ -80,10 +81,13 @@ export default function Header() {
 
         <div className="flex items-center gap-4">
           {user ? (
-            <p className="flex items-center gap-1 text-base md:text-lg text-primary cursor-pointer">
-              <MdOutlineShoppingBag className="text-foreground" /> (0)
-              &#8377;0.00
-            </p>
+            <Link
+              href={"/cart"}
+              className="flex items-center gap-1 text-base md:text-lg text-primary"
+            >
+              <MdOutlineShoppingBag className="text-foreground" /> (
+              {cartItems?.length}) &#8377;{totalAmount}
+            </Link>
           ) : (
             <Button onClick={() => router.push("/login")} variant={"default"}>
               Login

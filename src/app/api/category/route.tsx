@@ -18,8 +18,6 @@ export const POST = catchAsyncHandler(async (req: NextRequest) => {
   const title = data.get("title");
   const image = data.get("image");
 
-  console.log(title, image);
-
   if (!title || !image) {
     throw new ErrorCreator(
       StatusCodes.BAD_REQUEST,
@@ -148,7 +146,6 @@ export const DELETE = catchAsyncHandler(async (req: NextRequest) => {
 
   const modsExist = await Mod.find({ categoryId: isExist._id });
 
-  // Add a check to see if mods actually exist
   if (modsExist.length > 0) {
     throw new ErrorCreator(
       StatusCodes.FORBIDDEN,

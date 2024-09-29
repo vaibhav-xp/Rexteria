@@ -26,8 +26,6 @@ export const PATCH = catchAsyncHandler(async (req) => {
   const instagram = formData.get("instagram");
   const x = formData.get("x");
 
-  console.log("hello");
-
   // Validate required fields
   if (!name || !country || !phone || !instagram) {
     throw new ErrorCreator(

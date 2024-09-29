@@ -30,6 +30,7 @@ import {
 import Title from "@/components/ui/title";
 import useCarousal from "@/hooks/use-carousal";
 import useStore from "@/hooks/use-store";
+import { displayViews } from "@/lib/constants";
 import { showAlert } from "@/services/handle-api";
 import { deleteModsFn, getModsFn, statusModsFn } from "@/services/mod";
 import ShimmerTableBody from "@/shimmer/Spanel/table-shimmer";
@@ -144,6 +145,7 @@ export default function Mods() {
               </TableCell>
               <TableCell className="text-center text-lg">Category</TableCell>
               <TableCell className="text-center text-lg">Rating</TableCell>
+              <TableCell className="text-center text-lg">Rated By</TableCell>
               <TableCell className="text-center text-lg">Views</TableCell>
               <TableCell className="text-center text-lg">Status</TableCell>
               <TableCell className="text-center text-lg">Images</TableCell>
@@ -153,7 +155,7 @@ export default function Mods() {
               </TableCell>
             </TableRow>
           </TableHeader>
-          {loading && <ShimmerTableBody row={10} coloumn={11} />}
+          {loading && <ShimmerTableBody row={10} coloumn={12} />}
           {!loading && mods.length === 0 && (
             <TableBody>
               <TableRow>
@@ -194,7 +196,12 @@ export default function Mods() {
                     {mod?.categoryId?.title}
                   </TableCell>
                   <TableCell className="text-center">{mod.rating}</TableCell>
-                  <TableCell className="text-center">{mod.views}</TableCell>
+                  <TableCell className="text-center">
+                    {mod.reviewCount}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {displayViews(mod.views)}
+                  </TableCell>
                   <TableCell className="text-center">
                     <Switch
                       checked={mod.status}
@@ -236,7 +243,7 @@ export default function Mods() {
             ))}
           <TableFooter>
             <TableRow>
-              <TableCell colSpan={10}>
+              <TableCell colSpan={11}>
                 <Pagination>
                   <PaginationContent>
                     <PaginationItem>

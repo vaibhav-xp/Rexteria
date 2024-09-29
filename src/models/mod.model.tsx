@@ -54,6 +54,10 @@ const ModSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    reviewCount: {
+      type: Number,
+      default: 0,
+    },
     likes: {
       type: Number,
       default: 0,
@@ -87,23 +91,6 @@ const ModSchema = new mongoose.Schema(
     ],
   },
 );
-
-// ModSchema.pre(
-//   "deleteOne",
-//   { document: true, query: false },
-//   async function (next) {
-//     try {
-//       // Remove the image reference from the product
-//       await mongoose.model("Product").updateOne(
-//         { _id: this.productId },
-//         { $pull: { images: this._id } } // Remove the image ID from the images array
-//       );
-//       next();
-//     } catch (err) {
-//       next(err);
-//     }
-//   }
-// );
 
 const Mod = mongoose.models.mod || mongoose.model("mod", ModSchema);
 export default Mod;

@@ -13,20 +13,40 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import useStore from "@/hooks/use-store";
+import { loginFirst, showAlert } from "@/services/handle-api";
+import { patchRatingFn } from "@/services/review";
 import { ModType } from "@/types/mod-types";
 import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { IoStarOutline, IoStarSharp } from "react-icons/io5";
 import Rating from "../shared/rating";
 import { Button } from "../ui/button";
 
-export default function RatingDialog({ mod }: { mod: ModType }) {
+export default function RatingDialog({
+  mod,
+  fetchMod,
+}: {
+  mod: ModType;
+  fetchMod: () => Promise<void>;
+}) {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
+  const { user } = useStore();
   const [ratingValue, setRatingValue] = useState(0);
 
-  const handleRatingChange = (newRating: number) => {
-    setRatingValue(newRating);
+  const handleRatingSubmit = () => {
+    loginFirst(user, () => {
+      patchRatingFn({
+        mod_id: mod?._id,
+        rating: ratingValue,
+      })
+        .then((data) => showAlert(data))
+        .then(() => fetchMod())
+        .then(() => setOpen(false));
+    });
   };
 
   const handleDialogOpen = (newState: boolean) => {
@@ -107,7 +127,9 @@ export default function RatingDialog({ mod }: { mod: ModType }) {
             ),
           )}
         </div>
-        <Button disabled={ratingValue === 0}>Submit</Button>
+        <Button disabled={ratingValue === 0} onClick={handleRatingSubmit}>
+          Submit
+        </Button>
       </DialogContent>
     </Dialog>
   );

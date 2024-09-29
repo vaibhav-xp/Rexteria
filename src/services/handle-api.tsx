@@ -1,4 +1,6 @@
+import useStore from "@/hooks/use-store";
 import { toast } from "@/hooks/use-toast";
+import { UserType } from "@/types/store-types";
 import { AxiosError, AxiosResponse } from "axios";
 
 type AsyncFunction = (args?: object | string) => Promise<AxiosResponse>;
@@ -37,6 +39,17 @@ export const showAlert = (data: ShowAlert) => {
     title: "Success",
     description: data?.message,
   });
+};
+
+export const loginFirst = (user: UserType | null, fn: () => void) => {
+  if (user) {
+    fn();
+  } else {
+    toast({
+      title: "Failed",
+      description: "Please log in to access this feature. ",
+    });
+  }
 };
 
 export default apiAsyncHandle;

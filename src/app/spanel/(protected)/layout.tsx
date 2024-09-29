@@ -9,6 +9,7 @@ import {
   GalleryThumbnails,
   LayoutDashboard,
   LogIn,
+  StarIcon,
   User,
 } from "lucide-react";
 import { ReactNode } from "react";
@@ -46,6 +47,12 @@ export default function Layout({ children }: { children: ReactNode }) {
             title: "Users",
             href: "/spanel/users",
             icon: User,
+            variant: "ghost",
+          },
+          {
+            title: "Reviews",
+            href: "/spanel/reviews",
+            icon: StarIcon,
             variant: "ghost",
           },
           {

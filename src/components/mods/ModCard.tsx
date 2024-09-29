@@ -1,28 +1,38 @@
 import { addToCartFn } from "@/services/cart";
-import { showAlert } from "@/services/handle-api";
+import { loginFirst, showAlert } from "@/services/handle-api";
+import { addToWishlistFn } from "@/services/wishlist";
 import { ModType } from "@/types/mod-types";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { MouseEvent } from "react";
 import { FaRegHeart } from "react-icons/fa";
 import { MdOutlineShoppingBag } from "react-icons/md";
 import Rating from "../shared/rating";
-import { MouseEvent } from "react";
-import { addToWishlistFn } from "@/services/wishlist";
+import useStore from "@/hooks/use-store";
 
 export default function ModCard({ mod }: { mod: ModType }) {
+  const { refetchCartData } = useStore();
   const router = useRouter();
+  const { user } = useStore();
 
   const addToCart = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    const formData = new FormData();
-    formData.append("mod_id", mod._id);
-    addToCartFn(formData).then((data) => showAlert(data));
+    loginFirst(user, () => {
+      const formData = new FormData();
+      formData.append("mod_id", mod._id);
+      addToCartFn(formData)
+        .then((data) => showAlert(data))
+        .then(() => refetchCartData());
+    });
   };
+
   const addToWishlilst = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    const formData = new FormData();
-    formData.append("mod_id", mod._id);
-    addToWishlistFn(formData).then((data) => showAlert(data));
+    loginFirst(user, () => {
+      const formData = new FormData();
+      formData.append("mod_id", mod._id);
+      addToWishlistFn(formData).then((data) => showAlert(data));
+    });
   };
 
   return (

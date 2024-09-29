@@ -5,7 +5,6 @@ import {
   History,
   HomeIcon,
   Info,
-  LogOut,
   ShoppingBagIcon,
   User,
 } from "lucide-react";
@@ -106,4 +105,12 @@ export const placeHolderImage = (text?: string) => {
           .join("")
       : "Hey!+Gamer"
   }`;
+};
+
+export const displayViews = (views: number) => {
+  if (views > 1000) {
+    return `${(views / 1000).toFixed(views % 1000 === 0 ? 0 : 1)}k`;
+  } else {
+    return views;
+  }
 };
