@@ -74,14 +74,14 @@ export default function DisplayModImages({
               <CarouselItem
                 key={index}
                 className={cn(
-                  "overflow-hidden basis-1/4 sm:basis-1/2 md:basis-1/4 cursor-pointer h-[60px] md:h-[120px]",
+                  "overflow-hidden basis-1/4 sm:basis-1/2 md:basis-1/4 cursor-pointer h-[60px] md:h-[120px]"
                 )}
                 onClick={() => api?.scrollTo(index)}
               >
                 <div
                   className={cn(
                     "w-full h-full overflow-hidden rounded-md aspect-video ",
-                    current - 1 === index && "border-primary border ",
+                    current - 1 === index && "border-primary border "
                   )}
                 >
                   <Image
@@ -90,7 +90,7 @@ export default function DisplayModImages({
                     width={300}
                     height={200}
                     className={cn(
-                      "w-full h-full object-cover transition-transform duration-300 ease-in-out hover:scale-105",
+                      "w-full h-full object-cover transition-transform duration-300 ease-in-out hover:scale-105"
                     )}
                   />
                 </div>
@@ -98,7 +98,7 @@ export default function DisplayModImages({
             ))}
             <CarouselItem
               className={cn(
-                "rounded-md overflow-hidden basis-1/3 sm:basis-1/2 md:basis-1/4 cursor-pointer",
+                "rounded-md overflow-hidden basis-1/3 sm:basis-1/2 md:basis-1/4 cursor-pointer"
               )}
               onClick={() =>
                 handleSetImages(images.map((img) => img.url) as string[], 0)

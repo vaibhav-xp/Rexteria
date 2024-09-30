@@ -18,7 +18,7 @@ export default function CarousalContextProvider({
   const handleSetImages = useCallback((images: string[], index?: number) => {
     if (index !== undefined) {
       const selectedOne = images.find((_, idx) => index === idx);
-      setImages((prev) => [selectedOne as string, ...(prev || [])]);
+      setImages([selectedOne as string, ...images]);
     } else {
       setImages(images);
     }
