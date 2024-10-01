@@ -85,7 +85,7 @@ const Login = () => {
         {state === "send" && (
           <form
             onSubmit={handleSendOTP}
-            className="bg-transparent p-8 rounded-lg shadow-lg w-full max-w-sm space-y-6 animate-fade-in"
+            className="bg-transparent p-8 rounded-lg w-full max-w-sm space-y-6 animate-fade-in"
           >
             <h2 className="text-3xl font-bold mb-6 text-center">Login</h2>
 

@@ -52,7 +52,6 @@ export default function Mods() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalMods, setTotalMods] = useState(0);
   const [totalPage, setTotalPages] = useState(0);
-  const itemsPerPage = 10;
 
   const { handleSetImages } = useCarousal();
 
@@ -60,7 +59,7 @@ export default function Mods() {
     setLoading(true);
     getModsFn({
       search,
-      limit: itemsPerPage,
+      limit: 10,
       page: currentPage,
       categoryId: categoryId === "all" ? "" : categoryId,
     })
@@ -213,7 +212,7 @@ export default function Mods() {
                       className="text-primary hover:underline"
                       onClick={() => {
                         const images = mod.images.map((img) => img.url);
-                        handleSetImages([mod?.main_image?.url, ...images], 0);
+                        handleSetImages([mod?.main_image?.url, ...images]);
                       }}
                     >
                       View All
@@ -235,7 +234,7 @@ export default function Mods() {
                   </TableCell>
                   <TableCell>
                     <Link target="_blank" href={`/mods/${mod.slug}`}>
-                      <MdVisibility className="w-6 h-6 mx-auto" />
+                      <MdVisibility className="w-6 h-6 mx-auto hover:text-primary" />
                     </Link>
                   </TableCell>
                 </TableRow>

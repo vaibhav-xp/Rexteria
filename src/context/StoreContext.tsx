@@ -64,8 +64,7 @@ export default function StoreContextProvider({
       .then(() => setUser(null));
   }, [router]);
 
-  const refetchCartData = useCallback(() => {
-    setIsCartLoading(true);
+  const refetchCartData = useCallback(async () => {
     return getCartFn()
       .then((data) => {
         setCartItems(data?.data?.mods || []);

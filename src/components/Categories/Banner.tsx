@@ -39,10 +39,10 @@ export default function BannerCatgories() {
           <span className="text-primary hover:text-5xl cursor-pointer transition-all duration-300">
             GTA 5
           </span>{" "}
-          Experience <br /> Discover Exciting{" "}
+          Experience <br /> Discover Exciting
           <span className="text-primary hover:text-5xl cursor-pointer transition-all duration-300">
             Mods
-          </span>{" "}
+          </span>
           Here!
         </h1>
       </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import TopRatingMods from "@/components/home/top-rating-mods";
 import DisplayModImages from "@/components/mods/DisplayModImages";
 import RatingDialog from "@/components/mods/RatingDialog";
 import NotFound from "@/components/shared/not-found";
@@ -246,6 +247,8 @@ export default function SingleModShow({ params }: { params: { _id: string } }) {
           </div>
         </div>
       </div>
+      {/* Top Rated Mods Section */}
+      <TopRatingMods />
     </div>
   );
 }

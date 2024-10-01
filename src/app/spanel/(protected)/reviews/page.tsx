@@ -157,7 +157,10 @@ export default function OTPList() {
                     </TableCell>
                     <TableCell className="text-center">
                       <Link href={`/mods/${mod?.slug}`}>
-                        <MdVisibility size={20} className="mx-auto" />
+                        <MdVisibility
+                          size={20}
+                          className="mx-auto hover:text-primary"
+                        />
                       </Link>
                     </TableCell>
                   </TableRow>

@@ -7,6 +7,7 @@ import {
   ChartBarStacked,
   ChevronLeft,
   GalleryThumbnails,
+  History,
   LayoutDashboard,
   LogIn,
   StarIcon,
@@ -65,6 +66,12 @@ export default function Layout({ children }: { children: ReactNode }) {
             title: "Enquiry",
             href: "/spanel/enquiry",
             icon: BadgeHelp,
+            variant: "ghost",
+          },
+          {
+            title: "History",
+            href: "/spanel/history",
+            icon: History,
             variant: "ghost",
           },
           {

@@ -15,11 +15,11 @@ export default function CartShimmer() {
               </div>
               <div className="flex justify-between">
                 <Skeleton className="w-36 h-8" />
-                <p className="flex gap-4">
+                <div className="flex gap-4">
                   <Skeleton className="w-8 h-8" />
                   <Skeleton className="w-4 h-8" />
                   <Skeleton className="w-8 h-8" />
-                </p>
+                </div>
               </div>
               <div className="flex justify-between">
                 <Skeleton className="w-[100px] h-8" />

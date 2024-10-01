@@ -12,8 +12,7 @@ export const GET = catchAsyncHandler(async (req) => {
 
   const params = req.nextUrl.searchParams;
   const limit = parseInt(params.get("limit") || "10", 10);
-  const page = parseInt(params.get("page") || "1", 1);
-
+  const page = parseInt(params.get("page") || "1", 10);
   const totalReviews = await ReviewModel.countDocuments();
   const totalPages = Math.ceil(totalReviews / limit);
 

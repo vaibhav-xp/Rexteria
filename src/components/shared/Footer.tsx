@@ -45,9 +45,9 @@ export default function Footer() {
   const { categories } = useStore();
 
   return (
-    <footer className="mt-32">
+    <footer className="mt-4">
       {/* Features Grid */}
-      <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+      <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {featuresData.map((item) => (
           <div
             key={item.id}

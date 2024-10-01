@@ -87,7 +87,7 @@ export default function Header() {
               className="flex items-center gap-1 text-base md:text-lg text-primary"
             >
               <MdOutlineShoppingBag className="text-foreground" /> (
-              {cartItems?.length}) &#8377;{totalAmount}
+              {cartItems?.length}) &#8377;{totalAmount || 0}
             </Link>
           ) : (
             <Button onClick={() => router.push("/login")} variant={"default"}>

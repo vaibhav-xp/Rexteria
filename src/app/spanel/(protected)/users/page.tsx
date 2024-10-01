@@ -143,10 +143,9 @@ export default function UsersList() {
                         height={50}
                         className="w-full h-full object-cover cursor-pointer"
                         onClick={() =>
-                          handleSetImages(
-                            [user?.avatar?.url || placeHolderImage(user?.name)],
-                            0,
-                          )
+                          handleSetImages([
+                            user?.avatar?.url || placeHolderImage(user?.name),
+                          ])
                         }
                       />
                     </p>
