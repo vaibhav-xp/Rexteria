@@ -10,7 +10,7 @@ type Props = {
 
 export default function Title({ title, className }: Props) {
   return (
-    <h1 className={cn("text-2xl font-semibold text-primary", className)}>
+    <h1 className={cn("text-4xl font-semibold text-primary", className)}>
       {title}
     </h1>
   );

@@ -53,6 +53,8 @@ const ModSchema = new mongoose.Schema(
     rating: {
       type: Number,
       default: 0,
+      max: 5,
+      min: 1,
     },
     reviewCount: {
       type: Number,
