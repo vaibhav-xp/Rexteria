@@ -22,7 +22,7 @@ export const POST = catchAsyncHandler(async (req) => {
       StatusCodes.NOT_FOUND,
       "Mod not found with this id.",
     );
-
+  console.log(mod);
   mod.views += 1;
   await mod.save();
 
@@ -49,14 +49,10 @@ export const PATCH = catchAsyncHandler(async (req) => {
     );
   }
 
-  mod.likes = mod.likes || 0;
-  mod.rating = mod.rating || 0;
-  mod.reviewCount = mod.reviewCount || 0;
-
   const review = await ReviewModel.findOne({ user_id, mod_id });
 
   if (review) {
-    if (review.likes !== like) {
+    if (!rating && review.likes !== like) {
       if (like) {
         mod.likes += 1;
       } else {
@@ -67,10 +63,13 @@ export const PATCH = catchAsyncHandler(async (req) => {
 
     if (rating) {
       const newRating = parseInt(rating, 10);
+
+      // Adjust the rating calculation correctly
       mod.rating =
-        (mod.rating * mod.reviewCount - review.rating + newRating) /
-        mod.reviewCount;
+        (mod.rating * mod.reviewCount + newRating) / (mod.reviewCount + 1);
+
       review.rating = newRating;
+      mod.reviewCount += 1; // Increment reviewCount after updating the rating
     }
 
     await review.save();
@@ -79,14 +78,17 @@ export const PATCH = catchAsyncHandler(async (req) => {
       user_id,
       mod_id,
       likes: like,
-      rating: rating ? parseInt(rating, 10) : undefined,
+      rating: rating ? parseInt(rating, 10) : 0,
     });
 
     if (like) mod.likes += 1;
     if (rating) {
       const newRating = parseInt(rating, 10);
+
+      // Correct rating calculation here as well
       mod.rating =
         (mod.rating * mod.reviewCount + newRating) / (mod.reviewCount + 1);
+
       mod.reviewCount += 1;
       newReview.rating = newRating;
     }
@@ -104,7 +106,6 @@ export const GET = catchAsyncHandler(async (req) => {
 
   const user_id = req?.user?._id;
   const mod_id = req.nextUrl.searchParams.get("mod_id");
-
   await connectToDatabase();
   const data = await ReviewModel.findOne({ user_id, mod_id });
 

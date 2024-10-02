@@ -88,7 +88,7 @@ export default function SingleModShow({ params }: { params: { _id: string } }) {
     loginFirst(user, () => {
       patchRatingFn({
         mod_id: mod?._id,
-        like: "true",
+        like: review?.likes ? "false" : "true",
       })
         .then((data) => showAlert(data))
         .then(() => fetchMod())
@@ -166,8 +166,18 @@ export default function SingleModShow({ params }: { params: { _id: string } }) {
               </span>
             </div>
             <div className="flex gap-2 items-center">
-              <MdThumbUp className="text-primary text-lg" />
-              <span className="text-sm text-gray-600">
+              {review && review.likes ? (
+                <MdThumbUp
+                  className="text-primary text-lg cursor-pointer"
+                  onClick={handleLikeSubmit}
+                />
+              ) : (
+                <MdOutlineThumbUp
+                  className="text-primary text-lg cursor-pointer"
+                  onClick={handleLikeSubmit}
+                />
+              )}
+              <span className="text-sm text-gray-600 ">
                 {mod?.likes || 0} Likes
               </span>
             </div>
@@ -220,22 +230,8 @@ export default function SingleModShow({ params }: { params: { _id: string } }) {
             </Button>
           </div>
 
-          {!isRatingLoading && (
-            <div className="flex flex-col md:flex-row lg:flex-col xl:flex-row items-center gap-4">
-              {(!review || !review.likes) && (
-                <Button
-                  className="w-full my-4 flex gap-1"
-                  onClick={handleLikeSubmit}
-                >
-                  <MdOutlineThumbUp className="w-6 h-6" /> Like
-                </Button>
-              )}
-
-              {/* Show Rating Dialog if user has not rated */}
-              {(!review || !review.rating) && (
-                <RatingDialog mod={mod} fetchMod={fetchMod} />
-              )}
-            </div>
+          {!isRatingLoading && (!review || (review && review.rating === 0)) && (
+            <RatingDialog mod={mod} fetchMod={fetchMod} />
           )}
 
           <div className="mt-8">

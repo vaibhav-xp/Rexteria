@@ -5,7 +5,9 @@ import createSlug from "@/lib/slugCreator";
 import catchAsyncHandler from "@/lib/tryCatch";
 import { ROLES } from "@/middleware";
 import CartModel from "@/models/cart.model";
+import EnquiryModel from "@/models/enquiry.model";
 import Mod from "@/models/mod.model";
+import ReviewModel from "@/models/review.model";
 import WishlistModel from "@/models/wishlist.model";
 import { ImageTypeWithID } from "@/types/image-types";
 import ReturnNextResponse from "@/types/response-types";
@@ -123,10 +125,10 @@ export const PATCH = catchAsyncHandler(async (req) => {
   isModExist.content = data.content;
   isModExist.main_image = data.images[0];
   isModExist.images = data.images.slice(1);
-  isModExist.price = data.price.toFixed(0);
-  isModExist.discount = data.discount.toFixed(0);
+  isModExist.price = parseInt(data.price, 10).toFixed(0);
+  isModExist.discount = parseInt(data.discount).toFixed(0);
   isModExist.discount_price = (data.price * (1 - data.discount / 100)).toFixed(
-    2,
+    0,
   );
   isModExist.categoryId = data.categoryId;
   isModExist.status = data.status;
@@ -198,6 +200,14 @@ export const DELETE = catchAsyncHandler(async (req) => {
   if (!modId) {
     throw new ErrorCreator(StatusCodes.BAD_REQUEST, "Mod ID is required.");
   }
+  const isEnquiry = await EnquiryModel.find({ "mods.mod_id": modId });
+
+  if (isEnquiry.length > 0) {
+    throw new ErrorCreator(
+      StatusCodes.BAD_REQUEST,
+      "An enquiry has been raised for this mod, so it cannot be deleted at this time.",
+    );
+  }
 
   const deletedMod = await Mod.findByIdAndDelete(modId);
   if (!deletedMod) {
@@ -205,6 +215,7 @@ export const DELETE = catchAsyncHandler(async (req) => {
   }
 
   await WishlistModel.updateMany({ mods: modId }, { $pull: { mods: modId } });
+  await ReviewModel.deleteMany({ mod_id: modId });
 
   await CartModel.updateMany(
     { "mods.mod_id": modId },

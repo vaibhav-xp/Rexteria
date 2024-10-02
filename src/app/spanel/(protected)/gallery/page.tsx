@@ -23,9 +23,9 @@ import { useCallback, useEffect, useState } from "react";
 export default function Gallery() {
   const [loading, setLoading] = useState(true);
   const [images, setImages] = useState<ImageType[]>([]);
-  const [isDeleteDialogOpen, setDeleteDialogOpen] = useState<ImageType | null>(
-    null,
-  );
+  const [isDeleteDialogOpen, setDeleteDialogOpen] = useState<
+    ImageType[] | null
+  >(null);
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
 
   const { handleOpenUploadImages, handleSetRefetch } = useUploadImages();
@@ -70,6 +70,14 @@ export default function Gallery() {
           >
             <Upload className="w-4 h-4" /> Upload Images
           </Button>
+          <Button
+            variant={"destructive"}
+            className="flex justify-center gap-2 items-center"
+            disabled={images.length === 0}
+            onClick={() => setDeleteDialogOpen(images)}
+          >
+            <Trash className="w-4 h-4" /> Delete All Images
+          </Button>
         </div>
       </div>
 
@@ -97,7 +105,7 @@ export default function Gallery() {
                 className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 duration-200"
                 onClick={(e) => {
                   e.stopPropagation();
-                  setDeleteDialogOpen(img);
+                  setDeleteDialogOpen([img]);
                 }}
               >
                 <Trash className="w-4 h-4" />
@@ -118,7 +126,7 @@ export default function Gallery() {
           <DialogHeader>
             <DialogTitle>Are You Sure?</DialogTitle>
             <DialogDescription>
-              This action will permanently delete the selected image from the
+              This action will permanently delete the selected images from the
               gallery, categories, and MODS. Do you want to proceed?
             </DialogDescription>
           </DialogHeader>
@@ -132,7 +140,7 @@ export default function Gallery() {
             </Button>
             <Button
               variant={"destructive"}
-              onClick={() => handleDelete([isDeleteDialogOpen as ImageType])}
+              onClick={() => handleDelete(isDeleteDialogOpen as ImageType[])}
             >
               {isDeleteLoading ? "Deleting..." : "Delete"}
             </Button>

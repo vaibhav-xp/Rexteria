@@ -78,32 +78,34 @@ export default function UploadImages() {
 
         {/* Render selected images */}
         {images.length > 0 && (
-          <div className="grid grid-cols-3 gap-2 mt-4 max-h-[500px] overflow-y-scroll">
-            {images.map((img, index) => (
-              <div
-                key={index}
-                className="relative w-full aspect-square overflow-hidden rounded-lg cursor-pointer group"
-              >
-                <Image
-                  src={img}
-                  alt={`Selected image ${index}`}
-                  fill
-                  className="object-cover transition-transform duration-300 group-hover:scale-105 group-hover:grayscale"
-                  onClick={() => handleSetImages(images, index)}
-                />
-                <div className="absolute top-1 right-1 transition-transform duration-200">
-                  <div
-                    className="hidden group-hover:flex items-center justify-center w-6 h-6 bg-red-900 rounded-md transition-opacity duration-300 cursor-pointer"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleRemoveImage(index);
-                    }}
-                  >
-                    <Minus className="w-3 h-3 text-white" />
+          <div className="mt-4 max-h-[500px] overflow-y-scroll">
+            <div className="grid grid-cols-3 gap-2">
+              {images.map((img, index) => (
+                <div
+                  key={index}
+                  className="relative w-full aspect-square overflow-hidden rounded-lg cursor-pointer group"
+                >
+                  <Image
+                    src={img}
+                    alt={`Selected image ${index}`}
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-105 group-hover:grayscale"
+                    onClick={() => handleSetImages(images, index)}
+                  />
+                  <div className="absolute top-1 right-1 transition-transform duration-200">
+                    <div
+                      className="hidden group-hover:flex items-center justify-center w-6 h-6 bg-red-900 rounded-md transition-opacity duration-300 cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleRemoveImage(index);
+                      }}
+                    >
+                      <Minus className="w-3 h-3 text-white" />
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         )}
 

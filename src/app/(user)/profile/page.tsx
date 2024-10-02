@@ -43,8 +43,7 @@ const schema = z.object({
     .url("Invalid YouTube URL")
     .startsWith("https://www.youtube.com/", {
       message: "Youtube URL must start with https://www.youtube.com/",
-    })
-    .optional(),
+    }),
   x: z
     .string()
     .url("Invalid X (Twitter) URL")

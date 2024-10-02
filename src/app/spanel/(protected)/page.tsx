@@ -5,16 +5,11 @@ import DisplayModSection from "@/components/spanel/Dashboard/DisplayModSection";
 import ReviewSection from "@/components/spanel/Dashboard/DisplayReviews";
 import Title from "@/components/ui/title";
 import { getDashboardFn } from "@/services/dashboard";
+import ShimmerDashboard from "@/shimmer/Spanel/dashboard-shimmer";
 import { DashboardTypes } from "@/types/dashboard-types";
-import {
-  CarIcon,
-  ChartBarStacked,
-  ImageIcon,
-  User2Icon,
-  UsersIcon,
-} from "lucide-react";
+import { CarIcon, ChartBarStacked, ImageIcon, User2Icon } from "lucide-react";
 import Link from "next/link";
-import React, { ReactElement, ReactNode, useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 
 export default function Spanel() {
   const [dashboard, setDashboard] = useState<DashboardTypes | null>(null);
@@ -26,86 +21,96 @@ export default function Spanel() {
       .then(() => setLoading(false));
   }, []);
 
-  if (!dashboard) {
-    return <p className="text-center mt-8 text-xl">Loading...</p>;
-  }
-
   return (
-    <div className="p-6">
+    <>
       <Title title="Dashboard" />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mt-4">
-        {/* Active Users */}
-        <Link href="/spanel/users">
-          <Card
-            icon={<User2Icon />}
-            count={dashboard?.activeUsers}
-            title="Active Users"
-          />
-        </Link>
+      {loading && <ShimmerDashboard />}
 
-        {/* Total Categories */}
-        <Link href="/spanel/category">
-          <Card
-            icon={<ChartBarStacked />}
-            count={dashboard?.totalCategories}
-            title="Total Categories"
-          />
-        </Link>
+      {!loading && dashboard && (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mt-4">
+            {/* Active Users */}
+            <Link href="/spanel/users">
+              <Card
+                icon={<User2Icon />}
+                count={dashboard?.activeUsers}
+                title="Active Users"
+              />
+            </Link>
 
-        {/* Active Mods */}
-        <Link href="/spanel/mods">
-          <Card
-            icon={<CarIcon />}
-            count={dashboard?.activeMods}
-            title="Active Mods"
-          />
-        </Link>
+            {/* Total Categories */}
+            <Link href="/spanel/category">
+              <Card
+                icon={<ChartBarStacked />}
+                count={dashboard?.totalCategories}
+                title="Total Categories"
+              />
+            </Link>
 
-        {/* Total Mods */}
-        <Link href="/spanel/mods">
-          <Card
-            icon={<UsersIcon />}
-            count={dashboard?.totalMods}
-            title="Total Mods"
-          />
-        </Link>
+            {/* Active Mods */}
+            <Link href="/spanel/mods">
+              <Card
+                icon={<CarIcon />}
+                count={dashboard?.activeMods}
+                title="Active Mods"
+              />
+            </Link>
 
-        {/* Total Gallery Images */}
-        <Link href="/spanel/gallery">
-          <Card
-            icon={<ImageIcon />}
-            count={dashboard?.totalGalleryImage}
-            title="Gallery Images"
-          />
-        </Link>
-      </div>
+            {/* Total Mods */}
+            <Link href="/spanel/mods">
+              <Card
+                icon={<CarIcon />}
+                count={dashboard?.totalMods}
+                title="Total Mods"
+              />
+            </Link>
 
-      {/* Top 5 Mods by Rating */}
-      <DisplayModSection
-        title="Top 5 Mods by Rating"
-        items={dashboard?.top5ModsByRating}
-      />
+            {/* Total Gallery Images */}
+            <Link href="/spanel/gallery">
+              <Card
+                icon={<ImageIcon />}
+                count={dashboard?.totalGalleryImage}
+                title="Gallery Images"
+              />
+            </Link>
+          </div>
 
-      {/* Top 5 Mods by Views */}
-      <DisplayModSection
-        title="Top 5 Mods by Views"
-        items={dashboard?.top5ModsByViews}
-      />
+          {/* Top 5 Mods by Rating */}
+          {dashboard?.top5ModsByRating.length !== 0 && (
+            <DisplayModSection
+              title="Top 5 Mods by Rating"
+              items={dashboard?.top5ModsByRating}
+            />
+          )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Recent Reviews */}
-        <ReviewSection
-          title="Recent Reviews"
-          items={dashboard?.recentReviews}
-        />
+          {/* Top 5 Mods by Views */}
+          {dashboard?.top5ModsByViews.length !== 0 && (
+            <DisplayModSection
+              title="Top 5 Mods by Views"
+              items={dashboard?.top5ModsByViews}
+            />
+          )}
 
-        <DisplayEnquirySection
-          title="Review Enquiries"
-          items={dashboard?.recentEnquiry}
-        />
-      </div>
-    </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Recent Reviews */}
+            {dashboard?.recentReviews.length !== 0 && (
+              <ReviewSection
+                title="Recent Reviews"
+                items={dashboard?.recentReviews}
+              />
+            )}
+
+            {dashboard?.recentEnquiry.length !== 0 && (
+              <DisplayEnquirySection
+                title="Recent Enquiries"
+                items={dashboard?.recentEnquiry}
+              />
+            )}
+          </div>
+        </>
+      )}
+    </>
   );
 }
 

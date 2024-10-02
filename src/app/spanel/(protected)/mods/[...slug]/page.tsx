@@ -1,5 +1,6 @@
 "use client";
 
+import LoadingSpinner from "@/components/shared/loading-spinner";
 import EditSepecification from "@/components/spanel/mods/Specification";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -50,6 +51,7 @@ export default function AddUpdate({ params }: { params: Params }) {
   const [specifications, setSpecifications] = useState<SpecificationsTypes[]>(
     [],
   );
+  const [fetchingLoader, setFetchingLoader] = useState(false);
   const {
     selectedImages,
     setSelectDialogOpen,
@@ -77,7 +79,9 @@ export default function AddUpdate({ params }: { params: Params }) {
   });
 
   const fetchMod = useCallback(async () => {
+    setFetchingLoader(true);
     const data = await getModByIdFn(_id);
+    setFetchingLoader(false);
     const mod: ModType = data?.data;
     setSpecifications(mod.specifications);
     form.reset({
@@ -148,13 +152,16 @@ export default function AddUpdate({ params }: { params: Params }) {
         .finally(() => setLoading(false));
   };
 
-  const displayImages = (idx: number) =>
+  const displayImages = (idx?: number) =>
     handleSetImages(viewImages as string[], idx);
 
   return (
     <>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="relative">
+          {fetchingLoader && (
+            <LoadingSpinner className="text-3xl absolute top-1/2 left-1/2" />
+          )}
           <div className="flex justify-between">
             <Title title={`${status === "add" ? "Add" : "Update"} Mod`} />
             <Button type="submit" variant={"default"}>
@@ -173,7 +180,7 @@ export default function AddUpdate({ params }: { params: Params }) {
                       height={400}
                       alt="Preview"
                       className="h-full w-full object-cover"
-                      onClick={() => displayImages(0)}
+                      onClick={() => displayImages()}
                     />
                     <label
                       htmlFor="main_image"

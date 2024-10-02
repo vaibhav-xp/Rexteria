@@ -26,8 +26,8 @@ export const navLinks = [
     icon: Car,
   },
   {
-    href: "/about",
-    label: "About Us",
+    href: "/contact",
+    label: "Contact Us",
     icon: Info,
   },
 ];
@@ -87,8 +87,8 @@ export const navlinkMobAfterLogin = [
     icon: History,
   },
   {
-    href: "/about",
-    label: "About Us",
+    href: "/contact",
+    label: "Contact Us",
     icon: Info,
   },
 ];

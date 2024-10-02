@@ -3,7 +3,7 @@ import bg_mods from "@/assets/bg-mods.webp";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 
-export default function BannerCatgories() {
+export default function BannerContact() {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -35,14 +35,16 @@ export default function BannerCatgories() {
       </div>
       <div className="container h-full w-full relative flex items-center justify-end">
         <h1 className="absolute text-end text-2xl md:text-4xl right-[1rem] -translate-y-1/2 top-1/2 font-700">
-          Explore{" "}
+          Get in{" "}
+          <span className="text-primary hover:text-5xl cursor-pointer transition-all duration-300">
+            Touch
+          </span>{" "}
+          with Us <br /> We&apos;re Here to Help with Your{" "}
           <span className="text-primary hover:text-5xl cursor-pointer transition-all duration-300">
             GTA 5
           </span>{" "}
-          Mod Categories <br /> Find the Perfect Mod for Every{" "}
-          <span className="text-primary hover:text-5xl cursor-pointer transition-all duration-300">
-            Adventure!
-          </span>
+          <br />
+          Modding Needs!
         </h1>
       </div>
     </div>

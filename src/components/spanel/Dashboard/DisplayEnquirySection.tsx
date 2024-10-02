@@ -1,5 +1,5 @@
 import { placeHolderImage } from "@/lib/constants";
-import { EnquiryType } from "@/types/enquiry-types";
+import StatusDisplay, { EnquiryType } from "@/types/enquiry-types";
 import { UserType } from "@/types/store-types";
 import Image from "next/image";
 
@@ -31,7 +31,7 @@ export default function DisplayEnquirySection({
                 className="w-full h-full object-cover"
               />
             </p>
-            <div>
+            <div className="flex-grow">
               <p>
                 <strong>{(item.user_id as UserType).name}</strong>(
                 {(item?.user_id as UserType).email})
@@ -39,7 +39,10 @@ export default function DisplayEnquirySection({
               <p className="text-sm">
                 Created At: {new Date(item.createdAt).toLocaleString()}
               </p>
-              <p className="text-xl text-primary">₹{item?.pitchPrice}</p>
+              <div className="flex justify-between w-full">
+                <p className="text-xl text-primary">₹{item?.pitchPrice}</p>
+                <StatusDisplay status={item?.status} />
+              </div>
             </div>
           </li>
         ))}

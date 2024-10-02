@@ -56,7 +56,6 @@ export default function Mods() {
   const { handleSetImages } = useCarousal();
 
   const getMods = useCallback(() => {
-    setLoading(true);
     getModsFn({
       search,
       limit: 10,
@@ -155,20 +154,18 @@ export default function Mods() {
             </TableRow>
           </TableHeader>
           {loading && <ShimmerTableBody row={10} coloumn={12} />}
-          {!loading && mods.length === 0 && (
+          {!loading && (
             <TableBody>
-              <TableRow>
-                <TableCell className="min-h-[500px]" colSpan={11}>
-                  <NotFound className="w-1/3 mx-auto" />
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          )}
-
-          {!loading &&
-            mods.map((mod: ModType) => (
-              <TableBody key={mod?._id}>
+              {mods.length === 0 && (
                 <TableRow>
+                  <TableCell className="min-h-[500px]" colSpan={12}>
+                    <NotFound className="w-1/3 mx-auto" />
+                  </TableCell>
+                </TableRow>
+              )}
+
+              {mods.map((mod: ModType) => (
+                <TableRow key={mod?._id}>
                   <TableCell>
                     <p className="w-[250px] mx-auto text-center overflow-hidden whitespace-nowrap text-ellipsis ">
                       {mod.title}
@@ -238,8 +235,9 @@ export default function Mods() {
                     </Link>
                   </TableCell>
                 </TableRow>
-              </TableBody>
-            ))}
+              ))}
+            </TableBody>
+          )}
           <TableFooter>
             <TableRow>
               <TableCell colSpan={11}>

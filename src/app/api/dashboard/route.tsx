@@ -50,7 +50,10 @@ export const GET = catchAsyncHandler(async (req) => {
       .populate("user_id")
       .limit(5),
     User.countDocuments(),
-    EnquiryModel.find().sort({ createdAt: -1 }).populate("user_id").limit(5),
+    EnquiryModel.find({ status: { $ne: "completed" } })
+      .sort({ createdAt: -1 })
+      .populate("user_id")
+      .limit(5),
   ]);
 
   return ReturnNextResponse(StatusCodes.OK, "Analytics fetched successfully.", {

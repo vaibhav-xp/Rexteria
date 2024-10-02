@@ -6,6 +6,7 @@ import {
   Car,
   ChartBarStacked,
   ChevronLeft,
+  Contact,
   GalleryThumbnails,
   History,
   LayoutDashboard,
@@ -72,6 +73,12 @@ export default function Layout({ children }: { children: ReactNode }) {
             title: "History",
             href: "/spanel/history",
             icon: History,
+            variant: "ghost",
+          },
+          {
+            title: "Contact Us",
+            href: "/spanel/contacts",
+            icon: Contact,
             variant: "ghost",
           },
           {

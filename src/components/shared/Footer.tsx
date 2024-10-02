@@ -163,8 +163,8 @@ export default function Footer() {
               About Us
             </h4>
             <p className="text-sm mb-4">
-              GTAINDIAMODS.COM is an e-commerce digital download mod selling
-              website which is owned and managed by Faraz Khan.
+              ModtopiaGTA5 is an e-commerce digital download mod selling website
+              which is owned and managed by REXTERIA.
             </p>
             <p className="text-sm">
               For any queries, you can mail us at:
@@ -195,7 +195,7 @@ export default function Footer() {
           <p>
             Copyright © 2024 REXTERIA |{" "}
             <Link href={"/"} className="hover:text-primary">
-              Developer & Maintend By Vaibhav Maurya
+              Developed & Maintained By Vaibhav Maurya
             </Link>
           </p>
         </div>

@@ -113,7 +113,9 @@ export default function OTPList() {
                         />
                       </p>
                     </TableCell>
-                    <TableCell className="text-center">{user?.name}</TableCell>
+                    <TableCell className="text-center">
+                      {user?.name || "--"}
+                    </TableCell>
                     <TableCell className="text-center">{user?.email}</TableCell>
                     <TableCell className="text-center text-ellipsis whitespace-nowrap overflow-hidden max-w-[200px]">
                       {mod?.title}
@@ -121,7 +123,7 @@ export default function OTPList() {
                     <TableCell className="text-center">
                       <Image
                         src={mod?.main_image?.url}
-                        alt={mod.title}
+                        alt={mod?.title}
                         width={200}
                         height={200}
                         className="cursor-pointer"

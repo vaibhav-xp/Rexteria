@@ -39,7 +39,6 @@ export default function OTPList() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setLoading(true);
       getOtpFn({
         search,
         page,
