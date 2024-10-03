@@ -31,7 +31,7 @@ const ContactSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const ContactModel =
