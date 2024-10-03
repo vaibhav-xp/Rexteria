@@ -52,7 +52,7 @@ export default function Histor() {
           setTotalEnquiries(data?.data?.totalEnquiries || 0);
         })
         .finally(() => setLoading(false)),
-    [status, search, currentPage, searchById],
+    [search, currentPage, searchById]
   );
 
   useEffect(() => {
@@ -77,7 +77,7 @@ export default function Histor() {
           onChange={(e) => setSearchById(e.target.value)}
           className={cn(
             "p-2 border rounded w-full lg:w-[400px] my-4",
-            searchById.length !== 24 && "text-destructive",
+            searchById.length !== 24 && "text-destructive"
           )}
         />
       </div>

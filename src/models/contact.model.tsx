@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { string } from "zod";
 
 const ContactSchema = new mongoose.Schema(
   {
@@ -32,7 +31,7 @@ const ContactSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 const ContactModel =
