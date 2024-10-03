@@ -10,7 +10,7 @@ const config: Config = {
   theme: {
     extend: {
       container: {
-        center: "true",
+        center: true,
         padding: "1rem",
         screens: {
           "2xl": "1400px",
@@ -100,6 +100,7 @@ const config: Config = {
       },
     },
   },
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   plugins: [require("tailwindcss-animate")],
 };
 

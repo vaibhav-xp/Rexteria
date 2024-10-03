@@ -3,7 +3,7 @@ import connectToDatabase from "@/lib/connectDatabase";
 import catchAsyncHandler from "@/lib/tryCatch";
 import { ROLES } from "@/middleware";
 import EnquiryModel from "@/models/enquiry.model";
-import { EnquiryStatus, EnquiryType } from "@/types/enquiry-types";
+import { EnquiryType } from "@/types/enquiry-types";
 import { ModType } from "@/types/mod-types";
 import ReturnNextResponse from "@/types/response-types";
 import { UserType } from "@/types/store-types";

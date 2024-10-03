@@ -52,7 +52,7 @@ export default function Histor() {
           setTotalEnquiries(data?.data?.totalEnquiries || 0);
         })
         .finally(() => setLoading(false)),
-    [status, search, currentPage, searchById],
+    [search, currentPage, searchById],
   );
 
   useEffect(() => {
