@@ -10,7 +10,6 @@ export const GET = catchAsyncHandler(async (_, query) => {
   const {
     params: { _id },
   } = query as Params;
-  console.log(_id);
 
   // Fetch the mod by ID
   await connectToDatabase();

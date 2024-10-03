@@ -14,6 +14,13 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import useStore from "@/hooks/use-store";
 import { displayViews } from "@/lib/constants";
@@ -25,8 +32,17 @@ import { addToWishlistFn } from "@/services/wishlist";
 import ShimmerModDetails from "@/shimmer/Mods/mod-details-shimmer";
 import { ModType } from "@/types/mod-types";
 import { ReviewType } from "@/types/review-types";
-import { Car, Heart, HomeIcon } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import {
+  Car,
+  Heart,
+  HomeIcon,
+  Instagram,
+  Link as LinkIcon,
+  Share2Icon,
+  TwitterIcon,
+} from "lucide-react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { FaWhatsapp } from "react-icons/fa";
 import {
   MdOutlineShoppingBag,
   MdOutlineThumbUp,
@@ -41,6 +57,8 @@ export default function SingleModShow({ params }: { params: { _id: string } }) {
   const [loading, setLoading] = useState(true);
   const [viewHitOnce, setVewHitOnce] = useState(true);
   const [isRatingLoading, setIsRatingLoading] = useState(true);
+  const [share, setShare] = useState(false);
+  const url = useMemo(() => window.location.href, []);
 
   const fetchMod = useCallback(async () => {
     try {
@@ -117,6 +135,8 @@ export default function SingleModShow({ params }: { params: { _id: string } }) {
     return <NotFound className="mx-auto w-1/3" />;
   }
 
+  const handleShare = () => setShare((prev) => !prev);
+
   return (
     <div className="container py-4">
       <Breadcrumb>
@@ -158,29 +178,35 @@ export default function SingleModShow({ params }: { params: { _id: string } }) {
           <h1 className="text-2xl font-bold mb-2">{mod.title}</h1>
 
           {/* Views and Likes Section */}
-          <div className="flex gap-4 items-center mb-4">
-            <div className="flex gap-2 items-center">
-              <MdVisibility className="text-primary text-lg" />
-              <span className="text-sm text-gray-600">
-                {displayViews(mod.views)} Views
-              </span>
+          <div className="flex gap-4 items-center mb-4 justify-between">
+            <div className="flex gap-4 items-center">
+              <div className="flex gap-2 items-center">
+                <MdVisibility className="text-primary text-lg" />
+                <span className="text-sm text-gray-600">
+                  {displayViews(mod.views)} Views
+                </span>
+              </div>
+              <div className="flex gap-2 items-center">
+                {review && review.likes ? (
+                  <MdThumbUp
+                    className="text-primary text-lg cursor-pointer"
+                    onClick={handleLikeSubmit}
+                  />
+                ) : (
+                  <MdOutlineThumbUp
+                    className="text-primary text-lg cursor-pointer"
+                    onClick={handleLikeSubmit}
+                  />
+                )}
+                <span className="text-sm text-gray-600">
+                  {mod?.likes || 0} Likes
+                </span>
+              </div>
             </div>
-            <div className="flex gap-2 items-center">
-              {review && review.likes ? (
-                <MdThumbUp
-                  className="text-primary text-lg cursor-pointer"
-                  onClick={handleLikeSubmit}
-                />
-              ) : (
-                <MdOutlineThumbUp
-                  className="text-primary text-lg cursor-pointer"
-                  onClick={handleLikeSubmit}
-                />
-              )}
-              <span className="text-sm text-gray-600 ">
-                {mod?.likes || 0} Likes
-              </span>
-            </div>
+            <Share2Icon
+              className="text-primary cursor-pointer"
+              onClick={handleShare}
+            />
           </div>
 
           {/* Pricing Section */}
@@ -245,6 +271,60 @@ export default function SingleModShow({ params }: { params: { _id: string } }) {
       </div>
       {/* Top Rated Mods Section */}
       <TopRatingMods />
+
+      <Dialog open={share} onOpenChange={handleShare}>
+        <DialogContent>
+          <DialogHeader className="flex justify-between items-center">
+            <DialogTitle className="text-xl">Share</DialogTitle>
+          </DialogHeader>
+
+          <div className="flex flex-col items-center space-y-4 mt-4">
+            {/* Icons for sharing on platforms */}
+            <div className="flex items-center space-x-4">
+              {/* WhatsApp */}
+              <a
+                href={`https://wa.me/?text=${encodeURIComponent(url)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FaWhatsapp className="w-6 h-6 hover:text-primary cursor-pointer" />
+              </a>
+
+              {/* Instagram */}
+              <a
+                href={`https://www.instagram.com/?url=${url}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Instagram className="w-6 h-6 hover:text-primary cursor-pointer" />
+              </a>
+
+              {/* Twitter */}
+              <a
+                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                  `Check this out: ${url}`,
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <TwitterIcon className="w-6 h-6 hover:text-primary cursor-pointer" />
+              </a>
+            </div>
+            <DialogDescription>Or</DialogDescription>
+            {/* Copy link functionality */}
+            <div
+              className="flex items-center space-x-2 hover:brightness-50 duration-200 cursor-pointer"
+              onClick={() => {
+                navigator.clipboard.writeText(url);
+                showAlert({ message: "Link copied to clipboard!" });
+              }}
+            >
+              <LinkIcon className="w-5 h-5" />
+              <span className="px-2 py-1 bg-card">{url}</span>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

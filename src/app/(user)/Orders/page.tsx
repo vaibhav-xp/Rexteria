@@ -42,7 +42,7 @@ export default function Orders() {
                   className="bg-card rounded-xl px-4 py-2 hover:no-underline"
                 >
                   <AccordionTrigger>
-                    <div className="flex justify-between w-full pr-8">
+                    <div className="flex flex-col md:flex-row items-start md:items-center space-y-2 justify-between w-full pr-8">
                       <div className="font-poppins text-left space-y-1">
                         <p className="no-underline font-bold">
                           Order Id: {order?._id}

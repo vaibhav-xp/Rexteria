@@ -12,7 +12,9 @@ import { Label } from "@/components/ui/label";
 import useStore from "@/hooks/use-store";
 import { showAlert } from "@/services/handle-api";
 import { sendOtpFn, verfiyOtpFn } from "@/services/login";
+import { MoveLeft } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { IoArrowBack } from "react-icons/io5";
@@ -81,15 +83,15 @@ const Login = () => {
       </div>
 
       {/* Form Section */}
-      <div className="flex items-center justify-center w-full lg:w-2/5 p-6 lg:p-10 transition-transform duration-500 ease-in-out">
+      <div className="flex flex-col items-center justify-center w-full lg:w-2/5 p-8 lg:p-10 transition-transform duration-500 ease-in-out relative">
         {state === "send" && (
           <form
             onSubmit={handleSendOTP}
-            className="bg-transparent p-8 rounded-lg w-full max-w-sm space-y-6 animate-fade-in"
+            className="bg-transparent p-8 rounded-lg shadow-lg w-full max-w-md space-y-6 animate-fade-in"
           >
             <h2 className="text-3xl font-bold mb-6 text-center">Login</h2>
 
-            <div className="mb-4">
+            <div>
               <Label htmlFor="email" className="block text-sm font-medium mb-1">
                 Email
               </Label>
@@ -97,7 +99,7 @@ const Login = () => {
                 type="email"
                 id="email"
                 placeholder="Enter your email"
-                className="w-full mb-2 p-3 border rounded focus:outline-none focus:ring-2"
+                className="w-full mb-2 p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -107,7 +109,7 @@ const Login = () => {
             <Button
               type="submit"
               variant="default"
-              className="w-full hover:bg-primary-light transition-colors"
+              className="w-full py-3"
               disabled={loadingSend}
             >
               {loadingSend ? "Sending..." : "Send OTP"}
@@ -118,11 +120,11 @@ const Login = () => {
         {state === "otp" && (
           <form
             onSubmit={handleVerifyOTP}
-            className="bg-transparent p-8 rounded-lg w-full max-w-sm space-y-6 animate-slide-in"
+            className="bg-transparent p-8 rounded-lg shadow-lg w-full max-w-md space-y-6 animate-slide-in"
           >
             <h2 className="text-3xl font-bold mb-6 text-center">Verify OTP</h2>
 
-            <div className="mb-6">
+            <div>
               <Label htmlFor="otp" className="block text-sm font-medium mb-1">
                 Enter OTP
               </Label>
@@ -145,7 +147,7 @@ const Login = () => {
                 type="button"
                 variant="default"
                 onClick={handleBack}
-                className="hover:bg-primary-light transition-colors"
+                className="hover:underline"
               >
                 <IoArrowBack /> Back
               </Button>
@@ -153,13 +155,17 @@ const Login = () => {
                 type="submit"
                 variant="default"
                 disabled={loadingVerify}
-                className="hover:bg-primary-light transition-colors"
+                className="w-full py-3"
               >
                 {loadingVerify ? "Verifying..." : "Verify OTP"}
               </Button>
             </div>
           </form>
         )}
+        <Link href={"/"} className="flex gap-2 text-primary mt-4 group">
+          <MoveLeft className="translate-x-0 group-hover:-translate-x-2 duration-200 transition-translate" />
+          Home
+        </Link>
       </div>
     </div>
   );

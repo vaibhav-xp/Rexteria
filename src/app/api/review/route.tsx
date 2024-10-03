@@ -22,7 +22,6 @@ export const POST = catchAsyncHandler(async (req) => {
       StatusCodes.NOT_FOUND,
       "Mod not found with this id.",
     );
-  console.log(mod);
   mod.views += 1;
   await mod.save();
 

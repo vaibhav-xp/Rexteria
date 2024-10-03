@@ -31,7 +31,7 @@ const apiAsyncHandle =
 interface ShowAlert {
   data?: unknown;
   message: string;
-  statusCode: number;
+  statusCode?: number;
 }
 export const showAlert = (data: ShowAlert) => {
   toast({

@@ -1,4 +1,3 @@
-import page from "@/app/(public)/page";
 import { authRequired } from "@/lib/authRoute";
 import connectToDatabase from "@/lib/connectDatabase";
 import { mailOptions, transporter } from "@/lib/email";
@@ -93,6 +92,7 @@ export const GET = catchAsyncHandler(async (req) => {
   if (response) return response;
 
   const search = req.nextUrl.searchParams.get("search") as string;
+  const status = req.nextUrl.searchParams.get("status");
   const page = parseInt(req.nextUrl.searchParams.get("page") || "1", 10);
   const limit = parseInt(req.nextUrl.searchParams.get("limit") || "10", 10);
 
@@ -101,7 +101,18 @@ export const GET = catchAsyncHandler(async (req) => {
   const totalContacts = await ContactModel.countDocuments();
   const totalPages = Math.ceil(totalContacts / limit);
 
-  const contacts = await ContactModel.find()
+  const query = {
+    $or: [
+      { name: { $regex: search, $options: "i" } },
+      { email: { $regex: search, $options: "i" } },
+      { message: { $regex: search, $options: "i" } },
+      { instagram: { $regex: search, $options: "i" } },
+      { subject: { $regex: search, $options: "i" } },
+    ],
+    ...(status && { status }),
+  };
+
+  const contacts = await ContactModel.find(query)
     .sort({ createdAt: -1 })
     .limit(limit)
     .skip(limit * (page - 1))

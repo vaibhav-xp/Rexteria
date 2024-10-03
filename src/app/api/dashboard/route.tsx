@@ -5,6 +5,7 @@ import ModCategory from "@/models/category.model";
 import EnquiryModel from "@/models/enquiry.model";
 import GalleryModel from "@/models/gallery";
 import Mod from "@/models/mod.model";
+import OTP from "@/models/otp.model";
 import ReviewModel from "@/models/review.model";
 import User from "@/models/user.model";
 import ReturnNextResponse from "@/types/response-types";
@@ -40,7 +41,7 @@ export const GET = catchAsyncHandler(async (req) => {
       .select("title views main_image slug")
       .populate("main_image"),
     GalleryModel.countDocuments(),
-    User.countDocuments({ active: true }),
+    User.countDocuments({ active: true, role: ROLES.USER }),
     ReviewModel.find()
       .sort({ createdAt: -1 })
       .populate({
@@ -49,7 +50,7 @@ export const GET = catchAsyncHandler(async (req) => {
       })
       .populate("user_id")
       .limit(5),
-    User.countDocuments(),
+    OTP.countDocuments(),
     EnquiryModel.find({ status: { $ne: "completed" } })
       .sort({ createdAt: -1 })
       .populate("user_id")

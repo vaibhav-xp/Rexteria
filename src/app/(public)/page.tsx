@@ -9,42 +9,82 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import Title from "@/components/ui/title";
+import useStore from "@/hooks/use-store";
 import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import banner_1 from "@/assets/banner_home.webp";
+import banner_2 from "@/assets/banner_home_2.webp";
+import banner_3 from "@/assets/banner_home_3.webp";
+import banner_4 from "@/assets/bg-mods.webp";
 
-// Sample data array for slides
 const slidesData = [
   {
-    id: 1,
-    title: "The New 2024 Thar ROXX",
-    description: "Get the latest launched Mahindra Thar ROXX MOD for GTA V",
-    imgSrc:
-      "https://res.cloudinary.com/dkcaalfg3/image/upload/v1727243337/rexteria/qrlbt1wmkpyolci1rjca.webp",
+    id: 2,
+    title: "Unleash the Ultimate GTA 5 Experience",
+    description:
+      "Premium mods available, with custom car modifications for an additional charge.",
+    imgSrc: banner_1,
     buttonPrimary: "Shop Now",
-    buttonSecondary: "Login",
+    buttonPrimaryLink: "/mods",
+    buttonSecondary: "Sign Up",
+    buttonSecondryLink: "/login",
+    position: "0px 40%",
   },
   {
-    id: 2,
-    title: "Explore the Wild",
+    id: 5,
+    title: "Explore Our Categories of GTA 5 Mods",
     description:
-      "Take the new Mahindra Thar off-road and experience true adventure.",
-    imgSrc:
-      "https://res.cloudinary.com/dkcaalfg3/image/upload/v1727243337/rexteria/aoajoruey6zcyckxfzxh.webp",
+      "Browse a wide range of mod categories for endless customization options.",
+    imgSrc: banner_3,
     buttonPrimary: "Explore Now",
+    buttonPrimaryLink: "/categories",
     buttonSecondary: "Sign Up",
+    buttonSecondryLink: "/login",
+    position: "40% 80%",
+  },
+  {
+    id: 1,
+    title: "Upgrade, Modify, or Go Custom",
+    description:
+      "Standard mods or custom modifications available, additional charges for customization.",
+    imgSrc: banner_2,
+    buttonPrimary: "Contact Us",
+    buttonPrimaryLink: "/contact",
+    buttonSecondary: "Login",
+    buttonSecondryLink: "/login",
+    position: "0 60%",
   },
   {
     id: 3,
-    title: "Built for Tough Terrains",
-    description: "Conquer every road with the rugged build of the new Thar.",
+    title: "Your Dream Ride, Customized for You",
+    description:
+      "Mods plus custom car modifications available for an added fee.",
+    imgSrc: banner_4,
+    buttonPrimary: "Shop Now",
+    buttonPrimaryLink: "/mods",
+    buttonSecondary: "Sign Up",
+    buttonSecondryLink: "/login",
+    position: "0 90%",
+  },
+  {
+    id: 4,
+    title: "Drive Your GTA 5 World, Your Way",
+    description:
+      "Get unique mods or pay extra for personalized custom modifications.",
     imgSrc:
       "https://res.cloudinary.com/dkcaalfg3/image/upload/v1727243337/rexteria/x3yehik6dngasimps0oz.webp",
-    buttonPrimary: "Learn More",
-    buttonSecondary: "Contact Us",
+    buttonPrimary: "Show Now",
+    buttonPrimaryLink: "/mods",
+    buttonSecondary: "Sign Up",
+    buttonSecondryLink: "/login",
+    position: "0 10%",
   },
 ];
 
 export default function Home() {
+  const router = useRouter();
+  const { user } = useStore();
   return (
     <section>
       <div className="relative overflow-hidden">
@@ -66,14 +106,15 @@ export default function Home() {
             {slidesData.map((slide) => (
               <CarouselItem
                 key={slide.id}
-                className="aspect-video overflow-hidden h-[50vh] relative group"
+                className="aspect-video overflow-hidden h-[50vh] relative group select-none"
               >
                 <Image
                   src={slide.imgSrc}
                   alt={slide.title}
                   width={1920}
                   height={1080}
-                  className="w-full h-full object-cover transition-transform duration-500 ease-in-out transform scale-100 group-hover:scale-110 brightness-50 object-top"
+                  className={`w-full h-full object-cover transition-transform duration-500 ease-in-out transform scale-100 group-hover:scale-110 brightness-50`}
+                  style={{ objectPosition: slide.position }}
                 />
                 <div className="absolute inset-0 flex flex-col items-center justify-center z-10 text-center">
                   <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold drop-shadow-lg tracking-wide leading-tight animate-fade-in w-full px-4">
@@ -86,15 +127,19 @@ export default function Home() {
                     <Button
                       variant="default"
                       className="w-40 text-lg transition-transform transform hover:scale-105"
+                      onClick={() => router.push(slide.buttonPrimaryLink)}
                     >
                       {slide.buttonPrimary}
                     </Button>
-                    <Button
-                      variant="outline"
-                      className=" w-40 text-lg transition-transform transform hover:scale-105"
-                    >
-                      {slide.buttonSecondary}
-                    </Button>
+                    {!user && (
+                      <Button
+                        variant="outline"
+                        className=" w-40 text-lg transition-transform transform hover:scale-105"
+                        onClick={() => router.push(slide.buttonSecondryLink)}
+                      >
+                        {slide.buttonSecondary}
+                      </Button>
+                    )}
                   </div>
                 </div>
               </CarouselItem>
@@ -119,7 +164,7 @@ export default function Home() {
         <div className="grid gap-6 sm:gap-8 mt-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           <div className="overflow-hidden rounded-lg">
             <iframe
-              src="https://www.youtube.com/embed/QY-lCcONVmw?si=9095gOfot_B1htEE"
+              src="https://www.youtube.com/embed/_wQGH8tkr3s?si=PnRmxGP5oHdegXuE"
               title="YouTube video player"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               className="aspect-video w-full"
@@ -135,7 +180,7 @@ export default function Home() {
           </div>
           <div className="overflow-hidden rounded-lg">
             <iframe
-              src="https://www.youtube.com/embed/QY-lCcONVmw?si=9095gOfot_B1htEE"
+              src="https://www.youtube.com/embed/MnGIT3Ax6Hg?si=pwnDhT04uevC0mO0"
               title="YouTube video player"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               className="aspect-video w-full"

@@ -95,11 +95,11 @@ export default function Cart() {
         )}
       </div>
       <Dialog open={dialog} onOpenChange={handleDialogBox}>
-        <DialogContent>
+        <DialogContent className="w-[90vw] md:w-auto rounded-md">
           <DialogHeader>
             <DialogTitle className="text-xl">Send Enquiry</DialogTitle>
             <DialogDescription>
-              To buy mods send enquiry to we will read to you.
+              To buy mods send enquiry to we will reach to you.
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col gap-2 max-h-[250px] overflow-y-scroll pr-2">

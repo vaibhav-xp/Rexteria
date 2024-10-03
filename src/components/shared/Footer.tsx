@@ -66,14 +66,14 @@ export default function Footer() {
           <p className="font-bold text-xl">Follow us on social media!</p>
           <div className="flex gap-4 mt-4 lg:mt-0">
             <Link
-              href={"https://www.instagram.com/moddingguruji"}
+              href="https://www.instagram.com/rex_teria"
               target="_blank"
               className="hover:text-primary"
             >
               <InstagramLogoIcon className="w-8 h-8" />
             </Link>
             <Link
-              href={"https://www.youtube.com"}
+              href="https://www.youtube.com/c/Rexteria"
               target="_blank"
               className="hover:text-primary"
             >
@@ -96,13 +96,6 @@ export default function Footer() {
               rel="noopener noreferrer"
               className="flex items-center mt-2 hover:text-primary transition-colors duration-300"
             >
-              {/* <Avatar>
-                <AvatarImage
-                  src="https://instagram.flko13-1.fna.fbcdn.net/v/t51.2885-19/432336138_775596000784518_6021412784808401941_n.jpg?stp=dst-jpg_s150x150&_nc_ht=instagram.flko13-1.fna.fbcdn.net&_nc_cat=106&_nc_ohc=8tohqxMi3PIQ7kNvgENz02j&_nc_gid=d3e601ae7017485ea3b2499f1ee8489d&edm=AONqaaQBAAAA&ccb=7-5&oh=00_AYC85SDfw4fTybJIhaDARQr0bzxgbDksjjOa7lOJZiMINw&oe=66FB6AD9&_nc_sid=4e3341"
-                  alt="Insta Profile"
-                />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar> */}
               <p className="overflow-hidden rounded-full h-12 w-12 mr-2">
                 <Image
                   src={insta}
@@ -170,10 +163,10 @@ export default function Footer() {
               For any queries, you can mail us at:
               <br />
               <a
-                href="mailto:moddingguruji@outlook.com"
+                href="mailto:rexteria8999@gmail.com"
                 className="hover:text-primary transition-colors duration-300"
               >
-                moddingguruji@outlook.com
+                rexteria8999@gmail.com
               </a>
             </p>
             <p className="text-sm">

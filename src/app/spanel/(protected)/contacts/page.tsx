@@ -50,12 +50,14 @@ export default function ContactUs() {
   const [totalContacts, setTotalContacts] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [status, setStatus] = useState("all");
 
   const getContacts = useCallback(() => {
     getContactFn({
       page,
       limit: 10,
       search,
+      status: status === "all" ? "" : status,
     }).then((data) => {
       setContacts(data?.data?.contacts);
       setPage(data?.data?.page);
@@ -63,7 +65,7 @@ export default function ContactUs() {
       setTotalContacts(data?.data?.totalContacts);
       setIsLoading(false);
     });
-  }, [page, search]);
+  }, [page, search, status]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -92,7 +94,7 @@ export default function ContactUs() {
   return (
     <div>
       <Title title="Contact Us" />
-      <div>
+      <div className="flex gap-4 max-w-[600px] items-center">
         <Input
           type="text"
           placeholder="Search by title"
@@ -100,6 +102,16 @@ export default function ContactUs() {
           onChange={(e) => setSearch(e.target.value)}
           className="p-2 border rounded w-full lg:w-[400px] my-4"
         />
+        <Select value={status} onValueChange={(value) => setStatus(value)}>
+          <SelectTrigger>
+            <SelectValue placeholder="Status" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All</SelectItem>
+            <SelectItem value="seen">Seen</SelectItem>
+            <SelectItem value="unseen">Unseen</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
       <div className="overflow-x-auto w-full">
         <Table>

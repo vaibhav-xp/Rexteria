@@ -18,6 +18,7 @@ import { FaInstagram, FaYoutube } from "react-icons/fa";
 import { MdClose, MdMenu, MdOutlineShoppingBag } from "react-icons/md";
 import { Button } from "../ui/button";
 import { Drawer, DrawerContent, DrawerOverlay } from "../ui/drawer";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -33,7 +34,7 @@ export default function Header() {
   const { user, logout } = useStore();
   const pathname = usePathname();
   const [drawer, setDrawer] = useState(false);
-  const mail = "mauryaabc@gmail.com";
+  const mail = "rexteria8999@gmail.com";
   const toggleDrawer = () => {
     setDrawer(!drawer);
   };
@@ -49,10 +50,16 @@ export default function Header() {
             </Link>
           </span>
           <span className="flex gap-2 text-sm">
-            <Link href="/" className="hover:text-primary">
+            <Link
+              href="https://www.youtube.com/c/Rexteria"
+              className="hover:text-primary"
+            >
               <FaYoutube />
             </Link>
-            <Link href="/" className="hover:text-primary">
+            <Link
+              href="https://www.instagram.com/rex_teria"
+              className="hover:text-primary"
+            >
               <FaInstagram />
             </Link>
           </span>
