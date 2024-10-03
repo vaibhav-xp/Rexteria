@@ -11,27 +11,34 @@ const ModSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    specification: {
+    specifications: [
+      {
+        type: {
+          type: String,
+        },
+        value: {
+          type: String,
+        },
+        _id: false,
+      },
+    ],
+    content: {
       type: String,
-      required: true,
     },
     main_image: {
-      type: String,
-      required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "gallery",
+      onDelete: "cascade",
     },
     images: [
       {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "gallery",
       },
     ],
     categoryId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "ModCategory",
-      required: true,
-    },
-    subcategoryId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Subcategory",
+      ref: "categories",
       required: true,
     },
     price: {
@@ -40,18 +47,31 @@ const ModSchema = new mongoose.Schema(
     discount: {
       type: Number,
     },
+    discount_price: {
+      type: Number,
+    },
     rating: {
       type: Number,
+      default: 0,
+      max: 5,
+      min: 0,
+    },
+    reviewCount: {
+      type: Number,
+      default: 0,
+    },
+    likes: {
+      type: Number,
+      default: 0,
     },
     views: {
       type: Number,
+      default: 0,
     },
-    reviews: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "review",
-      },
-    ],
+    status: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
@@ -59,14 +79,14 @@ const ModSchema = new mongoose.Schema(
       {
         key: {
           categoryId: 1,
-          subcategoryId: 1,
           views: 1,
           rating: 1,
+          slug: 1,
         },
       },
     ],
   },
 );
 
-const Mod = mongoose.model("Mod", ModSchema);
+const Mod = mongoose.models.mod || mongoose.model("mod", ModSchema);
 export default Mod;

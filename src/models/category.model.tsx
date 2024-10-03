@@ -8,7 +8,8 @@ const CategorySchema = new mongoose.Schema(
       unique: true,
     },
     image: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "gallery",
       required: true,
     },
   },
@@ -17,5 +18,7 @@ const CategorySchema = new mongoose.Schema(
   },
 );
 
-const Category = mongoose.model("mod_category", CategorySchema);
-export default Category;
+const ModCategory =
+  mongoose.models.categories || mongoose.model("categories", CategorySchema);
+
+export default ModCategory;
