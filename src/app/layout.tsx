@@ -1,10 +1,9 @@
-import type { Metadata } from "next";
-import { Poppins, Oxanium } from "next/font/google";
-import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import type { Metadata } from "next";
 import dynamic from "next/dynamic";
+import { Oxanium, Poppins } from "next/font/google";
+import "./globals.css";
 
-// Lazy load CustomCarousal, UploadImages, and SelectedImages
 const CustomCarousal = dynamic(
   () => import("@/components/shared/custom-carousal"),
   {
@@ -71,6 +70,39 @@ export const metadata: Metadata = {
   title: "ModtopiaGTA5 - REXTERIA",
   description:
     "Discover a thriving hub for GTA 5 mod enthusiasts at ModtopiaGTA5. Explore an extensive collection of mods, from enhanced graphics to exciting gameplay tweaks. Join a vibrant community of gamers and unleash endless possibilities within the world of Grand Theft Auto V.",
+  openGraph: {
+    title: "ModtopiaGTA5 - REXTERIA",
+    description:
+      "Discover a thriving hub for GTA 5 mod enthusiasts at ModtopiaGTA5. Explore an extensive collection of mods, from enhanced graphics to exciting gameplay tweaks. Join a vibrant community of gamers and unleash endless possibilities within the world of Grand Theft Auto V.",
+    url: "https://www.modtopiagta5.com",
+    type: "website",
+    images: [
+      {
+        url: "https://res.cloudinary.com/dnowxs192/image/upload/v1728039993/m9enaldefswnm6cqh4nu.jpg",
+        width: 1200,
+        height: 630,
+        alt: "ModtopiaGTA5 - Explore GTA 5 Mods",
+      },
+    ],
+    locale: "en_US",
+    siteName: "ModtopiaGTA5",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ModtopiaGTA5 - REXTERIA",
+    description:
+      "Discover a thriving hub for GTA 5 mod enthusiasts at ModtopiaGTA5. Explore an extensive collection of mods, from enhanced graphics to exciting gameplay tweaks. Join a vibrant community of gamers and unleash endless possibilities within the world of Grand Theft Auto V.",
+    images: [
+      "https://res.cloudinary.com/dnowxs192/image/upload/v1728040083/bsq7wlag3pmcpugt44h9.webp",
+    ],
+  },
+  alternates: {
+    canonical: "https://www.rexteria.vercel.app/",
+  },
+  robots: "index, follow",
+  icons: {
+    icon: "https://res.cloudinary.com/dnowxs192/image/upload/v1728040237/nihmc13uscbpdexrw5pt.webp",
+  },
 };
 
 export default function RootLayout({
