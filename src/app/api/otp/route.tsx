@@ -108,7 +108,7 @@ export const POST = catchAsyncHandler(async (req: NextRequest) => {
           <p>This OTP is valid for 15 minutes. If you did not request this verification, please ignore this email.</p>
           <div class="footer">
             Regards,<br>
-            FusionFlow Team
+            Rexteria Team
           </div>
         </div>
       </body>
