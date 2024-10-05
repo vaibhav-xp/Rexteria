@@ -1,46 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# REXTERIA (Modtopia)
 
-## Getting Started
+**Modtopia** is a fullstack e-commerce application developed using **Next.js**, **Tailwind CSS**, **shadcn**, and **MongoDB**. It is designed specifically for selling **GTA 5 mods**, offering a platform for users to browse and purchase game modifications.
 
-First, run the development server:
+The application includes a comprehensive **admin dashboard** for managing various aspects of the platform. Admins can:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Manage mods
+- Handle categories
+- Respond to contact inquiries
+- Address user enquiries
+- Oversee user management
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Modtopia provides an intuitive interface for both buyers and sellers, ensuring a seamless mod shopping experience.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Live Link
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+You can access the live application here: [Modtopia Live](https://modtopia.vercel.app/)
 
-## Learn More
+You can watch this video: [Link](https://youtu.be/xopUB6D-jEc?si=MVpvc0EJCyElr9Tl)
 
-To learn more about Next.js, take a look at the following resources:
+## Installation Guide
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Follow the steps below to install and run the project locally:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. **Clone the project**  
+   Run the following command to clone the repository:
+   ```bash
+   git clone https://github.com/vaibhav-xp/Rexteria.git
+   ```
 
-## Deploy on Vercel
+2. **Install dependencies**  
+   Navigate to the project directory and install all required packages using pnpm:
+   ```bash
+   pnpm i
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+4. **Set up environment variables**  
+   Create an `.env` file in the root of the project and add all the required environment variables as per the project’s setup.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
-user/
-
-1. Name
-2. Email
-3. Avatar
-4. Instagram URL
-5. Youtube URL
-6. Twitter URL
-7. Roles
+5. **Run the application**  
+   Once the setup is complete, start the development server:
+   ```bash
+   pnpm run dev
+   ```
