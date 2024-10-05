@@ -22,7 +22,7 @@ export default function DisplayModSection({
                 {item.title}
               </h3>
               <p className="text-sm">
-                {(item.rating && (
+                {(typeof item.rating === "number" && (
                   <Rating rating={item.rating} className="justify-start" />
                 )) ||
                   `${displayViews(item.views)} Views`}
