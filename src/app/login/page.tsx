@@ -1,6 +1,6 @@
 "use client";
 
-import background from "@/assets/bg-mods.webp";
+import background from "@/assets/banner_home_3.webp";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
