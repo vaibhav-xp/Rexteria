@@ -43,8 +43,8 @@ const CustomCarousal = () => {
                   src={item}
                   alt={`Image ${index + 1}`}
                   className="w-full h-full object-contain rounded-lg shadow-lg my-auto"
-                  width={1000}
-                  height={600}
+                  width={1920}
+                  height={1080}
                 />
               </CarouselItem>
             ))}
