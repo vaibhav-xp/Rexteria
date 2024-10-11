@@ -46,7 +46,7 @@ export default function Gallery() {
     setIsDeleteLoading(true);
     const formData = new FormData();
     imagesToDelete.forEach((img, i) =>
-      formData.append(`image[${i}]`, img.public_id as string),
+      formData.append(`image[${i}]`, img.public_id as string)
     );
     const data = await deleteGalleryFn(formData);
     showAlert(data);
@@ -70,14 +70,14 @@ export default function Gallery() {
           >
             <Upload className="w-4 h-4" /> Upload Images
           </Button>
-          <Button
+          {/* <Button
             variant={"destructive"}
             className="flex justify-center gap-2 items-center"
             disabled={images.length === 0}
             onClick={() => setDeleteDialogOpen(images)}
           >
             <Trash className="w-4 h-4" /> Delete All Images
-          </Button>
+          </Button> */}
         </div>
       </div>
 
