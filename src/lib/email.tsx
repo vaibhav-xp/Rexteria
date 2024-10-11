@@ -15,6 +15,9 @@ export function isValidEmail(email: string): boolean {
 
 export const transporter = nodemailer.createTransport({
   service: "gmail",
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
   auth: {
     user: process.env.EMAIL,
     pass: process.env.APP_PASSWORD,
@@ -31,14 +34,14 @@ export const transporter = nodemailer.createTransport({
 export const mailOptions = (
   email: string,
   subject: string,
-  content: string,
+  content: string
 ): object => {
   const senderEmail = process.env.EMAIL;
 
   if (!senderEmail) {
     throw new ErrorCreator(
       StatusCodes.INTERNAL_SERVER_ERROR,
-      "Sender email is not defined in the environment variables.",
+      "Sender email is not defined in the environment variables."
     );
   }
 
