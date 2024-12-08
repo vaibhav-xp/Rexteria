@@ -7,7 +7,13 @@ import Title from "@/components/ui/title";
 import { getDashboardFn } from "@/services/dashboard";
 import ShimmerDashboard from "@/shimmer/Spanel/dashboard-shimmer";
 import { DashboardTypes } from "@/types/dashboard-types";
-import { CarIcon, ChartBarStacked, ImageIcon, User2Icon } from "lucide-react";
+import {
+  CarIcon,
+  ChartBarStacked,
+  ImageIcon,
+  Smartphone,
+  User2Icon,
+} from "lucide-react";
 import Link from "next/link";
 import React, { ReactElement, useEffect, useState } from "react";
 
@@ -72,6 +78,14 @@ export default function Spanel() {
                 icon={<ImageIcon />}
                 count={dashboard?.totalGalleryImage}
                 title="Gallery Images"
+              />
+            </Link>
+
+            <Link href="/spanel/otp">
+              <Card
+                icon={<Smartphone />}
+                count={dashboard?.otps}
+                title="OTPs"
               />
             </Link>
           </div>

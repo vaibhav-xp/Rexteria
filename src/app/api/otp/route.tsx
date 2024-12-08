@@ -31,7 +31,7 @@ export const POST = catchAsyncHandler(async (req: NextRequest) => {
   if (isUserActive && !isUserActive?.active)
     throw new ErrorCreator(
       StatusCodes.BAD_REQUEST,
-      "Your account has been blocked by the admin. Please contact the administrator for further assistance.",
+      "Your account has been blocked by the admin. Please contact the administrator for further assistance."
     );
 
   const otp = generateOTP();
@@ -59,7 +59,7 @@ export const POST = catchAsyncHandler(async (req: NextRequest) => {
     console.log(error);
     throw new ErrorCreator(
       StatusCodes.INTERNAL_SERVER_ERROR,
-      "Failed to save OTP.",
+      "Failed to save OTP."
     );
   }
 
@@ -122,13 +122,13 @@ export const POST = catchAsyncHandler(async (req: NextRequest) => {
     console.log(error);
     throw new ErrorCreator(
       StatusCodes.INTERNAL_SERVER_ERROR,
-      "Failed to send OTP email.",
+      "Failed to send OTP email."
     );
   }
 
   return ReturnNextResponse(
     StatusCodes.OK,
-    "OTP sent successfully. It will be valid only for 15 minutes.",
+    "OTP sent successfully. It will be valid only for 15 minutes."
   );
 });
 
@@ -138,8 +138,8 @@ export const GET = catchAsyncHandler(async (req) => {
 
   const params = req.nextUrl.searchParams;
   const search = params.get("search");
-  const limit = parseInt(params.get("limit") as string, 10) || 10;
-  const page = parseInt(params.get("page") as string, 10) || 1;
+  const limit = parseInt(params.get("limit") as string, 20) || 10;
+  const page = parseInt(params.get("page") as string, 20) || 1;
 
   const query = {
     $or: [{ email: { $regex: search, $options: "i" } }],
@@ -160,6 +160,6 @@ export const GET = catchAsyncHandler(async (req) => {
       page,
       totalPages,
       totalOTPs,
-    },
+    }
   );
 });

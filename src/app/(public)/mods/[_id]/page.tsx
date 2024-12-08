@@ -302,7 +302,7 @@ export default function SingleModShow({ params }: { params: { _id: string } }) {
               {/* Twitter */}
               <a
                 href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                  `Check this out: ${url}`,
+                  `Check this out: ${url}`
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"

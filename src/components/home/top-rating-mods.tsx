@@ -36,23 +36,25 @@ export default function TopRatingMods() {
         {loading ? (
           <ShimmerModCard cardLength={8} />
         ) : (
-          mods.length && (
-            <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
-              {mods.map((mod) => (
-                <ModCard key={mod._id} mod={mod} />
-              ))}
-              <div className="relative overflow-hidden group">
-                <div className="overflow-hidden w-full h-full rounded-lg bg-indigo-600 flex items-center justify-center brightness-50 group transition-all duration-200 hover:brightness-90">
-                  <Link
-                    href={"/mods"}
-                    className="text-white text-3xl font-bold tracking-wide transition-transform duration-500 transform translate-y-0 group-hover:-translate-y-3"
-                  >
-                    Show All
-                  </Link>
+          <>
+            {mods?.length && (
+              <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+                {mods.map((mod) => (
+                  <ModCard key={mod._id} mod={mod} />
+                ))}
+                <div className="relative overflow-hidden group">
+                  <div className="overflow-hidden w-full h-full rounded-lg bg-indigo-600 flex items-center justify-center brightness-50 group transition-all duration-200 hover:brightness-90">
+                    <Link
+                      href={"/mods"}
+                      className="text-white text-3xl font-bold tracking-wide transition-transform duration-500 transform translate-y-0 group-hover:-translate-y-3"
+                    >
+                      Show All
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
-          )
+            )}
+          </>
         )}
       </>
     </div>

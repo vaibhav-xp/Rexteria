@@ -67,7 +67,7 @@ export default function ShowEnquiryDetails({
               src={user?.avatar?.url || placeHolderImage(user?.name)}
               width={200}
               height={200}
-              alt={user?.name}
+              alt={user?.name || "user profile"}
               className="w-full h-full object-cover"
             />
           </div>
@@ -77,9 +77,11 @@ export default function ShowEnquiryDetails({
             <p className="text-sm text-gray-300">{user?.email}</p>
             <p className="text-sm text-gray-300">{user?.phone}</p>
             <div className="flex flex-col items-end absolute right-2 top-2 gap-2">
-              <Link href={user?.instagram}>
-                <Instagram size={18} />
-              </Link>
+              {user?.instagram && (
+                <Link href={user?.instagram}>
+                  <Instagram size={18} />
+                </Link>
+              )}
               {!isOrderPage && <StatusDisplay status={enquiry?.status} />}
             </div>
           </div>
@@ -112,9 +114,14 @@ export default function ShowEnquiryDetails({
                     </p>
                   </div>
                   <p>
-                    <Link href={`/mods/${mod?.slug}`} target="_blank">
-                      <MdVisibility size={20} className="hover:text-primary" />
-                    </Link>
+                    {mod?.slug && (
+                      <Link href={`/mods/${mod?.slug}`} target="_blank">
+                        <MdVisibility
+                          size={20}
+                          className="hover:text-primary"
+                        />
+                      </Link>
+                    )}
                   </p>
                 </div>
               </div>

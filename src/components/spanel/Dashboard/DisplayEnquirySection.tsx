@@ -22,22 +22,22 @@ export default function DisplayEnquirySection({
             <p className="w-20 h-20 overflow-hidden rounded-md">
               <Image
                 src={
-                  (item.user_id as UserType).avatar.url ||
+                  (item.user_id as UserType)?.avatar?.url ||
                   placeHolderImage((item.user_id as UserType).name)
                 }
                 width={200}
                 height={200}
-                alt={(item.user_id as UserType).name}
+                alt={(item.user_id as UserType)?.name}
                 className="w-full h-full object-cover"
               />
             </p>
             <div className="flex-grow">
               <p>
-                <strong>{(item.user_id as UserType).name}</strong>(
-                {(item?.user_id as UserType).email})
+                <strong>{(item.user_id as UserType)?.name}</strong>(
+                {(item?.user_id as UserType)?.email})
               </p>
               <p className="text-sm">
-                Created At: {new Date(item.createdAt).toLocaleString()}
+                Created At: {new Date(item?.createdAt).toLocaleString()}
               </p>
               <div className="flex justify-between w-full">
                 <p className="text-xl text-primary">₹{item?.pitchPrice}</p>

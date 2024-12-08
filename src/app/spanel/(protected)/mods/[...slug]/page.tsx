@@ -49,7 +49,7 @@ export default function AddUpdate({ params }: { params: Params }) {
   const { categories } = useStore();
   const [loading, setLoading] = useState(false);
   const [specifications, setSpecifications] = useState<SpecificationsTypes[]>(
-    [],
+    []
   );
   const [fetchingLoader, setFetchingLoader] = useState(false);
   const {
@@ -61,7 +61,7 @@ export default function AddUpdate({ params }: { params: Params }) {
   } = useSelectImages();
   const viewImages = useMemo(
     () => selectedImages.map((img) => img?.url),
-    [selectedImages],
+    [selectedImages]
   );
   const { slug } = params;
   const status = slug[0];
@@ -99,7 +99,7 @@ export default function AddUpdate({ params }: { params: Params }) {
         if (m) modsImage.push(m);
       });
     setSelectedImages(modsImage);
-  }, [_id, form, setSelectedImages]);
+  }, [_id]);
 
   useEffect(() => {
     if (status === "update" && _id) fetchMod();
