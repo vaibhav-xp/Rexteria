@@ -1,6 +1,6 @@
 "use client";
 
-import ner from "@/components/shared/loading-spinner";
+import LoadingSpinner from "@/components/shared/loading-spinner";
 import EditSepecification from "@/components/spanel/mods/Specification";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
