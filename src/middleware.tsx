@@ -23,7 +23,7 @@ const requiresAdminAccess = (path: string) => {
 
 const requiresLogin = (path: string) => {
   return [...USER_PATHS, ...ADMIN_PATHS].some((protectedPath) =>
-    path.startsWith(protectedPath),
+    path.startsWith(protectedPath)
   );
 };
 

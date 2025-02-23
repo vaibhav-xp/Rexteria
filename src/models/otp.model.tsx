@@ -18,7 +18,7 @@ const OTPSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  },
+  }
 );
 
 const OTP = mongoose.models.otp || mongoose.model("otp", OTPSchema);

@@ -70,7 +70,7 @@ export default function SelectedImages() {
   const handleDelete = async (imagesToDelete: ImageTypeWithID[]) => {
     const formData = new FormData();
     imagesToDelete.forEach((img) =>
-      formData.append(`image[]`, img.public_id as string),
+      formData.append(`image[]`, img.public_id as string)
     );
 
     const data = await deleteGalleryFn(formData);
@@ -80,7 +80,7 @@ export default function SelectedImages() {
 
   const handleCheckboxChange = (
     checked: CheckedState,
-    img: ImageTypeWithID,
+    img: ImageTypeWithID
   ) => {
     if (checked) {
       if (selectedImages.length < selectDialogOpen) handleSelectedImages(img);
@@ -134,7 +134,7 @@ export default function SelectedImages() {
                         onClick={() =>
                           handleSetImages(
                             selectedImages.map((s) => s?.url) as string[],
-                            idx,
+                            idx
                           )
                         }
                       />
@@ -177,7 +177,7 @@ export default function SelectedImages() {
                       <Checkbox
                         className="absolute left-1 bottom-1 w-6 h-6 bg-card border rounded-md"
                         checked={selectedImages.some(
-                          (selected) => selected?._id === img?._id,
+                          (selected) => selected?._id === img?._id
                         )}
                         onCheckedChange={(checked) =>
                           handleCheckboxChange(checked, img)

@@ -19,7 +19,7 @@ export const POST = catchAsyncHandler(async (req: NextRequest) => {
   if (!email || !otp) {
     throw new ErrorCreator(
       StatusCodes.BAD_REQUEST,
-      "Email and OTP are required.",
+      "Email and OTP are required."
     );
   }
 
@@ -34,7 +34,7 @@ export const POST = catchAsyncHandler(async (req: NextRequest) => {
   if (!otpEntry) {
     throw new ErrorCreator(
       StatusCodes.FORBIDDEN,
-      "No OTP found for this email.",
+      "No OTP found for this email."
     );
   }
 
@@ -69,13 +69,13 @@ export const POST = catchAsyncHandler(async (req: NextRequest) => {
   const token = jwt.sign(
     { _id: user._id, email: user.email, role: user.role },
     process.env.SECRET_ACCESS_TOKEN as string,
-    { expiresIn: "24h" },
+    { expiresIn: "24h" }
   );
 
   // Return success response
   const response = ReturnNextResponse(
     StatusCodes.OK,
-    "User verified successfully.",
+    "User verified successfully."
   );
 
   response.cookies.set("token", token, {

@@ -29,7 +29,7 @@ export const POST = catchAsyncHandler(async (req) => {
   if (!mod) {
     throw new ErrorCreator(
       StatusCodes.NOT_FOUND,
-      "Mod not found with this id.",
+      "Mod not found with this id."
     );
   }
 
@@ -37,13 +37,13 @@ export const POST = catchAsyncHandler(async (req) => {
 
   if (isCart) {
     const modPresent = isCart.mods.find(
-      (item: CartModType) => item.mod_id.toString() === mod_id,
+      (item: CartModType) => item.mod_id.toString() === mod_id
     );
 
     if (modPresent) {
       throw new ErrorCreator(
         StatusCodes.CONFLICT,
-        "Mod already exists in cart.",
+        "Mod already exists in cart."
       );
     }
 
@@ -72,7 +72,7 @@ export const POST = catchAsyncHandler(async (req) => {
 
   return ReturnNextResponse(
     StatusCodes.OK,
-    "Mod added to the cart successfully.",
+    "Mod added to the cart successfully."
   );
 });
 
@@ -98,7 +98,7 @@ export const GET = catchAsyncHandler(async (req) => {
   return ReturnNextResponse(
     StatusCodes.OK,
     "Cart data fetched successfully.",
-    cart,
+    cart
   );
 });
 
@@ -115,7 +115,7 @@ export const PATCH = catchAsyncHandler(async (req) => {
   if (!modProduct) {
     throw new ErrorCreator(
       StatusCodes.NOT_FOUND,
-      "Mod not found with this id.",
+      "Mod not found with this id."
     );
   }
 
@@ -141,7 +141,7 @@ export const PATCH = catchAsyncHandler(async (req) => {
 
   cart.totalAmount = cart.mods.reduce(
     (total: number, mod: CartModType) => total + mod.price,
-    0,
+    0
   );
   await cart.save();
 
@@ -168,7 +168,7 @@ export const DELETE = catchAsyncHandler(async (req) => {
   }
 
   const modIndex = cart.mods.findIndex(
-    (mod: CartModType) => mod.mod_id.toString() === mod_id,
+    (mod: CartModType) => mod.mod_id.toString() === mod_id
   );
 
   if (modIndex === -1) {
@@ -187,6 +187,6 @@ export const DELETE = catchAsyncHandler(async (req) => {
 
   return ReturnNextResponse(
     StatusCodes.OK,
-    "Mod removed from the cart successfully.",
+    "Mod removed from the cart successfully."
   );
 });

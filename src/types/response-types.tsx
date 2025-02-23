@@ -14,7 +14,7 @@ export class NextRequestWithUser extends NextRequest {
 const ReturnNextResponse = (
   statusCode: number,
   message: string,
-  data?: unknown,
+  data?: unknown
 ): NextResponse => {
   const response: ResponseType = {
     statusCode,

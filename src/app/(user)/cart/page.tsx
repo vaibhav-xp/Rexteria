@@ -53,7 +53,10 @@ export default function Cart() {
     };
     setSendEnquiryLoading(true);
     postEnquiryFn(enquiry)
-      .then((data) => showAlert(data))
+      .then((data) => {
+        showAlert(data);
+        window.open(data.data, "_blank");
+      })
       .then(() => refetchCartData())
       .then(() => handleDialogBox())
       .finally(() => setSendEnquiryLoading(true));
@@ -159,7 +162,8 @@ export default function Cart() {
               purchasing. Please ensure your profile is complete before
               submitting. Currently, payments are handled manually due to
               certain reasons, and we do not support automated payments at this
-              time.
+              time. Communication will only be through WhatsApp; please do not
+              make calls.
             </label>
           </div>
 
@@ -168,7 +172,7 @@ export default function Cart() {
               Total Amount: ₹{totalAmount}
             </div>
             <Button
-              disabled={!checkbox}
+              disabled={!checkbox || !buyWhenProfileComplete}
               className="mt-4 md:mt-0 w-full md:w-auto"
               onClick={handleEnquiry}
             >
@@ -176,7 +180,7 @@ export default function Cart() {
                 ? sendEnquiryLoading
                   ? "Sending..."
                   : "Send Enquiry"
-                : "Complete Your Profile"}
+                : "Complete Your Profile First"}
             </Button>
           </div>
         </DialogContent>

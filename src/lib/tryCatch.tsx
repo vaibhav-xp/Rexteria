@@ -32,7 +32,7 @@ const catchAsyncHandler =
             statusCode: statusCode,
             message: message,
           },
-          { status: error.statusCode },
+          { status: error.statusCode }
         );
       }
 
@@ -41,7 +41,7 @@ const catchAsyncHandler =
           statusCode: 500,
           message: "An unexpected error occurred.",
         },
-        { status: 500 },
+        { status: 500 }
       );
     }
   };

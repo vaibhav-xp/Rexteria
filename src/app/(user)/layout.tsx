@@ -1,13 +1,7 @@
 "use client";
 
 import Sidebar from "@/components/spanel/Sidebar";
-import {
-  ChevronLeft,
-  Heart,
-  History,
-  ShoppingBagIcon,
-  User,
-} from "lucide-react";
+import { ChevronLeft, Heart, ShoppingBagIcon, User } from "lucide-react";
 import { ReactNode } from "react";
 
 export default function Layout({ children }: { children: ReactNode }) {
@@ -33,12 +27,12 @@ export default function Layout({ children }: { children: ReactNode }) {
             icon: Heart,
             variant: "ghost",
           },
-          {
-            title: "Orders",
-            href: "/orders",
-            icon: History,
-            variant: "ghost",
-          },
+          // {
+          //   title: "Orders",
+          //   href: "/orders",
+          //   icon: History,
+          //   variant: "ghost",
+          // },
           {
             title: "Back",
             href: "/",

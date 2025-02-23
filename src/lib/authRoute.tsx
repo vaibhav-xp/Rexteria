@@ -11,7 +11,7 @@ import User from "@/models/user.model";
 
 export async function authRequired(
   req: NextRequestWithUser,
-  assignedRoles?: string[],
+  assignedRoles?: string[]
 ): Promise<NextResponse | null> {
   const authToken = req.cookies.get("token");
 
@@ -24,13 +24,13 @@ export async function authRequired(
   try {
     const verified = jwt.verify(
       token,
-      process.env.SECRET_ACCESS_TOKEN as string,
+      process.env.SECRET_ACCESS_TOKEN as string
     ) as UserType;
 
     if (!verified) {
       throw new ErrorCreator(
         StatusCodes.UNAUTHORIZED,
-        "User is not authorized.",
+        "User is not authorized."
       );
     }
 
@@ -43,7 +43,7 @@ export async function authRequired(
     if (userIsActive && !userIsActive?.active) {
       throw new ErrorCreator(
         StatusCodes.FORBIDDEN,
-        "User is blocked.Contact to the administrator.",
+        "User is blocked. Contact to the administrator."
       );
     }
 
@@ -57,7 +57,7 @@ export async function authRequired(
     console.error("JWT Verification Error:", error);
     const response = ReturnNextResponse(
       StatusCodes.UNAUTHORIZED,
-      "User is not authorized.",
+      "User is not authorized."
     );
     response.cookies.delete("token");
     return response;
@@ -66,7 +66,7 @@ export async function authRequired(
 
 export function allowedRoles(
   user: JwtPayload,
-  assignedRoles: string[],
+  assignedRoles: string[]
 ): boolean {
   const userRole = user.role as string | undefined;
 
@@ -79,7 +79,7 @@ export function allowedRoles(
   if (!assigned) {
     throw new ErrorCreator(
       StatusCodes.UNAUTHORIZED,
-      "Only authorized roles have access.",
+      "Only authorized roles have access."
     );
   }
 

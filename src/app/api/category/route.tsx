@@ -20,7 +20,7 @@ export const POST = catchAsyncHandler(async (req: NextRequest) => {
   if (!title || !image) {
     throw new ErrorCreator(
       StatusCodes.BAD_REQUEST,
-      "Title & image are required.",
+      "Title & image are required."
     );
   }
 
@@ -30,7 +30,7 @@ export const POST = catchAsyncHandler(async (req: NextRequest) => {
   if (isExist) {
     throw new ErrorCreator(
       StatusCodes.BAD_REQUEST,
-      "Category with this title already exists.",
+      "Category with this title already exists."
     );
   }
 
@@ -39,7 +39,7 @@ export const POST = catchAsyncHandler(async (req: NextRequest) => {
   if (!galleryExists) {
     throw new ErrorCreator(
       StatusCodes.BAD_REQUEST,
-      "Image does not exist in the gallery.",
+      "Image does not exist in the gallery."
     );
   }
 
@@ -48,7 +48,7 @@ export const POST = catchAsyncHandler(async (req: NextRequest) => {
 
   return ReturnNextResponse(
     StatusCodes.CREATED,
-    `Category "${newCategory.title}" created successfully.`,
+    `Category "${newCategory.title}" created successfully.`
   );
 });
 
@@ -63,7 +63,7 @@ export const PATCH = catchAsyncHandler(async (req: NextRequest) => {
   if (!_id) {
     throw new ErrorCreator(
       StatusCodes.BAD_REQUEST,
-      "Category _id is required.",
+      "Category _id is required."
     );
   }
 
@@ -77,7 +77,7 @@ export const PATCH = catchAsyncHandler(async (req: NextRequest) => {
   if (!isExist) {
     throw new ErrorCreator(
       StatusCodes.NOT_FOUND,
-      "Category not found with the provided _id.",
+      "Category not found with the provided _id."
     );
   }
 
@@ -85,7 +85,7 @@ export const PATCH = catchAsyncHandler(async (req: NextRequest) => {
   if (existingTitle) {
     throw new ErrorCreator(
       StatusCodes.BAD_REQUEST,
-      "A category with this title already exists.",
+      "A category with this title already exists."
     );
   }
 
@@ -95,7 +95,7 @@ export const PATCH = catchAsyncHandler(async (req: NextRequest) => {
     if (!galleryExists) {
       throw new ErrorCreator(
         StatusCodes.BAD_REQUEST,
-        "Image does not exist in the gallery.",
+        "Image does not exist in the gallery."
       );
     }
   }
@@ -107,7 +107,7 @@ export const PATCH = catchAsyncHandler(async (req: NextRequest) => {
 
   return ReturnNextResponse(
     StatusCodes.OK,
-    `Category "${isExist.title}" updated successfully.`,
+    `Category "${isExist.title}" updated successfully.`
   );
 });
 
@@ -121,7 +121,7 @@ export const GET = catchAsyncHandler(async () => {
   return ReturnNextResponse(
     StatusCodes.OK,
     "Categories fetched successfully.",
-    categories,
+    categories
   );
 });
 
@@ -134,7 +134,7 @@ export const DELETE = catchAsyncHandler(async (req: NextRequest) => {
   if (!_id) {
     throw new ErrorCreator(
       StatusCodes.BAD_REQUEST,
-      "Category _id is required.",
+      "Category _id is required."
     );
   }
 
@@ -152,7 +152,7 @@ export const DELETE = catchAsyncHandler(async (req: NextRequest) => {
   if (modsExist.length > 0) {
     throw new ErrorCreator(
       StatusCodes.FORBIDDEN,
-      "Mods are already assigned to this category. Deletion is not possible.",
+      "Mods are already assigned to this category. Deletion is not possible."
     );
   }
 
@@ -160,6 +160,6 @@ export const DELETE = catchAsyncHandler(async (req: NextRequest) => {
 
   return ReturnNextResponse(
     StatusCodes.OK,
-    `Category "${categoryName}" deleted successfully.`,
+    `Category "${categoryName}" deleted successfully.`
   );
 });

@@ -18,6 +18,12 @@ import banner_2 from "@/assets/banner_home_2.webp";
 import banner_3 from "@/assets/banner_home_3.webp";
 import banner_4 from "@/assets/bg-mods.webp";
 
+const whatsappNumber = "918419080110";
+const whatsappMessage =
+  "Hello! I would like to know more about your custom car modification services for GTA 5.";
+const encodedMessage = encodeURIComponent(whatsappMessage);
+const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+
 const slidesData = [
   {
     id: 2,
@@ -30,6 +36,7 @@ const slidesData = [
     buttonSecondary: "Sign Up",
     buttonSecondryLink: "/login",
     position: "0px 40%",
+    isContact: false,
   },
   {
     id: 5,
@@ -37,11 +44,12 @@ const slidesData = [
     description:
       "Browse a wide range of mod categories for endless customization options.",
     imgSrc: banner_3,
-    buttonPrimary: "Explore Now",
-    buttonPrimaryLink: "/categories",
+    buttonPrimary: "Custom Order",
+    buttonPrimaryLink: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappLink)}`,
     buttonSecondary: "Sign Up",
     buttonSecondryLink: "/login",
     position: "40% 80%",
+    isContact: true,
   },
   {
     id: 1,
@@ -54,6 +62,7 @@ const slidesData = [
     buttonSecondary: "Login",
     buttonSecondryLink: "/login",
     position: "0 60%",
+    isContact: false,
   },
   {
     id: 3,
@@ -66,19 +75,7 @@ const slidesData = [
     buttonSecondary: "Sign Up",
     buttonSecondryLink: "/login",
     position: "0 90%",
-  },
-  {
-    id: 4,
-    title: "Drive Your GTA 5 World, Your Way",
-    description:
-      "Get unique mods or pay extra for personalized custom modifications.",
-    imgSrc:
-      "https://res.cloudinary.com/dkcaalfg3/image/upload/v1727243337/rexteria/x3yehik6dngasimps0oz.webp",
-    buttonPrimary: "Show Now",
-    buttonPrimaryLink: "/mods",
-    buttonSecondary: "Sign Up",
-    buttonSecondryLink: "/login",
-    position: "0 10%",
+    isContact: false,
   },
 ];
 
@@ -124,13 +121,27 @@ export default function Home() {
                     {slide.description}
                   </p>
                   <div className="flex items-center gap-4 mt-6">
-                    <Button
-                      variant="default"
-                      className="w-40 text-lg transition-transform transform hover:scale-105"
-                      onClick={() => router.push(slide.buttonPrimaryLink)}
-                    >
-                      {slide.buttonPrimary}
-                    </Button>
+                    {slide.isContact ? (
+                      user && (
+                        <Button
+                          variant="default"
+                          className="w-40 text-lg transition-transform transform hover:scale-105"
+                          onClick={() => router.push(slide.buttonPrimaryLink)}
+                        >
+                          {slide.buttonPrimary}
+                        </Button>
+                      )
+                    ) : (
+                      <Button
+                        variant="default"
+                        className="w-40 text-lg transition-transform transform hover:scale-105"
+                        onClick={() =>
+                          window.open(slide.buttonPrimaryLink, "_blank")
+                        }
+                      >
+                        {slide.buttonPrimary}
+                      </Button>
+                    )}
                     {!user && (
                       <Button
                         variant="outline"
