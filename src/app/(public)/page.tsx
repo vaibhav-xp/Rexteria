@@ -17,8 +17,8 @@ import banner_1 from "@/assets/banner_home.webp";
 import banner_2 from "@/assets/banner_home_2.webp";
 import banner_3 from "@/assets/banner_home_3.webp";
 import banner_4 from "@/assets/bg-mods.webp";
+import { whatsappNumber } from "@/lib/whastsapp-template";
 
-const whatsappNumber = "918419080110";
 const whatsappMessage =
   "Hello! I would like to know more about your custom car modification services for GTA 5.";
 const encodedMessage = encodeURIComponent(whatsappMessage);

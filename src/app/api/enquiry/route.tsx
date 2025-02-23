@@ -2,7 +2,10 @@ import { authRequired } from "@/lib/authRoute";
 import connectToDatabase from "@/lib/connectDatabase";
 import ErrorCreator from "@/lib/errorCreator";
 import catchAsyncHandler from "@/lib/tryCatch";
-import { generateWhatsAppMessage } from "@/lib/whastsapp-template";
+import {
+  generateWhatsAppMessage,
+  whatsappNumber,
+} from "@/lib/whastsapp-template";
 import { ROLES } from "@/middleware";
 import CartModel from "@/models/cart.model";
 import EnquiryModel from "@/models/enquiry.model";
@@ -45,7 +48,7 @@ export const POST = catchAsyncHandler(async (req) => {
   }
 
   const template = generateWhatsAppMessage(user._doc, isCart, req, message);
-  const whatsappLink = `https://wa.me/91${8917726220}?text=${template}`;
+  const whatsappLink = `https://wa.me/91${whatsappNumber}?text=${template}`;
   await isCart.deleteOne();
   return ReturnNextResponse(
     StatusCodes.OK,

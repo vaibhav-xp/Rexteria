@@ -1,6 +1,8 @@
 import { CartModType, CartTypes } from "@/types/cart-types";
 import { NextRequestWithUser } from "@/types/response-types";
 
+export const whatsappNumber = 7309526841;
+
 export const generateWhatsAppMessage = (
   user: {
     name: string;
